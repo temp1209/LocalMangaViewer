@@ -1,0 +1,206 @@
+:root {
+  --title-shadow-color: #854655;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #d3d3d3;
+}
+
+h1 {
+  text-align: center;
+}
+
+.manga-list {
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f4f4f4;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#manga-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.manga-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0px 16px 16px;
+  background-color: #ffbfdd;
+  overflow: hidden;
+  width: 100%;
+  min-height: 360px;
+}
+
+.manga-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background-color: #fc86a3;
+  z-index: 1;
+}
+
+.manga-item::after {
+  content: "";
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 1;
+}
+
+.cover__portrait,
+.cover__landscape {
+  width: 240px;
+  height: 340px;
+  border-radius: 4px;
+  margin-top: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.cover__portrait {
+  object-fit: cover;
+}
+
+.cover__landscape {
+  background-color: #333;
+  object-fit: contain;
+}
+
+.info-container {
+  width: calc(100% - 240px);
+  z-index: 2;
+}
+
+.title,
+.author {
+  white-space: nowrap; /* 改行しない */
+  overflow: hidden; /* はみ出した部分を隠す */
+  text-overflow: ellipsis; /* 省略記号「...」を表示 */
+  width: 100%;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f8f8f8;
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+  text-shadow: -1px -1px 0 var(--title-shadow-color), 1px -1px 0 var(--title-shadow-color),
+    -1px 1px 0 var(--title-shadow-color), 1px 1px 0 var(--title-shadow-color), 0 -2px 0 var(--title-shadow-color),
+    0 2px 0 var(--title-shadow-color), -2px 0 0 var(--title-shadow-color), 2px 0 0 var(--title-shadow-color);
+}
+
+.author {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--title-shadow-color);
+  height: 30px;
+  line-height: 30px;
+}
+
+.author-link{
+  cursor: pointer;
+}
+
+.author-link:hover {
+  text-decoration: underline;
+}
+
+.charactor-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.charactor-item {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.charactor-item:hover{
+  background-color: #e9e9e9;
+}
+
+.tag-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* タグ同士の間隔 */
+  margin-top: 20px;
+}
+
+.tag-item {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tag-item:hover{
+  background-color: #e9e9e9;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #e9e9e9;
+  border-radius: 8px;
+}
+
+.pagination button {
+  display: inline-block;
+  min-width: 48px;
+  padding: 10px 0;
+  margin: 5px;
+  border: none;
+  border-radius: 20px;
+  background-color: #d343c0;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #b3006e;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: auto;
+  box-shadow: none;
+  transform: none;
+}

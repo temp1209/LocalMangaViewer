@@ -1,0 +1,51 @@
+/* 全体のスタイルリセット */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* スクロールを無効化 */
+  height: 100vh; /* 全体をビューポートの高さに合わせる */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ヘッダーのスタイル */
+#header {
+  height: 50px; /* 固定ヘッダーの高さ */
+  background-color: #303030;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+#back-button {
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#back-button:hover {
+  background-color: #e5533f;
+}
+
+/* ビューアのスタイル */
+#viewer-container {
+  flex-grow: 1; /* 残りのスペース全体を使用 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3f3f3f;
+  overflow: hidden; /* スクロールを防止 */
+}
+
+#comic-page {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* アスペクト比を維持して画像を表示 */
+}
