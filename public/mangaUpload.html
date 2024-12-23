@@ -9,13 +9,13 @@
   <body>
     <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
       <label for="file">ZIPファイルを選択:</label>
-      <input type="file" name="file" accept=".zip">
-      <input type="text" name="title" placeholder="タイトル">
-      <input type="text" name="authors" placeholder="作者">
-      <input type="text" name="groups" placeholder="サークル">
-      <input type="text" name="originals" placeholder="原作">
-      <input type="text" name="charactors" placeholder="キャラクター">
-      <input type="text" name="tags" placeholder="タグ">
+      <input type="file" id="file" name="file" accept=".zip">
+      <input type="text" id="title" name="title" placeholder="タイトル">
+      <input type="text" id="authors" name="authors" placeholder="作者">
+      <input type="text" id="groups" name="groups" placeholder="サークル">
+      <input type="text" id="originals" name="originals" placeholder="原作">
+      <input type="text" id="charactors" name="charactors" placeholder="キャラクター">
+      <input type="text" id="tags" name="tags" placeholder="タグ">
       <button type="submit">アップロード</button>
     </form>
     <script src="js/mangaUpload.js"></script>
