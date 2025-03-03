@@ -137,6 +137,10 @@ app.get("/taglist",(req,res) => {
   res.sendFile(path.join(__dirname, "public", "taglist.html"));
 });
 
+app.get("/upload",(res,req)=>{
+  res.sendFile(path.join(__dirname,"public","mangaUpload.html"));
+});
+
 // サーバー起動
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
