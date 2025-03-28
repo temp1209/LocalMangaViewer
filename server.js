@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const AdmZip = require("adm-zip");
 const crypto = require("crypto");
-const { error } = require("console");
 
 const app = express();
 const PORT = 3000;
