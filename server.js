@@ -17,6 +17,8 @@ if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory);
 }
 
+const mangaDataPath = path.join(__dirname, "data", "metadata.json");
+
 const multerStorage = multer.memoryStorage();
 
 const multerUpload = multer({ storage: multerStorage });
@@ -38,7 +40,6 @@ app.get("/api/get-manga-list", (req, res) => {
     return res.status(400).json({ error: "Invalid page parameter" });
   }
 
-  const mangaDataPath = path.join(__dirname, "public", "manga", "metadata.json");
   fs.readFile(mangaDataPath, "utf-8", (err, data) => {
     if (err) {
       console.error(err);
@@ -98,7 +99,6 @@ app.get("/api/get-pages/:mangaName", (req, res) => {
 
 //タグとその登録数を返すAPI
 app.get("/api/get-tag-list", (req, res) => {
-  const mangaDataPath = path.join(__dirname, "public", "manga", "metadata.json");
   fs.readFile(mangaDataPath, "utf-8", (err, data) => {
     if (err) {
       console.error(err);
