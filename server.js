@@ -125,10 +125,9 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), (req, res) => {
   try {
     const mangaData = JSON.parse(req.body.data);
     console.log("受信したデータ:", mangaData);
+    
     const fileBuffer = req.file.buffer;
     const zip = new AdmZip(fileBuffer);
-    console.log(req.file.filename);
-
     zip.extractAllTo(path.join(uploadDirectory,mangaData.title),true);
 
     res.status(200).json({ message: "アップロードに成功しました", mangaData, file:req.file });
