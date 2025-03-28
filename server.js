@@ -4,6 +4,7 @@ const fs = require("fs");
 const sizeOf = require("image-size");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const unzipper = require("unzipper");
 
 const app = express();
 const PORT = 3000;
