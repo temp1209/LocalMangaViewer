@@ -4,7 +4,6 @@ const fs = require("fs");
 const sizeOf = require("image-size");
 const bodyParser = require("body-parser");
 const multer = require("multer");
-const adm = require("adm-zip");
 const AdmZip = require("adm-zip");
 
 const app = express();
