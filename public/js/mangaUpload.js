@@ -54,7 +54,14 @@ uploadForm.addEventListener("submit", async (event) => {
   fetch(uploadEndPoint, {
     method: "POST",
     body:formData,
-  }).then((res) => {
-    console.log(res.message);
+  }).then(async (res) => {
+    const result = await res.json();
+    if(res.ok){
+      console.log(result.message);
+    }else{
+      console.error(result.message);
+    }
+  }).catch((e)=>{
+    console.error(e);
   });
 });
