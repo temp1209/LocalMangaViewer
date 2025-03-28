@@ -13,13 +13,8 @@ const PORT = 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 
-const uploadDirectory = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory);
-}
-
 const mangaDataPath = path.join(__dirname, "data", "metadata.json");
-
+const mangaDirectory = path.join(__dirname, "public", "manga");
 const multerStorage = multer.memoryStorage();
 
 const multerUpload = multer({ storage: multerStorage });
@@ -58,21 +53,21 @@ app.get("/api/get-manga-list", (req, res) => {
 
     //ページに切り取り
     const mangaListPageData = formedData.slice(startIndex, endIndex);
-    const dummyCoverPath = path.join(__dirname, "public", "manga", "DummyCover.png");
+    const dummyCoverPath = path.join("manga", "DummyCover.png");
 
     const getMangaCover = (manga) => {
       try {
-        const mangaFolderPath = path.join(__dirname, "public", "manga", manga.title);
+        const mangaFolderPath = path.join(mangaDirectory, manga.id);
         const filesInFolder = fs.readdirSync(mangaFolderPath).filter((item) => /\.(png|jpe?g|gif|webp)$/i.test(item));
         const coverImageName = filesInFolder.length > 0 ? encodeURIComponent(filesInFolder[0]) : null;
         const coverImagePath = coverImageName
-          ? path.join("manga", encodeURIComponent(manga.title), coverImageName)
+          ? path.join("manga", encodeURIComponent(manga.id), coverImageName)
           : dummyCoverPath;
         const coverImageSize = sizeOf(path.join(__dirname, "public", decodeURIComponent(coverImagePath)));
 
         return { path: coverImagePath, isPortrait: coverImageSize.height > coverImageSize.width * 1.2 };
       } catch (error) {
-        console.warn(`フォルダが見つかりませんでした:${manga.title}\n`, error);
+        console.warn(`フォルダが見つかりませんでした:\ntitle:${manga.title}\nid:${manga.id}`, error);
         return {
           path: dummyCoverPath,
           isPortrait: false,
@@ -88,9 +83,9 @@ app.get("/api/get-manga-list", (req, res) => {
 });
 
 // 指定されたフォルダ内の画像一覧を返すAPI
-app.get("/api/get-pages/:mangaName", (req, res) => {
-  const mangaName = decodeURIComponent(req.params.mangaName);
-  const mangaPath = path.join(__dirname, "public", "manga", mangaName);
+app.get("/api/get-pages/:mangaID", (req, res) => {
+  const mangaID = req.params.mangaID
+  const mangaPath = path.join(mangaDirectory, mangaID);
 
   fs.readdir(mangaPath, (err, files) => {
     if (err) {
@@ -100,7 +95,7 @@ app.get("/api/get-pages/:mangaName", (req, res) => {
     // 画像ファイルのみフィルタリングして返す
     const pageFiles = files
       .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
-      .map((file) => `/manga/${encodeURIComponent(mangaName)}/${encodeURIComponent(file)}`);
+      .map((file) => `/manga/${mangaID}/${encodeURIComponent(file)}`);
 
     res.json(pageFiles);
   });
@@ -135,19 +130,22 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), (req, res) => {
     const newMangaData = JSON.parse(req.body.data);
     console.log("受信したデータ:", newMangaData);
 
+    const newMangaID = crypto.randomUUID().toString();
+    const newMangaDataWithID = {...newMangaData,id:newMangaID};
+
     const fileBuffer = req.file.buffer;
     const zip = new AdmZip(fileBuffer);
-    zip.extractAllTo(path.join(uploadDirectory, newMangaData.title), true);
+    zip.extractAllTo(path.join(mangaDirectory, newMangaID), true);
 
     const currentMangaData = JSON.parse(fs.readFileSync(mangaDataPath, "utf-8"));
     if (Array.isArray(currentMangaData)) {
-      currentMangaData.push(newMangaData);
+      currentMangaData.push(newMangaDataWithID);
     } else {
       console.error("metadata.jsonの形式が不正です");
       return;
     }
     fs.writeFileSync(mangaDataPath, JSON.stringify(currentMangaData, null, 2));
-    res.status(200).json({ message: "アップロードに成功しました", mangaData: newMangaData, file: req.file });
+    res.status(200).json({ message: "アップロードに成功しました", mangaData: newMangaDataWithID, file: req.file });
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "アップロードに失敗しました" });
