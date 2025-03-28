@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const sizeOf = require("image-size");
 const bodyParser = require("body-parser");
+const multer = require("multer");
 
 const app = express();
 const PORT = 3000;
@@ -10,6 +11,21 @@ const PORT = 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 
+const uploadDirectory = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDirectory)) {
+  fs.mkdirSync(uploadDirectory);
+}
+
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDirectory);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const multerUpload = multer({storage:multerStorage});
 
 // Get
 // マンガ情報を返すAPI
@@ -101,17 +117,29 @@ app.get("/api/get-tag-list", (req, res) => {
       return acc;
     }, {});
 
-    const sortedTagData = Object.entries(tagFrequency).sort((a,b)=>b[1]-a[1]);
-    const tagDataWithCount = sortedTagData.map(([str,count])=>{return {str,count}});
+    const sortedTagData = Object.entries(tagFrequency).sort((a, b) => b[1] - a[1]);
+    const tagDataWithCount = sortedTagData.map(([str, count]) => {
+      return { str, count };
+    });
 
     res.json(tagDataWithCount);
   });
 });
 
-
 //POST
-//app.post();
+app.post("/api/post-manga-upload", multerUpload.single("file"), (req, res) => {
+  try{
+    const mangaData = JSON.parse(req.body.data);
+    console.log("受信したデータ:",mangaData);
+    const fileInfo = req.file;
+    console.log('アップロードされたファイル:', fileInfo);
 
+    res.status(200).json({message:"アップロードに成功しました",mangaData,fileInfo})
+  } catch (e){
+    console.error(e);
+    res.status(500).json({message:"アップロードに失敗しました"});
+  }
+});
 
 //ルーティング
 //閲覧画面
@@ -141,12 +169,12 @@ app.get("/search", (req, res) => {
   res.redirect(`/mangaList.html?${redirectQuery}`);
 });
 
-app.get("/taglist",(req,res) => {
+app.get("/taglist", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "taglist.html"));
 });
 
-app.get("/upload",(req,res)=>{
-  res.sendFile(path.join(__dirname,"public","mangaUpload.html"));
+app.get("/upload", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "mangaUpload.html"));
 });
 
 // サーバー起動

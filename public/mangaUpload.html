@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="css/mangaUpload.css" />
   </head>
   <body>
-    <form id="upload-form">
+    <form id="upload-form" method="post" enctype="multipart/form-data">
       <label for="file">ZIPファイルを選択:</label>
-      <input type="file" id="file" name="file" accept=".zip" required>
+      <input type="file" id="file" name="file" accept=".png" required>
       <input type="text" id="title" name="title" placeholder="タイトル" required>
       <input type="text" id="authors" name="authors" placeholder="作者" required>
       <input type="text" id="groups" name="groups" placeholder="サークル">

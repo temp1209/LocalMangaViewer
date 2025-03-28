@@ -55,8 +55,6 @@ uploadForm.addEventListener("submit", async (event) => {
     method: "POST",
     body:formData,
   }).then((res) => {
-    if (!res.ok) {
-      alert("マンガのアップロードに失敗しました");
-    }
+    console.log(res.message);
   });
 });
