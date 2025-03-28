@@ -2,12 +2,16 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const sizeOf = require("image-size");
+const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json());
 
+
+// Get
 // マンガ情報を返すAPI
 app.get("/api/get-manga-list", (req, res) => {
   const page = parseInt(req.query.page, 10) || 1;
@@ -105,6 +109,10 @@ app.get("/api/get-tag-list", (req, res) => {
 });
 
 
+//POST
+//app.post();
+
+
 //ルーティング
 //閲覧画面
 app.get("/viewer", (req, res) => {
@@ -137,7 +145,7 @@ app.get("/taglist",(req,res) => {
   res.sendFile(path.join(__dirname, "public", "taglist.html"));
 });
 
-app.get("/upload",(res,req)=>{
+app.get("/upload",(req,res)=>{
   res.sendFile(path.join(__dirname,"public","mangaUpload.html"));
 });
 
