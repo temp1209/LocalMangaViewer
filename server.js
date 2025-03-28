@@ -124,14 +124,23 @@ app.get("/api/get-tag-list", (req, res) => {
 //POST
 app.post("/api/post-manga-upload", multerUpload.single("file"), (req, res) => {
   try {
-    const mangaData = JSON.parse(req.body.data);
-    console.log("受信したデータ:", mangaData);
+    const newMangaData = JSON.parse(req.body.data);
+    console.log("受信したデータ:", newMangaData);
     
     const fileBuffer = req.file.buffer;
     const zip = new AdmZip(fileBuffer);
-    zip.extractAllTo(path.join(uploadDirectory,mangaData.title),true);
+    zip.extractAllTo(path.join(uploadDirectory,newMangaData.title),true);
 
-    res.status(200).json({ message: "アップロードに成功しました", mangaData, file:req.file });
+    const currentMangaData = JSON.parse(fs.readFileSync(mangaDataPath,"utf-8"));
+    if (Array.isArray(currentMangaData)){
+      currentMangaData.push(newMangaData);
+    }else{
+      console.error("metadata.jsonの形式が不正です");
+      return;
+    }
+
+    fs.writeFileSync(mangaDataPath,JSON.stringify(currentMangaData,null,2));
+    res.status(200).json({ message: "アップロードに成功しました", mangaData: newMangaData, file:req.file });
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "アップロードに失敗しました" });
