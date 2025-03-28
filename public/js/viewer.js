@@ -5,7 +5,6 @@ let currentIndex = 0;
 
 async function fetchImages() {
   const res = await fetch(`/api/get-pages/${id}`);
-  //ページ画像の/manga以下のパスのリスト
   images = await res.json();
 
   if (images.length > 0) {
@@ -34,7 +33,6 @@ function updateImage() {
 }
 
 document.addEventListener("keydown", (event) => {
-  // 左右の矢印キーのコードを取得
   if (event.key === "ArrowRight" || event.key === "d") {
     prevPage();
   } else if (event.key === "ArrowLeft" || event.key === "a") {
