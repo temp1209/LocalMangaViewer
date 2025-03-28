@@ -1,10 +1,10 @@
 const urlParams = new URLSearchParams(window.location.search);
-const folder = urlParams.get("folder"); // フォルダ名を取得
+const id = urlParams.get("id"); // フォルダ名を取得
 let images = [];
 let currentIndex = 0;
 
 async function fetchImages() {
-  const res = await fetch(`/api/get-pages/${encodeURIComponent(folder)}`);
+  const res = await fetch(`/api/get-pages/${id}`);
   //ページ画像の/manga以下のパスのリスト
   images = await res.json();
 
