@@ -4,7 +4,8 @@ const fs = require("fs");
 const sizeOf = require("image-size");
 const bodyParser = require("body-parser");
 const multer = require("multer");
-const unzipper = require("unzipper");
+const adm = require("adm-zip");
+const AdmZip = require("adm-zip");
 
 const app = express();
 const PORT = 3000;
@@ -17,16 +18,9 @@ if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory);
 }
 
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDirectory);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+const multerStorage = multer.memoryStorage();
 
-const multerUpload = multer({storage:multerStorage});
+const multerUpload = multer({ storage: multerStorage });
 
 // Get
 // マンガ情報を返すAPI
@@ -129,16 +123,19 @@ app.get("/api/get-tag-list", (req, res) => {
 
 //POST
 app.post("/api/post-manga-upload", multerUpload.single("file"), (req, res) => {
-  try{
+  try {
     const mangaData = JSON.parse(req.body.data);
-    console.log("受信したデータ:",mangaData);
-    const fileInfo = req.file;
-    console.log('アップロードされたファイル:', fileInfo);
+    console.log("受信したデータ:", mangaData);
+    const fileBuffer = req.file.buffer;
+    const zip = new AdmZip(fileBuffer);
+    console.log(req.file.filename);
 
-    res.status(200).json({message:"アップロードに成功しました",mangaData,fileInfo})
-  } catch (e){
+    zip.extractAllTo(path.join(uploadDirectory,mangaData.title),true);
+
+    res.status(200).json({ message: "アップロードに成功しました", mangaData, file:req.file });
+  } catch (e) {
     console.error(e);
-    res.status(500).json({message:"アップロードに失敗しました"});
+    res.status(500).json({ message: "アップロードに失敗しました" });
   }
 });
 
