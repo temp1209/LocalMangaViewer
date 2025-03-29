@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const AdmZip = require("adm-zip");
 const crypto = require("crypto");
+const fileUploadHandlers = require("./fileUploadHandlers");
 
 const app = express();
 const PORT = 3000;
@@ -84,7 +85,7 @@ app.get("/api/get-manga-list", (req, res) => {
 
 // 指定されたフォルダ内の画像一覧を返すAPI
 app.get("/api/get-pages/:mangaID", (req, res) => {
-  const mangaID = req.params.mangaID
+  const mangaID = req.params.mangaID;
   const mangaPath = path.join(mangaDirectory, mangaID);
 
   fs.readdir(mangaPath, (err, files) => {
@@ -125,27 +126,44 @@ app.get("/api/get-tag-list", (req, res) => {
 });
 
 //POST
-app.post("/api/post-manga-upload", multerUpload.single("file"), (req, res) => {
+//漫画のアップロードAPI
+app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res) => {
   try {
     const newMangaData = JSON.parse(req.body.data);
     console.log("受信したデータ:", newMangaData);
 
     const newMangaID = crypto.randomUUID().toString();
-    const newMangaDataWithID = {...newMangaData,id:newMangaID};
+    const newMangaDataWithID = { ...newMangaData, id: newMangaID };
 
-    const fileBuffer = req.file.buffer;
-    const zip = new AdmZip(fileBuffer);
-    zip.extractAllTo(path.join(mangaDirectory, newMangaID), true);
+    const file = req.file;
+    const mimeType = file.mimetype;
+    console.log(mimeType);
 
-    const currentMangaData = JSON.parse(fs.readFileSync(mangaDataPath, "utf-8"));
-    if (Array.isArray(currentMangaData)) {
-      currentMangaData.push(newMangaDataWithID);
+    let isUploadSuccessed = false;
+
+    if (fileUploadHandlers[mimeType]) {
+      try {
+        await fileUploadHandlers[mimeType](file, newMangaID);
+        isUploadSuccessed = true;
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: "アップロード処理に失敗しました" });
+      }
     } else {
-      console.error("metadata.jsonの形式が不正です");
-      return;
+      res.status(400).json({ message: "未対応のファイル形式です" });
     }
-    fs.writeFileSync(mangaDataPath, JSON.stringify(currentMangaData, null, 2));
-    res.status(200).json({ message: "アップロードに成功しました", mangaData: newMangaDataWithID, file: req.file });
+
+    if (isUploadSuccessed) {
+      const currentMangaData = JSON.parse(fs.readFileSync(mangaDataPath, "utf-8"));
+      if (Array.isArray(currentMangaData)) {
+        currentMangaData.push(newMangaDataWithID);
+      } else {
+        console.error("metadata.jsonの形式が不正です");
+        return;
+      }
+      fs.writeFileSync(mangaDataPath, JSON.stringify(currentMangaData, null, 2));
+      res.status(200).json({ message: "アップロードに成功しました", mangaData: newMangaDataWithID, file: req.file });
+    }
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "アップロードに失敗しました" });
