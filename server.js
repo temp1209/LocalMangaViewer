@@ -16,7 +16,17 @@ app.use(bodyParser.json());
 
 const mangaDataPath = path.join(__dirname, "data", "metadata.json");
 const mangaDirectory = path.join(__dirname, "public", "manga");
-const multerStorage = multer.memoryStorage();
+
+//アップロードされたデータの一時保存先
+//バックアップとして取っておく
+const multerStorage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, path.resolve(__dirname, "./uploads"));
+  },
+  filename(req, file, callback) {
+    callback(null, `${Date.now()}-${file.originalname}`);
+  },
+});
 
 const multerUpload = multer({ storage: multerStorage });
 
@@ -130,7 +140,8 @@ app.get("/api/get-tag-list", (req, res) => {
 app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res) => {
   try {
     const newMangaData = JSON.parse(req.body.data);
-    console.log("受信したデータ:", newMangaData);
+    console.log("受信したマンガデータ:", newMangaData);
+    console.log("受信したファイルデータ:", req.file);
 
     const newMangaID = crypto.randomUUID().toString();
     const newMangaDataWithID = { ...newMangaData, id: newMangaID };
