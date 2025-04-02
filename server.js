@@ -5,6 +5,8 @@ const sizeOf = require("image-size");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const AdmZip = require("adm-zip");
+const crypto = require("crypto");
+const fileUploadHandlers = require("./fileUploadHandlers");
 
 const app = express();
 const PORT = 3000;
@@ -12,12 +14,19 @@ const PORT = 3000;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 
-const uploadDirectory = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory);
-}
+const mangaDataPath = path.join(__dirname, "data", "metadata.json");
+const mangaDirectory = path.join(__dirname, "public", "manga");
 
-const multerStorage = multer.memoryStorage();
+//アップロードされたデータの一時保存先
+//バックアップとして取っておく
+const multerStorage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, path.resolve(__dirname, "./uploads"));
+  },
+  filename(req, file, callback) {
+    callback(null, `${Date.now()}-${file.originalname}`);
+  },
+});
 
 const multerUpload = multer({ storage: multerStorage });
 
@@ -38,7 +47,6 @@ app.get("/api/get-manga-list", (req, res) => {
     return res.status(400).json({ error: "Invalid page parameter" });
   }
 
-  const mangaDataPath = path.join(__dirname, "public", "manga", "metadata.json");
   fs.readFile(mangaDataPath, "utf-8", (err, data) => {
     if (err) {
       console.error(err);
@@ -56,31 +64,39 @@ app.get("/api/get-manga-list", (req, res) => {
 
     //ページに切り取り
     const mangaListPageData = formedData.slice(startIndex, endIndex);
-    const dummyCoverPath = path.join(__dirname, "public", "manga", "DummyCover.png");
+    const dummyCoverPath = path.join("manga", "DummyCover.png");
 
-    const mangaData = mangaListPageData.map((manga) => {
-      const mangaFolderPath = path.join(__dirname, "public", "manga", manga.title);
-      const filesInFolder = fs.readdirSync(mangaFolderPath).filter((item) => /\.(png|jpe?g|gif|webp)$/i.test(item));
-      const coverImageName = filesInFolder.length > 0 ? encodeURIComponent(filesInFolder[0]) : null;
-      const coverImagePath = coverImageName
-        ? path.join("manga", encodeURIComponent(manga.title), coverImageName)
-        : dummyCoverPath;
-      const coverImageSize = sizeOf(path.join(__dirname, "public", decodeURIComponent(coverImagePath)));
+    const getMangaCover = (manga) => {
+      try {
+        const mangaFolderPath = path.join(mangaDirectory, manga.id);
+        const filesInFolder = fs.readdirSync(mangaFolderPath).filter((item) => /\.(png|jpe?g|gif|webp)$/i.test(item));
+        const coverImageName = filesInFolder.length > 0 ? encodeURIComponent(filesInFolder[0]) : null;
+        const coverImagePath = coverImageName
+          ? path.join("manga", encodeURIComponent(manga.id), coverImageName)
+          : dummyCoverPath;
+        const coverImageSize = sizeOf(path.join(__dirname, "public", decodeURIComponent(coverImagePath)));
 
-      return {
-        ...manga,
-        cover: { path: coverImagePath, isPortrait: coverImageSize.height > coverImageSize.width * 1.2 },
-      };
-    });
+        return { path: coverImagePath, isPortrait: coverImageSize.height > coverImageSize.width * 1.2 };
+      } catch (error) {
+        console.warn(`フォルダが見つかりませんでした:\ntitle:${manga.title}\nid:${manga.id}`, error);
+        return {
+          path: dummyCoverPath,
+          isPortrait: false,
+        };
+      }
+    };
+
+    //カバー画像のデータを含んだJSON
+    const mangaData = mangaListPageData.map((manga) => ({ ...manga, cover: getMangaCover(manga) }));
 
     res.json({ page, limit, total: formedData.length, data: mangaData });
   });
 });
 
 // 指定されたフォルダ内の画像一覧を返すAPI
-app.get("/api/get-pages/:mangaName", (req, res) => {
-  const mangaName = decodeURIComponent(req.params.mangaName);
-  const mangaPath = path.join(__dirname, "public", "manga", mangaName);
+app.get("/api/get-pages/:mangaID", (req, res) => {
+  const mangaID = req.params.mangaID;
+  const mangaPath = path.join(mangaDirectory, mangaID);
 
   fs.readdir(mangaPath, (err, files) => {
     if (err) {
@@ -90,7 +106,7 @@ app.get("/api/get-pages/:mangaName", (req, res) => {
     // 画像ファイルのみフィルタリングして返す
     const pageFiles = files
       .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
-      .map((file) => `/manga/${encodeURIComponent(mangaName)}/${encodeURIComponent(file)}`);
+      .map((file) => `/manga/${mangaID}/${encodeURIComponent(file)}`);
 
     res.json(pageFiles);
   });
@@ -98,7 +114,6 @@ app.get("/api/get-pages/:mangaName", (req, res) => {
 
 //タグとその登録数を返すAPI
 app.get("/api/get-tag-list", (req, res) => {
-  const mangaDataPath = path.join(__dirname, "public", "manga", "metadata.json");
   fs.readFile(mangaDataPath, "utf-8", (err, data) => {
     if (err) {
       console.error(err);
@@ -121,16 +136,45 @@ app.get("/api/get-tag-list", (req, res) => {
 });
 
 //POST
-app.post("/api/post-manga-upload", multerUpload.single("file"), (req, res) => {
+//漫画のアップロードAPI
+app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res) => {
   try {
-    const mangaData = JSON.parse(req.body.data);
-    console.log("受信したデータ:", mangaData);
-    
-    const fileBuffer = req.file.buffer;
-    const zip = new AdmZip(fileBuffer);
-    zip.extractAllTo(path.join(uploadDirectory,mangaData.title),true);
+    const newMangaData = JSON.parse(req.body.data);
+    console.log("受信したマンガデータ:", newMangaData);
+    console.log("受信したファイルデータ:", req.file);
 
-    res.status(200).json({ message: "アップロードに成功しました", mangaData, file:req.file });
+    const newMangaID = crypto.randomUUID().toString();
+    const newMangaDataWithID = { ...newMangaData, id: newMangaID };
+
+    const file = req.file;
+    const mimeType = file.mimetype;
+    console.log(mimeType);
+
+    let isUploadSuccessed = false;
+
+    if (fileUploadHandlers[mimeType]) {
+      try {
+        await fileUploadHandlers[mimeType](file, newMangaID);
+        isUploadSuccessed = true;
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: "アップロード処理に失敗しました" });
+      }
+    } else {
+      res.status(400).json({ message: "未対応のファイル形式です" });
+    }
+
+    if (isUploadSuccessed) {
+      const currentMangaData = JSON.parse(fs.readFileSync(mangaDataPath, "utf-8"));
+      if (Array.isArray(currentMangaData)) {
+        currentMangaData.push(newMangaDataWithID);
+      } else {
+        console.error("metadata.jsonの形式が不正です");
+        return;
+      }
+      fs.writeFileSync(mangaDataPath, JSON.stringify(currentMangaData, null, 2));
+      res.status(200).json({ message: "アップロードに成功しました", mangaData: newMangaDataWithID, file: req.file });
+    }
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "アップロードに失敗しました" });

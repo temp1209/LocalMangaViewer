@@ -15,6 +15,9 @@
     "express": "^4.21.2",
     "image-size": "^1.1.1",
     "multer": "^1.4.5-lts.1",
+    "pdf-lib": "^1.17.1",
+    "pdf-to-png-converter": "^3.6.5",
+    "sharp": "^0.33.5",
     "unzipper": "^0.12.3"
   },
   "devDependencies": {

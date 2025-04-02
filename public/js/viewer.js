@@ -1,11 +1,10 @@
 const urlParams = new URLSearchParams(window.location.search);
-const folder = urlParams.get("folder"); // フォルダ名を取得
+const id = urlParams.get("id"); // フォルダ名を取得
 let images = [];
 let currentIndex = 0;
 
 async function fetchImages() {
-  const res = await fetch(`/api/get-pages/${encodeURIComponent(folder)}`);
-  //ページ画像の/manga以下のパスのリスト
+  const res = await fetch(`/api/get-pages/${id}`);
   images = await res.json();
 
   if (images.length > 0) {
@@ -34,7 +33,6 @@ function updateImage() {
 }
 
 document.addEventListener("keydown", (event) => {
-  // 左右の矢印キーのコードを取得
   if (event.key === "ArrowRight" || event.key === "d") {
     prevPage();
   } else if (event.key === "ArrowLeft" || event.key === "a") {
