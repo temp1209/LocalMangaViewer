@@ -4,7 +4,6 @@ const fs = require("fs");
 const sizeOf = require("image-size");
 const bodyParser = require("body-parser");
 const multer = require("multer");
-const AdmZip = require("adm-zip");
 const crypto = require("crypto");
 const fileUploadHandlers = require("./fileUploadHandlers");
 
