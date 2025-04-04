@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const AdmZip = require("adm-zip");
-const { getConfig } = require("../utils/configManager");
+const { getConfig } = require("../utils/configManager.ts");
 
 const uploadDirectory = getConfig().uploadDirectory;
 

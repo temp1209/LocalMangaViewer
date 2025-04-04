@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { PDFDocument } = require("pdf-lib");
 const sharp = require("sharp");
-const { getConfig } = require("../utils/configManager");
+const { getConfig } = require("../utils/configManager.ts");
 const { pdfToPng } = require("pdf-to-png-converter");
 
 const uploadDirectory = getConfig().uploadDirectory;
