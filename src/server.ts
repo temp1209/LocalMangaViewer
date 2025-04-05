@@ -19,9 +19,10 @@ const deafaultPageLimit = 10;
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 
-const mangaDataPath = path.join(__dirname, "data", "metadata.json");
-const mangaDirectory = path.join(__dirname, "public", "manga");
-const uploadDirectory = path.resolve(__dirname, "./uploads");
+const dataDirectory = getConfig()?.dataDirectory!;
+const mangaDataPath = path.join(dataDirectory, "metadata", "metadata.json");
+const mangaDirectory = path.join(dataDirectory, "manga");
+const uploadDirectory = path.join(dataDirectory, "uploads");
 
 //アップロードされたデータの一時保存先
 //バックアップとして取っておく
@@ -148,11 +149,6 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res)
     const newMangaData = JSON.parse(req.body.data);
     console.log("受信したマンガデータ:", newMangaData);
     console.log("受信したファイルデータ:", req.file);
-
-    const uploadDirectory = getConfig()?.uploadDirectory;
-    if (!uploadDirectory) {
-      throw new Error("設定ファイルの読み込みに失敗しました");
-    }
 
     const newMangaID = crypto.randomUUID().toString();
     const newMangaDataWithID:MetadataItem = { ...newMangaData, id: newMangaID };
