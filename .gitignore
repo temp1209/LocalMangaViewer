@@ -132,3 +132,6 @@ dist
 public/manga/
 /uploads
 /data
+/src/uploads
+/src/public/manga
+/src/data

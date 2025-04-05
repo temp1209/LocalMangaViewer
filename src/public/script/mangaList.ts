@@ -1,10 +1,12 @@
+import { Metadatas, MetadataItem } from "@mytypes/metadata";
+
 async function loadMangaList() {
   const urlParams = new URLSearchParams(window.location.search);
 
   const currentPage = urlParams.get("page") || 1;
   const author = urlParams.get("author");
   const original = urlParams.get("original");
-  const charactor = urlParams.get("charactor");
+  const character = urlParams.get("character");
   const tag = urlParams.get("tag");
 
   const queryParams = [];
@@ -12,7 +14,7 @@ async function loadMangaList() {
   queryParams.push(`page=${currentPage}`);
   if (author) queryParams.push(`author=${encodeURIComponent(author)}`);
   if (original) queryParams.push(`original=${encodeURIComponent(original)}`);
-  if (charactor) queryParams.push(`charactor=${encodeURIComponent(charactor)}`);
+  if (character) queryParams.push(`character=${encodeURIComponent(character)}`);
   if (tag) queryParams.push(`tag=${encodeURIComponent(tag)}`);
 
   const searchQuery = queryParams.join("&");
@@ -34,8 +36,14 @@ async function loadMangaList() {
     .catch((error) => alert(error.message));
 }
 
-function displayMangaList(mangaDataList) {
+function displayMangaList(mangaDataList: Metadatas) {
   const mangaListContainer = document.getElementById("manga-list-container");
+
+  if (!mangaListContainer) {
+    console.error("manga-list-containerが見つかりません");
+    return;
+  }
+
   mangaListContainer.innerHTML = ""; // 一覧をクリア
 
   mangaDataList.forEach((mangaDataItem) => {
@@ -44,12 +52,14 @@ function displayMangaList(mangaDataList) {
 
     //表紙要素
     const coverImage = document.createElement("img");
-    if (mangaDataItem.cover.isPortrait) {
-      coverImage.className = "cover__portrait";
-    } else {
-      coverImage.className = "cover__landscape";
+    if (mangaDataItem.cover) {
+      if (mangaDataItem.cover.isPortrait) {
+        coverImage.className = "cover__portrait";
+      } else {
+        coverImage.className = "cover__landscape";
+      }
+      coverImage.src = mangaDataItem.cover.path;
     }
-    coverImage.src = mangaDataItem.cover.path;
     coverImage.alt = mangaDataItem.title;
     coverImage.addEventListener("click", () => {
       window.location.href = `/viewer?id=${mangaDataItem.id}`;
@@ -107,23 +117,23 @@ function displayMangaList(mangaDataList) {
       originalElement.textContent = "原作：" + mangaDataItem.originals.join(", ");
       infoContainer.appendChild(originalElement);
 
-      if (mangaDataItem.charactors.length != 0) {
+      if (mangaDataItem.characters.length != 0) {
         //キャラクター要素
-        const charactorContainerElement = document.createElement("div");
-        charactorContainerElement.className = "charactor-list-container";
-        charactorContainerElement.textContent = "キャラクター：";
-        mangaDataItem.charactors.forEach((chara) => {
-          const charactorElement = document.createElement("div");
-          charactorElement.className = "charactor-item";
-          charactorElement.textContent = chara;
-          charactorElement.addEventListener("click", () => {
-            window.location.href = `/search?charactor=${encodeURIComponent(chara)}`;
+        const characterContainerElement = document.createElement("div");
+        characterContainerElement.className = "character-list-container";
+        characterContainerElement.textContent = "キャラクター：";
+        mangaDataItem.characters.forEach((chara) => {
+          const characterElement = document.createElement("div");
+          characterElement.className = "character-item";
+          characterElement.textContent = chara;
+          characterElement.addEventListener("click", () => {
+            window.location.href = `/search?character=${encodeURIComponent(chara)}`;
           });
 
-          charactorContainerElement.append(charactorElement);
+          characterContainerElement.append(characterElement);
         });
 
-        infoContainer.appendChild(charactorContainerElement);
+        infoContainer.appendChild(characterContainerElement);
       }
     }
 
@@ -146,11 +156,6 @@ function displayMangaList(mangaDataList) {
 
     //今までの要素をひとまとまりとして登録
     mangaListContainer.appendChild(mangaElement);
-
-    //画面を一番上に
-    window.scrollTo({
-      top: 0,
-    });
   });
 
   /*
@@ -163,8 +168,8 @@ function displayMangaList(mangaDataList) {
           <div class="author"></div>
           <div class="group"></div>
           <div class="original"></div>
-          <div class="charactor-list-container">
-            <div class="charactor-item"></div>
+          <div class="character-list-container">
+            <div class="character-item"></div>
           </div>
           <div class="tag-list-container">
             <div class="tag-item"></div>
@@ -175,20 +180,31 @@ function displayMangaList(mangaDataList) {
       ...
     </div>
   */
+
+  //画面を一番上に
+  window.scrollTo({
+    top: 0,
+  });
 }
 
-function updatePagination(current, totalPages) {
+function updatePagination(current: number, totalPages: number) {
   const pagination = document.getElementById("pagination");
+
+  if (!pagination) {
+    console.error("paginationが見つかりません");
+    return;
+  }
+
   pagination.innerHTML = ""; // 既存のボタンをクリア
 
   for (let i = 1; i <= totalPages; i++) {
     const button = document.createElement("button");
-    button.textContent = i;
+    button.textContent = i.toString();
     button.disabled = i === current; // 現在のページはボタンを無効化
 
     button.addEventListener("click", () => {
       const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("page", i); // ページ情報をクエリパラメーターに設定
+      urlParams.set("page", i.toString()); // ページ情報をクエリパラメーターに設定
       window.history.pushState({}, "", `?${urlParams.toString()}`);
 
       loadMangaList();
@@ -201,7 +217,8 @@ function updatePagination(current, totalPages) {
 window.addEventListener("popstate", (event) => {
   // URLのクエリパラメーターを取得
   const urlParams = new URLSearchParams(window.location.search);
-  const page = parseInt(urlParams.get("page") || 1, 10); // デフォルトでページ1
+  const pageParam = urlParams.get("page");
+  const page = pageParam ? parseInt(pageParam, 10) : 1; // デフォルトでページ1
   console.log("popstate:", page);
 
   loadMangaList(); // ページ内容を更新

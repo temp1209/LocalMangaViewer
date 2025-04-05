@@ -1,21 +1,20 @@
-const path = require("path");
-const fs = require("fs");
+import path from "path";
+import fs from "fs";
+import { UserConfig } from "@mytypes/userConfig";
 
-const configPath = path.join(__dirname, "../config.json");
+const configPath = path.join(__dirname, "./config.json");
 
-// 設定の読み込み
-function getConfig() {
+export function getConfig():UserConfig | null {
   try {
     const configData = fs.readFileSync(configPath, "utf-8");
     return JSON.parse(configData);
   } catch (error) {
     console.error("config.jsonの読み込みに失敗しました:", error);
-    return {};
+    return null;
   }
 }
 
-// 設定の書き込み
-function setConfig(newConfig) {
+export function setConfig(newConfig:UserConfig) {
   try {
     fs.writeFileSync(configPath, JSON.stringify(newConfig, null, 2));
     console.log("config.jsonに保存しました");
@@ -23,5 +22,3 @@ function setConfig(newConfig) {
     console.error("config.jsonの書き込みに失敗しました:", error);
   }
 }
-
-module.exports = { getConfig, setConfig };
