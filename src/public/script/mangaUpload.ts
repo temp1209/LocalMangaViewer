@@ -1,5 +1,3 @@
-import { MetadataItem } from "@mytypes/metadata";
-
 const uploadForm = document.getElementById("upload-form")! as HTMLFormElement;
 const fileInput = document.getElementById("file")! as HTMLInputElement;
 const titleInput = document.getElementById("title")! as HTMLInputElement;

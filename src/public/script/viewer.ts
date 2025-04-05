@@ -1,6 +1,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id"); // フォルダ名を取得
-let images = [];
+let images:string[] = [];
 let currentIndex = 0;
 
 async function fetchImages() {
@@ -28,7 +28,7 @@ function prevPage() {
 }
 
 function updateImage() {
-  const currentImageElement = document.getElementById("comic-page");
+  const currentImageElement = document.getElementById("comic-page")! as HTMLImageElement;
   currentImageElement.src = `${images[currentIndex]}`;
 }
 
@@ -40,7 +40,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-document.getElementById('back-button').addEventListener('click', () => {
+document.getElementById('back-button')?.addEventListener('click', () => {
   window.history.back();
 });
 
