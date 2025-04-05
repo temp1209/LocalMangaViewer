@@ -1,23 +1,21 @@
-const uploadForm = document.getElementById("upload-form");
-const fileInput = document.getElementById("file");
-const titleInput = document.getElementById("title");
-const authorsInput = document.getElementById("authors");
-const groupsInput = document.getElementById("groups");
-const originalsInput = document.getElementById("originals");
-const charactorsInput = document.getElementById("charactors");
-const tagsInput = document.getElementById("tags");
+import { MetadataItem } from "@mytypes/metadata";
 
-function splitComma(str) {
-  if (str == "") {
+const uploadForm = document.getElementById("upload-form")! as HTMLFormElement;
+const fileInput = document.getElementById("file")! as HTMLInputElement;
+const titleInput = document.getElementById("title")! as HTMLInputElement;
+
+function splitComma(str:string | null | undefined) {
+  if (!str) {
     return [];
   } else {
     return str.split(",").map((item) => item.trim());
   }
 }
 
-fileInput.addEventListener("change", () => {
-  if (fileInput.isDefaultNamespace.length > 0) {
-    const fileName = fileInput.files[0].name;
+document.getElementById("file")?.addEventListener("change", () => {
+  const files = fileInput.files;
+  if (files && files.length > 0) {
+    const fileName = files[0].name;
     const baseName = fileName.replace(/\.[^/.]+$/, "");
 
     if (!titleInput.value) {
@@ -29,31 +27,32 @@ fileInput.addEventListener("change", () => {
 uploadForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const file = fileInput.files[0];
-  const title = titleInput.value;
-  const authors = splitComma(authorsInput.value);
-  const groups = splitComma(groupsInput.value);
-  const originals = splitComma(originalsInput.value);
-  const charactors = splitComma(charactorsInput.value);
-  const tags = splitComma(tagsInput.value);
+  const formData = new FormData(uploadForm);
+  const file = formData.get("file") as File;
+  const title = formData.get("title") as string;
+  const authors = splitComma(formData.get("authors")?.toString());
+  const groups = splitComma(formData.get("groups")?.toString());
+  const originals = splitComma(formData.get("originals")?.toString());
+  const characters = splitComma(formData.get("characters")?.toString());
+  const tags = splitComma(formData.get("tags")?.toString());
 
   const mangaDataJson = {
     title,
     authors,
     groups,
     originals,
-    charactors,
-    tags,
+    characters,
+    tags
   };
 
   const uploadEndPoint = "/api/post-manga-upload";
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("data",JSON.stringify(mangaDataJson));
+  const uploadData = new FormData();
+  uploadData.append("file", file);
+  uploadData.append("data",JSON.stringify(mangaDataJson));
   
   fetch(uploadEndPoint, {
     method: "POST",
-    body:formData,
+    body:uploadData,
   }).then(async (res) => {
     const result = await res.json();
     if(res.ok){
