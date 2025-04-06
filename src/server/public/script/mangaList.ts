@@ -1,4 +1,4 @@
-import { Metadatas, MetadataItem } from "@mytypes/metadata";
+import { Metadatas, MetadataItem } from "server/types/metadata";
 
 async function loadMangaList() {
   const urlParams = new URLSearchParams(window.location.search);

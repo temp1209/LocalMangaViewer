@@ -6,9 +6,9 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import crypto from "crypto";
 import fileUploadHandlers from "./utils/fileUploadHandlers";
-import { MangaQuery,RawMangaQuery } from "@mytypes/queries";
+import { MangaQuery,RawMangaQuery } from "server/types/queries";
 import { decodeQueryParamArray } from "./utils/query";
-import { Metadatas, MetadataItem, SearchableKeys } from "@mytypes/metadata";
+import { Metadatas, MetadataItem, SearchableKeys } from "server/types/metadata";
 import { getConfig } from "./config/configManager";
 
 const app = express();
