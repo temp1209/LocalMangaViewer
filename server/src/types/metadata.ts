@@ -17,10 +17,10 @@ export const MetadataItemSchema = z.object({
     .optional(),
 });
 
-export const MetadatasSchema = z.array(MetadataItemSchema);
+export const MetadataSchema = z.array(MetadataItemSchema);
 
 export const SearchableKeysSchema = z.enum(["authors", "groups", "originals", "characters", "tags"]);
 
 export type MetadataItem = z.infer<typeof MetadataItemSchema>;
-export type Metadatas = z.infer<typeof MetadatasSchema>;
+export type Metadata = z.infer<typeof MetadataSchema>;
 export type SearchableKeys = z.infer<typeof SearchableKeysSchema>;
