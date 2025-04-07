@@ -8,16 +8,16 @@ async function loadTagList() {
     .catch((e) => alert(e));
 }
 
-function displayTagList(tagList:Record<string,number>) {
+function displayTagList(tagList:{str:string,count:number}[]) {
   console.log(tagList);
 
   const tagListContainer = document.getElementById("tag-list-container");
 
-  Object.entries(tagList).forEach(([str,count]) => {
+  tagList.forEach(({str,count}) => {
     const tagItemElement = document.createElement("div");
     tagItemElement.className = "tag-item";
     tagItemElement.addEventListener("click",()=>{
-      window.location.href = `/search?tag=${encodeURIComponent(str)}`;
+      window.location.href = `/mangaList.html?tag=${encodeURIComponent(str)}`;
     });
 
     const tagStrElement = document.createElement("div");
