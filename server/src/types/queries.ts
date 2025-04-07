@@ -1,27 +1,29 @@
-import { SearchableKeys } from "./metadata";
+import { SearchableKeysSchema } from "./metadata";
+import { z } from "zod";
 
-export type MangaQuery = {
-  search: SearchQuery;
-  pageConf: {
-    page?: string;
-    limit?: string;
-  };
-};
+const searchableKeys = SearchableKeysSchema.options;
 
-export type RawMangaQuery = {
-  search: RawSearchQuery;
-  pageConf: PageConf;
-}
+const SearchQuerySchema = z.record(z.enum(searchableKeys),z.array(z.string()));
 
-type SearchQuery = {
-  [K in SearchableKeys]: string[];
-};
+const RawSearchQuerySchema = z.record(z.enum(searchableKeys), z.union([z.string(), z.array(z.string())]).optional());
 
-type RawSearchQuery = {
-  [K in SearchableKeys]?: string | string[];
-}
+const PageConfSchema = z.object({
+  page: z.string().optional(),
+  limit: z.string().optional(),
+});
 
-type PageConf = {
-  page?: string;
-  limit?: string;
-}
+export const MangaQuerySchema = z.object({
+  search: SearchQuerySchema,
+  pageConf: PageConfSchema,
+});
+
+export const RawMangaQuerySchema = z.object({
+  search: RawSearchQuerySchema,
+  pageConf: PageConfSchema,
+});
+
+export type RawSearchQuery = z.infer<typeof RawSearchQuerySchema>;
+export type SearchQuery = z.infer<typeof SearchQuerySchema>;
+export type PageConf = z.infer<typeof PageConfSchema>;
+export type MangaQuery = z.infer<typeof MangaQuerySchema>;
+export type RawMangaQuery = z.infer<typeof RawMangaQuerySchema>;

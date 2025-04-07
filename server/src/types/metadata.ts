@@ -1,17 +1,26 @@
-export type Metadatas = MetadataItem[];
+import { z } from "zod";
 
-export type MetadataItem = {
-  title: string;
-  authors: string[];
-  groups: string[];
-  originals: string[];
-  characters: string[];
-  tags: string[];
-  id: string;
-  cover?:{
-    path:string;
-    isPortrait:boolean;
-  };
-};
+// MetadataItem に対応する Zod スキーマ
+export const MetadataItemSchema = z.object({
+  title: z.string(),
+  authors: z.array(z.string()),
+  groups: z.array(z.string()),
+  originals: z.array(z.string()),
+  characters: z.array(z.string()),
+  tags: z.array(z.string()),
+  id: z.string(),
+  cover: z
+    .object({
+      path: z.string(),
+      isPortrait: z.boolean(),
+    })
+    .optional(),
+});
 
-export type SearchableKeys = "authors" | "groups" | "originals" | "characters" | "tags";
+export const MetadatasSchema = z.array(MetadataItemSchema);
+
+export const SearchableKeysSchema = z.enum(["authors", "groups", "originals", "characters", "tags"]);
+
+export type MetadataItem = z.infer<typeof MetadataItemSchema>;
+export type Metadatas = z.infer<typeof MetadatasSchema>;
+export type SearchableKeys = z.infer<typeof SearchableKeysSchema>;
