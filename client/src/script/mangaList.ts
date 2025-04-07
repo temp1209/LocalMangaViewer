@@ -70,7 +70,7 @@ function displayMangaList(mangaDataList: Metadatas) {
     }
     coverImage.alt = mangaDataItem.title;
     coverImage.addEventListener("click", () => {
-      window.location.href = `/viewer.html?id=${mangaDataItem.id}`;
+      window.location.href = `/src/viewer.html?id=${mangaDataItem.id}`;
     });
     mangaElement.appendChild(coverImage);
 
@@ -83,7 +83,7 @@ function displayMangaList(mangaDataList: Metadatas) {
     titleElement.className = "title";
     titleElement.textContent = mangaDataItem.title;
     titleElement.addEventListener("click", () => {
-      window.location.href = `/viewer.html?id=${mangaDataItem.id}`;
+      window.location.href = `/src/viewer.html?id=${mangaDataItem.id}`;
     });
     infoContainer.appendChild(titleElement);
 
