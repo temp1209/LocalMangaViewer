@@ -70,7 +70,7 @@ function displayMangaList(mangaDataList: Metadatas) {
     }
     coverImage.alt = mangaDataItem.title;
     coverImage.addEventListener("click", () => {
-      window.location.href = `/viewer?id=${mangaDataItem.id}`;
+      window.location.href = `/viewer.html?id=${mangaDataItem.id}`;
     });
     mangaElement.appendChild(coverImage);
 
@@ -83,7 +83,7 @@ function displayMangaList(mangaDataList: Metadatas) {
     titleElement.className = "title";
     titleElement.textContent = mangaDataItem.title;
     titleElement.addEventListener("click", () => {
-      window.location.href = `/viewer?id=${mangaDataItem.id}`;
+      window.location.href = `/viewer.html?id=${mangaDataItem.id}`;
     });
     infoContainer.appendChild(titleElement);
 
@@ -96,7 +96,7 @@ function displayMangaList(mangaDataList: Metadatas) {
       authorLink.className = "author-link";
       authorLink.textContent = author;
       authorLink.addEventListener("click", () => {
-        window.location.href = `/search?author=${encodeURIComponent(author)}`;
+        window.location.href = `/mangaList.html?author=${encodeURIComponent(author)}`;
       });
 
       authorsElement.appendChild(authorLink);
@@ -135,7 +135,7 @@ function displayMangaList(mangaDataList: Metadatas) {
           characterElement.className = "character-item";
           characterElement.textContent = chara;
           characterElement.addEventListener("click", () => {
-            window.location.href = `/search?character=${encodeURIComponent(chara)}`;
+            window.location.href = `/mangaList.html?character=${encodeURIComponent(chara)}`;
           });
 
           characterContainerElement.append(characterElement);
@@ -153,7 +153,7 @@ function displayMangaList(mangaDataList: Metadatas) {
       tagElement.className = "tag-item";
       tagElement.textContent = tag;
       tagElement.addEventListener("click", () => {
-        window.location.href = `/search?tag=${encodeURIComponent(tag)}`;
+        window.location.href = `/mangaList.html?tag=${encodeURIComponent(tag)}`;
       });
 
       tagsContainerElement.appendChild(tagElement);
