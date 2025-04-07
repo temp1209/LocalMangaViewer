@@ -6,7 +6,8 @@
     "server"
   ],
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "electron": "^35.1.4"
   },
   "scripts": {
     "build:server": "tsc --project server/tsconfig.json",
