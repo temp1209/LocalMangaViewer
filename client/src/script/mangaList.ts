@@ -1,4 +1,4 @@
-import { Metadatas, MetadataItem } from "server/types/metadata";
+import { Metadatas } from "../types/metadata";
 
 async function loadMangaList() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -214,7 +214,7 @@ function updatePagination(current: number, totalPages: number) {
 }
 
 //ページ遷移時にURLを更新
-window.addEventListener("popstate", (event) => {
+window.addEventListener("popstate", () => {
   // URLのクエリパラメーターを取得
   const urlParams = new URLSearchParams(window.location.search);
   const pageParam = urlParams.get("page");

@@ -5,11 +5,11 @@ import sizeOf from "image-size";
 import bodyParser from "body-parser";
 import multer from "multer";
 import crypto from "crypto";
-import fileUploadHandlers from "./utils/fileUploadHandlers";
-import { MangaQuery,RawMangaQuery } from "server/types/queries";
-import { decodeQueryParamArray } from "./utils/query";
-import { Metadatas, MetadataItem, SearchableKeys } from "server/types/metadata";
-import { getConfig } from "./config/configManager";
+import fileUploadHandlers from "./src/utils/fileUploadHandlers";
+import { MangaQuery,RawMangaQuery } from "./src/types/queries";
+import { decodeQueryParamArray } from "./src/utils/query";
+import { Metadatas, MetadataItem, SearchableKeys } from "./src/types/metadata";
+import { getConfig } from "./src/config/configManager";
 
 const app = express();
 const PORT = 3000;
