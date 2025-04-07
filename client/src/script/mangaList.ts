@@ -1,27 +1,32 @@
 import { Metadatas } from "../types/metadata";
+import { RawMangaQuery } from "../types/queries";
+import qs from "qs"
 
 async function loadMangaList() {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const currentPage = urlParams.get("page") || 1;
+  const paramPage = urlParams.get("page")
+  const currentPage = paramPage ? parseInt(paramPage) : 1;
   const author = urlParams.get("author");
   const original = urlParams.get("original");
   const character = urlParams.get("character");
   const tag = urlParams.get("tag");
 
-  const queryParams = [];
+  const query:RawMangaQuery = {
+    search:{
+      authors:author,
+      originals:original,
+      characters:character,
+      tags:tag
+    },
+    pageConf:{
+      page:currentPage.toString()
+    }
+  }
 
-  queryParams.push(`page=${currentPage}`);
-  if (author) queryParams.push(`author=${encodeURIComponent(author)}`);
-  if (original) queryParams.push(`original=${encodeURIComponent(original)}`);
-  if (character) queryParams.push(`character=${encodeURIComponent(character)}`);
-  if (tag) queryParams.push(`tag=${encodeURIComponent(tag)}`);
+  console.log(query);
 
-  const searchQuery = queryParams.join("&");
-
-  console.log(searchQuery);
-
-  const apiEndPoint = `/api/get-manga-list?${searchQuery}`;
+  const apiEndPoint = `/api/get-manga-list?${qs.stringify(query)}`;
 
   fetch(apiEndPoint)
     .then((response) => response.json())
@@ -33,7 +38,10 @@ async function loadMangaList() {
       displayMangaList(data);
       updatePagination(page, Math.ceil(total / limit));
     })
-    .catch((error) => alert(error.message));
+    .catch((error) => {
+      alert(error.message);
+      console.error(error.message);
+    });
 }
 
 function displayMangaList(mangaDataList: Metadatas) {

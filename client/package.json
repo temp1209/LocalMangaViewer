@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "comic-viewer-client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,10 +9,12 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/qs": "^6.9.18",
     "typescript": "~5.7.2",
     "vite": "^6.2.5"
   },
   "dependencies": {
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "qs": "^6.14.0"
   }
 }
