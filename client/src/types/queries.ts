@@ -18,7 +18,7 @@ type SearchQuery = {
 };
 
 type RawSearchQuery = {
-  [K in SearchableKeys]?: string | string[];
+  [K in SearchableKeys]?: string | string[] | null;
 }
 
 type PageConf = {

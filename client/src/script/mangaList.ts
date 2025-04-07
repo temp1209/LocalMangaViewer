@@ -1,27 +1,32 @@
-import { Metadatas, MetadataItem } from "@mytypes/metadata";
+import { Metadatas } from "../types/metadata";
+import { RawMangaQuery } from "../types/queries";
+import qs from "qs"
 
 async function loadMangaList() {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const currentPage = urlParams.get("page") || 1;
+  const paramPage = urlParams.get("page")
+  const currentPage = paramPage ? parseInt(paramPage) : 1;
   const author = urlParams.get("author");
   const original = urlParams.get("original");
   const character = urlParams.get("character");
   const tag = urlParams.get("tag");
 
-  const queryParams = [];
+  const query:RawMangaQuery = {
+    search:{
+      authors:author,
+      originals:original,
+      characters:character,
+      tags:tag
+    },
+    pageConf:{
+      page:currentPage.toString()
+    }
+  }
 
-  queryParams.push(`page=${currentPage}`);
-  if (author) queryParams.push(`author=${encodeURIComponent(author)}`);
-  if (original) queryParams.push(`original=${encodeURIComponent(original)}`);
-  if (character) queryParams.push(`character=${encodeURIComponent(character)}`);
-  if (tag) queryParams.push(`tag=${encodeURIComponent(tag)}`);
+  console.log(query);
 
-  const searchQuery = queryParams.join("&");
-
-  console.log(searchQuery);
-
-  const apiEndPoint = `/api/get-manga-list?${searchQuery}`;
+  const apiEndPoint = `/api/get-manga-list?${qs.stringify(query)}`;
 
   fetch(apiEndPoint)
     .then((response) => response.json())
@@ -33,7 +38,10 @@ async function loadMangaList() {
       displayMangaList(data);
       updatePagination(page, Math.ceil(total / limit));
     })
-    .catch((error) => alert(error.message));
+    .catch((error) => {
+      alert(error.message);
+      console.error(error.message);
+    });
 }
 
 function displayMangaList(mangaDataList: Metadatas) {
@@ -62,7 +70,7 @@ function displayMangaList(mangaDataList: Metadatas) {
     }
     coverImage.alt = mangaDataItem.title;
     coverImage.addEventListener("click", () => {
-      window.location.href = `/viewer?id=${mangaDataItem.id}`;
+      window.location.href = `/src/viewer.html?id=${mangaDataItem.id}`;
     });
     mangaElement.appendChild(coverImage);
 
@@ -75,7 +83,7 @@ function displayMangaList(mangaDataList: Metadatas) {
     titleElement.className = "title";
     titleElement.textContent = mangaDataItem.title;
     titleElement.addEventListener("click", () => {
-      window.location.href = `/viewer?id=${mangaDataItem.id}`;
+      window.location.href = `/src/viewer.html?id=${mangaDataItem.id}`;
     });
     infoContainer.appendChild(titleElement);
 
@@ -88,7 +96,7 @@ function displayMangaList(mangaDataList: Metadatas) {
       authorLink.className = "author-link";
       authorLink.textContent = author;
       authorLink.addEventListener("click", () => {
-        window.location.href = `/search?author=${encodeURIComponent(author)}`;
+        window.location.href = `/mangaList.html?author=${encodeURIComponent(author)}`;
       });
 
       authorsElement.appendChild(authorLink);
@@ -127,7 +135,7 @@ function displayMangaList(mangaDataList: Metadatas) {
           characterElement.className = "character-item";
           characterElement.textContent = chara;
           characterElement.addEventListener("click", () => {
-            window.location.href = `/search?character=${encodeURIComponent(chara)}`;
+            window.location.href = `/mangaList.html?character=${encodeURIComponent(chara)}`;
           });
 
           characterContainerElement.append(characterElement);
@@ -145,7 +153,7 @@ function displayMangaList(mangaDataList: Metadatas) {
       tagElement.className = "tag-item";
       tagElement.textContent = tag;
       tagElement.addEventListener("click", () => {
-        window.location.href = `/search?tag=${encodeURIComponent(tag)}`;
+        window.location.href = `/mangaList.html?tag=${encodeURIComponent(tag)}`;
       });
 
       tagsContainerElement.appendChild(tagElement);
@@ -214,7 +222,7 @@ function updatePagination(current: number, totalPages: number) {
 }
 
 //ページ遷移時にURLを更新
-window.addEventListener("popstate", (event) => {
+window.addEventListener("popstate", () => {
   // URLのクエリパラメーターを取得
   const urlParams = new URLSearchParams(window.location.search);
   const pageParam = urlParams.get("page");

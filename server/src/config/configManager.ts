@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { UserConfig } from "@mytypes/userConfig";
+import { UserConfig } from "../../src/types/userConfig";
 
 const configPath = path.join(__dirname, "./config.json");
 
