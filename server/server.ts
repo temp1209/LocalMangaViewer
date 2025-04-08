@@ -17,6 +17,7 @@ const PORT = 3000;
 const deafaultPageLimit = 10;
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.resolve("../client/dist")));
 app.use(bodyParser.json());
 
 const dataDirectory = getConfig()?.dataDirectory!;

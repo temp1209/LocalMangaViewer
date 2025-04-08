@@ -3,9 +3,11 @@
   "private": true,
   "workspaces": [
     "client",
-    "server"
+    "server",
+    "electron"
   ],
   "devDependencies": {
+    "@types/electron": "^1.4.38",
     "concurrently": "^9.1.2",
     "electron": "^35.1.4"
   },
@@ -14,6 +16,7 @@
     "build:client": "vite build",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
+    "dev:electron": "cd electron && npm run dev",
+    "dev": "concurrently \"npm:dev:*\""
   }
 }
