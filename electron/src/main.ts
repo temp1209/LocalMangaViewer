@@ -3,6 +3,14 @@ const path = require("path");
 
 console.log("reqelec:",require('electron'));
 
+const serverApp = require("../../server/dist/server.js");
+const PORT = 3000;
+
+// サーバー起動
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
+
 let mainWindow = null;
 
 const createWindow = () => {

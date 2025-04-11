@@ -243,7 +243,4 @@ app.get("/search", (req, res) => {
   res.redirect(`/mangaList.html${queryString}`);
 });
 
-// サーバー起動
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+export default app;
