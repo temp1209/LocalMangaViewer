@@ -112,7 +112,7 @@ app.get("/api/get-pages/:mangaID", (req: Request, res: Response) => {
     // 画像ファイルのみフィルタリングして返す
     const pageFiles = files
       .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
-      .map((file) => `/manga/${mangaID}/${encodeURIComponent(file)}`);
+      .map((file) => path.join(mangaPath,encodeURI(file)));
 
     res.status(200).json(pageFiles);
   });
@@ -209,7 +209,7 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res)
   console.log("受信したファイルデータ:", file);
 
   try {
-    await fileUploadHandlers[mimeType](file, newMangaID, uploadDirectory);
+    await fileUploadHandlers[mimeType](file, newMangaID, mangaDirectory);
   } catch (e) {
     console.error("アップロードファイルの書き込みに失敗しました",e);
     res.status(500).json({ message: "アップロードファイルの書き込みに失敗しました" });

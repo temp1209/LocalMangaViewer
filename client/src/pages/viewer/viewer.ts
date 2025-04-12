@@ -1,10 +1,12 @@
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id"); // フォルダ名を取得
+const APIBase = "http://localhost:3000"
+
 let images:string[] = [];
 let currentIndex = 0;
 
 async function fetchImages() {
-  const res = await fetch(`/api/get-pages/${id}`);
+  const res = await fetch(`${APIBase}/api/get-pages/${id}`);
   images = await res.json();
 
   if (images.length > 0) {
@@ -30,6 +32,7 @@ function prevPage() {
 function updateImage() {
   const currentImageElement = document.getElementById("comic-page")! as HTMLImageElement;
   currentImageElement.src = `${images[currentIndex]}`;
+  console.log(images[currentIndex]);
 }
 
 document.addEventListener("keydown", (event) => {

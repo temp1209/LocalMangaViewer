@@ -5,17 +5,17 @@ import { pdfToPng } from "pdf-to-png-converter";
 export async function handlePdfUpload(
   file: Express.Multer.File,
   id: string,
-  uploadDirectory: string
+  extractDirectory: string
 ): Promise<boolean> {
   const pdfPath = file.path;
   console.log(`[PDF Upload] PDFファイルを受け取りました: ${pdfPath}`);
 
-  if (!uploadDirectory) {
+  if (!extractDirectory) {
     console.error("[PDF Upload] アップロードディレクトリが指定されていません");
     return false;
   }
 
-  const outputDir = path.join(uploadDirectory, id);
+  const outputDir = path.join(extractDirectory, id);
   try {
     fs.mkdirSync(outputDir, { recursive: true });
   } catch (err) {
