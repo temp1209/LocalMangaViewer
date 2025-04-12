@@ -1,5 +1,5 @@
-import { Metadatas } from "../types/metadata";
-import { RawMangaQuery } from "../types/queries";
+import { Metadatas } from "../../types/metadata";
+import { RawMangaQuery } from "../../types/queries";
 import qs from "qs"
 
 async function loadMangaList() {
