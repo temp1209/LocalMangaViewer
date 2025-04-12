@@ -2,9 +2,9 @@ import path from "path";
 import fs from "fs";
 import { UserConfig } from "../../src/types/userConfig";
 
-const configPath = path.join(__dirname, "./config.json");
+const configPath = path.resolve(__dirname, "../../config/config.json");
 
-export function getConfig():UserConfig | null {
+export function getConfig(): UserConfig | null {
   try {
     const configData = fs.readFileSync(configPath, "utf-8");
     return JSON.parse(configData);
@@ -14,7 +14,7 @@ export function getConfig():UserConfig | null {
   }
 }
 
-export function setConfig(newConfig:UserConfig) {
+export function setConfig(newConfig: UserConfig) {
   try {
     fs.writeFileSync(configPath, JSON.stringify(newConfig, null, 2));
     console.log("config.jsonに保存しました");
