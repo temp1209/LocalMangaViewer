@@ -4,7 +4,7 @@ import path from "path";
 const pagesPath = path.resolve(__dirname,"src","pages");
 
 export default defineConfig({
-  root: path.resolve(__dirname, "src"),
+  root: ".",
   base: "./",
   build: {
     outDir: path.resolve(__dirname, "dist"),
