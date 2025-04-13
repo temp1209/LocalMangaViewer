@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import AdmZip from "adm-zip";
 
-export async function handleZipUpload(file: Express.Multer.File, id: string, uploadDirectory: string) {
-  const outputDir = path.join(uploadDirectory, id);
+export async function handleZipUpload(file: Express.Multer.File, id: string, extractDirectory: string) {
+  const outputDir = path.join(extractDirectory, id);
   try{
     fs.mkdirSync(outputDir);
     const zip = new AdmZip(file.buffer);

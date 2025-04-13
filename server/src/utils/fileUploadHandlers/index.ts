@@ -1,7 +1,7 @@
 import { handleZipUpload } from "./handleZip";
 import { handlePdfUpload } from "./handlePdf";
 
-type UploadHandler = (file: Express.Multer.File, id: string, uploadDirectory: string) => Promise<boolean>;
+type UploadHandler = (file: Express.Multer.File, id: string, extractDirectory: string) => Promise<boolean>;
 
 const mimeHandlers:Record<string,UploadHandler> = {
   "application/zip": handleZipUpload,

@@ -1,6 +1,8 @@
-import { Metadatas } from "../types/metadata";
-import { RawMangaQuery } from "../types/queries";
+import { Metadatas } from "../../types/metadata";
+import { RawMangaQuery } from "../../types/queries";
 import qs from "qs"
+
+const APIBase = "http://localhost:3000"
 
 async function loadMangaList() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -26,7 +28,7 @@ async function loadMangaList() {
 
   console.log(query);
 
-  const apiEndPoint = `/api/get-manga-list?${qs.stringify(query)}`;
+  const apiEndPoint = `${APIBase}/api/get-manga-list?${qs.stringify(query)}`;
 
   fetch(apiEndPoint)
     .then((response) => response.json())
@@ -70,7 +72,7 @@ function displayMangaList(mangaDataList: Metadatas) {
     }
     coverImage.alt = mangaDataItem.title;
     coverImage.addEventListener("click", () => {
-      window.location.href = `/src/viewer.html?id=${mangaDataItem.id}`;
+      window.location.href = `../viewer/viewer.html?id=${mangaDataItem.id}`;
     });
     mangaElement.appendChild(coverImage);
 
@@ -83,7 +85,7 @@ function displayMangaList(mangaDataList: Metadatas) {
     titleElement.className = "title";
     titleElement.textContent = mangaDataItem.title;
     titleElement.addEventListener("click", () => {
-      window.location.href = `/src/viewer.html?id=${mangaDataItem.id}`;
+      window.location.href = `../viewer/viewer.html?id=${mangaDataItem.id}`;
     });
     infoContainer.appendChild(titleElement);
 
@@ -96,7 +98,7 @@ function displayMangaList(mangaDataList: Metadatas) {
       authorLink.className = "author-link";
       authorLink.textContent = author;
       authorLink.addEventListener("click", () => {
-        window.location.href = `/mangaList.html?author=${encodeURIComponent(author)}`;
+        window.location.href = `../mangaList/mangaList.html?author=${encodeURIComponent(author)}`;
       });
 
       authorsElement.appendChild(authorLink);
@@ -135,7 +137,7 @@ function displayMangaList(mangaDataList: Metadatas) {
           characterElement.className = "character-item";
           characterElement.textContent = chara;
           characterElement.addEventListener("click", () => {
-            window.location.href = `/mangaList.html?character=${encodeURIComponent(chara)}`;
+            window.location.href = `../mangaList/mangaList.html?character=${encodeURIComponent(chara)}`;
           });
 
           characterContainerElement.append(characterElement);
@@ -153,7 +155,7 @@ function displayMangaList(mangaDataList: Metadatas) {
       tagElement.className = "tag-item";
       tagElement.textContent = tag;
       tagElement.addEventListener("click", () => {
-        window.location.href = `/mangaList.html?tag=${encodeURIComponent(tag)}`;
+        window.location.href = `../mangaList/mangaList.html?tag=${encodeURIComponent(tag)}`;
       });
 
       tagsContainerElement.appendChild(tagElement);

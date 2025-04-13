@@ -43,7 +43,7 @@ uploadForm.addEventListener("submit", async (event) => {
     tags
   };
 
-  const uploadEndPoint = "/api/post-manga-upload";
+  const uploadEndPoint = "http://localhost:3000/api/post-manga-upload";
   const uploadData = new FormData();
   uploadData.append("file", file);
   uploadData.append("data",JSON.stringify(mangaDataJson));

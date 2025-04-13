@@ -1,5 +1,5 @@
 async function loadTagList() {
-  const tagListApiEndPoint = "/api/get-tag-list";
+  const tagListApiEndPoint = "http://localhost:3000/api/get-tag-list";
 
     fetch(tagListApiEndPoint).then((response) => response.json())
     .then((tagData) => {
@@ -17,7 +17,7 @@ function displayTagList(tagList:{str:string,count:number}[]) {
     const tagItemElement = document.createElement("div");
     tagItemElement.className = "tag-item";
     tagItemElement.addEventListener("click",()=>{
-      window.location.href = `/mangaList.html?tag=${encodeURIComponent(str)}`;
+      window.location.href = `../mangaList/mangaList.html?tag=${encodeURIComponent(str)}`;
     });
 
     const tagStrElement = document.createElement("div");

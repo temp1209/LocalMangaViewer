@@ -5,11 +5,11 @@ import sizeOf from "image-size";
 import bodyParser from "body-parser";
 import multer from "multer";
 import crypto from "crypto";
-import fileUploadHandlers from "./src/utils/fileUploadHandlers";
-import { MangaQuery, RawMangaQuerySchema } from "./src/types/queries";
-import { decodeQueryParamArray } from "./src/utils/query";
-import { Metadata, MetadataItem, SearchableKeys, MetadataSchema, RawMetadataItemSchema, RawMetadataItem} from "./src/types/metadata";
-import { getConfig } from "./src/config/configManager";
+import fileUploadHandlers from "./utils/fileUploadHandlers";
+import { MangaQuery, RawMangaQuerySchema } from "./types/queries";
+import { decodeQueryParamArray } from "./utils/query";
+import { Metadata, MetadataItem, SearchableKeys, MetadataSchema, RawMetadataItemSchema, RawMetadataItem} from "./types/metadata";
+import { getConfig } from "./config/configManager";
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +17,7 @@ const PORT = 3000;
 const deafaultPageLimit = 10;
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.resolve("../client/dist")));
 app.use(bodyParser.json());
 
 const dataDirectory = getConfig()?.dataDirectory!;
@@ -111,7 +112,7 @@ app.get("/api/get-pages/:mangaID", (req: Request, res: Response) => {
     // 画像ファイルのみフィルタリングして返す
     const pageFiles = files
       .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
-      .map((file) => `/manga/${mangaID}/${encodeURIComponent(file)}`);
+      .map((file) => path.join(mangaPath,encodeURI(file)));
 
     res.status(200).json(pageFiles);
   });
@@ -208,7 +209,7 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res)
   console.log("受信したファイルデータ:", file);
 
   try {
-    await fileUploadHandlers[mimeType](file, newMangaID, uploadDirectory);
+    await fileUploadHandlers[mimeType](file, newMangaID, mangaDirectory);
   } catch (e) {
     console.error("アップロードファイルの書き込みに失敗しました",e);
     res.status(500).json({ message: "アップロードファイルの書き込みに失敗しました" });
@@ -242,7 +243,4 @@ app.get("/search", (req, res) => {
   res.redirect(`/mangaList.html${queryString}`);
 });
 
-// サーバー起動
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+export default app;

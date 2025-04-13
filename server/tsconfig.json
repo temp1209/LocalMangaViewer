@@ -6,12 +6,15 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "types": ["express", "multer"],
+    "skipLibCheck": true,
+    "moduleResolution": "node"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
+  "include": ["src/**/*.ts" , "src/server.ts"],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "../electron",
+    "../node_modules/@types/electron"
   ]
 }
