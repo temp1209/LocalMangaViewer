@@ -8,7 +8,14 @@ import crypto from "crypto";
 import fileUploadHandlers from "./utils/fileUploadHandlers";
 import { MangaQuery, RawMangaQuerySchema } from "./types/queries";
 import { decodeQueryParamArray } from "./utils/query";
-import { Metadata, MetadataItem, SearchableKeys, MetadataSchema, RawMetadataItemSchema, RawMetadataItem} from "./types/metadata";
+import {
+  Metadata,
+  MetadataItem,
+  SearchableKeys,
+  MetadataSchema,
+  RawMetadataItemSchema,
+  RawMetadataItem,
+} from "./types/metadata";
 import { getConfig } from "./config/configManager";
 
 const app = express();
@@ -112,7 +119,7 @@ app.get("/api/get-pages/:mangaID", (req: Request, res: Response) => {
     // 画像ファイルのみフィルタリングして返す
     const pageFiles = files
       .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
-      .map((file) => path.join(mangaPath,encodeURI(file)));
+      .map((file) => path.join(mangaPath, encodeURI(file)));
 
     res.status(200).json(pageFiles);
   });
@@ -144,7 +151,7 @@ app.get("/api/get-tag-list", (req, res) => {
 //POST
 //漫画のアップロードAPI
 app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res) => {
-  console.log("reqData:",req.body.data);
+  console.log("reqData:", req.body.data);
   let rawData: unknown;
   try {
     rawData = JSON.parse(req.body.data);
@@ -152,7 +159,7 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res)
     res.status(400).json({ message: "JSONのパースに失敗しました" });
     return;
   }
-  console.log("rawData:",rawData);
+  console.log("rawData:", rawData);
   const resultReqParse = RawMetadataItemSchema.safeParse(rawData);
   if (!resultReqParse.success) {
     console.error("リクエストデータ形式が不正です");
@@ -160,7 +167,7 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res)
     return;
   }
 
-  const getMangaCover = (manga: RawMetadataItem,id:string): { path: string; isPortrait: boolean } => {
+  const getMangaCover = (manga: RawMetadataItem, id: string): { path: string; isPortrait: boolean } => {
     const dummyCoverName = "DummyCover.png";
     const dummyCoverPath = path.join(mangaDirectory, dummyCoverName);
     const mangaFolder = path.join(mangaDirectory, id);
@@ -191,7 +198,11 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res)
 
   const reqMangaData: RawMetadataItem = resultReqParse.data;
   const newMangaID = crypto.randomUUID().toString();
-  const newMangaData: MetadataItem = { ...reqMangaData, id: newMangaID, cover: getMangaCover(reqMangaData,newMangaID) };
+  const newMangaData: MetadataItem = {
+    ...reqMangaData,
+    id: newMangaID,
+    cover: getMangaCover(reqMangaData, newMangaID),
+  };
   const file = req.file;
 
   if (!file) {
@@ -211,7 +222,7 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res)
   try {
     await fileUploadHandlers[mimeType](file, newMangaID, mangaDirectory);
   } catch (e) {
-    console.error("アップロードファイルの書き込みに失敗しました",e);
+    console.error("アップロードファイルの書き込みに失敗しました", e);
     res.status(500).json({ message: "アップロードファイルの書き込みに失敗しました" });
     return;
   }
@@ -224,7 +235,7 @@ app.post("/api/post-manga-upload", multerUpload.single("file"), async (req, res)
     const currentMangaData: Metadata = resultMetadataParse.data;
     currentMangaData.push(newMangaData);
     fs.writeFileSync(mangaDataPath, JSON.stringify(currentMangaData, null, 2));
-    console.log("アップロードに成功しました:",file.filename);
+    console.log("アップロードに成功しました:", file.filename);
     res.status(200).json({ message: "アップロードに成功しました", mangaData: newMangaData, filename: file.filename });
     return;
   } catch (e) {
@@ -242,5 +253,14 @@ app.get("/search", (req, res) => {
 
   res.redirect(`/mangaList.html${queryString}`);
 });
+
+console.log("NodeEnv:", process.env.NODE_ENV);
+
+if (process.env.NODE_ENV === "development") {
+  // 開発中はサーバーのプロセスから起動
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
 
 export default app;
