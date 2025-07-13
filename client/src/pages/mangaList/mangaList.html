@@ -3,19 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ローカル漫画ビューア</title>
+    <title>漫画一覧</title>
     <link rel="stylesheet" href="mangaList.css" />
   </head>
   <body>
-    <h1>ローカル漫画ビューア</h1>
-    <div id="tag-list-page"><a href="../tagList/tagList.html">タグリスト</a></div>
-    <div id="manga-upload-page"><a href="../upload/upload.html">アップロード</a></div>
-    <div class="manga-list">
-      <div id="manga-list-container">
-        <!-- 漫画フォルダ一覧を表示する場所 -->
-      </div>
-      <div class="pagination" id="pagination"></div>
+    <div class="mangalist-container">
+      <header class="mangalist-header">
+        <h1>漫画一覧</h1>
+        <div class="header-actions">
+          <button id="refresh-button" class="secondary-button">更新</button>
+          <button id="back-button" class="back-button">一覧に戻る</button>
+        </div>
+      </header>
+      
+      <main class="mangalist-content">
+        <section class="mangalist-section">
+          <div class="navigation-links">
+            <div id="tag-list-page"><a href="../tagList/tagList.html">タグリスト</a></div>
+            <div id="manga-upload-page"><a href="../upload/upload.html">アップロード</a></div>
+            <div id="settings-page"><a href="../settings/settings.html">設定</a></div>
+          </div>
+          
+          <div class="manga-list">
+            <div id="manga-list-container">
+              <!-- 漫画フォルダ一覧を表示する場所 -->
+            </div>
+            <div class="pagination" id="pagination"></div>
+          </div>
+        </section>
+      </main>
+      
+      <footer class="mangalist-footer">
+        <div class="footer-info">
+          <span id="manga-count">0件の漫画</span>
+        </div>
+        <div class="footer-actions">
+          <button id="export-list" class="secondary-button">リストをエクスポート</button>
+        </div>
+      </footer>
     </div>
+    
     <script type="module" src="mangaList.js"></script>
   </body>
 </html>

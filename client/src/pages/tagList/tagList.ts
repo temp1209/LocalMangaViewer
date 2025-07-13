@@ -1,22 +1,41 @@
-async function loadTagList() {
-  const tagListApiEndPoint = "http://localhost:3000/api/get-tag-list";
+// DOM要素の取得
+const backButton = document.getElementById("back-button") as HTMLButtonElement;
+const refreshButton = document.getElementById("refresh-button") as HTMLButtonElement;
+const exportButton = document.getElementById("export-button") as HTMLButtonElement;
 
-    fetch(tagListApiEndPoint).then((response) => response.json())
-    .then((tagData) => {
-      displayTagList(tagData);
-    })
-    .catch((e) => alert(e));
+async function loadTagList() {
+  const tagListApiEndPoint = `/api/get-tag-list`;
+
+  try {
+    const response = await fetch(tagListApiEndPoint);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const tagData = await response.json();
+    displayTagList(tagData);
+  } catch (error) {
+    console.error("タグ一覧の読み込みに失敗しました:", error);
+    alert("タグ一覧の読み込みに失敗しました。");
+  }
 }
 
-function displayTagList(tagList:{str:string,count:number}[]) {
+function displayTagList(tagList: {str: string, count: number}[]) {
   console.log(tagList);
 
   const tagListContainer = document.getElementById("tag-list-container");
+  
+  if (!tagListContainer) {
+    console.error("tag-list-containerが見つかりません");
+    return;
+  }
 
-  tagList.forEach(({str,count}) => {
+  // 既存のタグをクリア
+  tagListContainer.innerHTML = "";
+
+  tagList.forEach(({str, count}) => {
     const tagItemElement = document.createElement("div");
     tagItemElement.className = "tag-item";
-    tagItemElement.addEventListener("click",()=>{
+    tagItemElement.addEventListener("click", () => {
       window.location.href = `../mangaList/mangaList.html?tag=${encodeURIComponent(str)}`;
     });
 
@@ -30,10 +49,59 @@ function displayTagList(tagList:{str:string,count:number}[]) {
     tagCountElement.textContent = count.toString();
     tagItemElement.appendChild(tagCountElement);
 
-    tagListContainer?.appendChild(tagItemElement);
+    tagListContainer.appendChild(tagItemElement);
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// タグ一覧をエクスポート
+function exportTagList() {
+  const tagListContainer = document.getElementById("tag-list-container");
+  if (!tagListContainer) return;
+
+  const tagItems = tagListContainer.querySelectorAll(".tag-item");
+  const tagData: {str: string, count: number}[] = [];
+
+  tagItems.forEach((item) => {
+    const strElement = item.querySelector(".tag-str");
+    const countElement = item.querySelector(".tag-count");
+    
+    if (strElement && countElement) {
+      tagData.push({
+        str: strElement.textContent || "",
+        count: parseInt(countElement.textContent || "0")
+      });
+    }
+  });
+
+  const dataStr = JSON.stringify(tagData, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(dataBlob);
+  link.download = 'tag-list.json';
+  link.click();
+}
+
+// イベントリスナーの設定
+function setupEventListeners() {
+  // 戻るボタン
+  backButton?.addEventListener('click', () => {
+    window.location.href = '../mangaList/mangaList.html';
+  });
+  
+  // 更新ボタン
+  refreshButton?.addEventListener('click', () => {
+    loadTagList();
+  });
+  
+  // エクスポートボタン
+  exportButton?.addEventListener('click', exportTagList);
+}
+
+// 初期化
+function init() {
   loadTagList();
-});
+  setupEventListeners();
+}
+
+document.addEventListener("DOMContentLoaded", init);
