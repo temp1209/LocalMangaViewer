@@ -1,6 +1,9 @@
 const uploadForm = document.getElementById("upload-form")! as HTMLFormElement;
 const fileInput = document.getElementById("file")! as HTMLInputElement;
 const titleInput = document.getElementById("title")! as HTMLInputElement;
+const uploadButton = document.getElementById("upload-button") as HTMLButtonElement;
+const cancelButton = document.getElementById("cancel-button") as HTMLButtonElement;
+const backButton = document.getElementById("back-button") as HTMLButtonElement;
 
 function splitComma(str:string | null | undefined) {
   if (!str) {
@@ -10,7 +13,8 @@ function splitComma(str:string | null | undefined) {
   }
 }
 
-document.getElementById("file")?.addEventListener("change", () => {
+// ファイル選択時のタイトル自動設定
+fileInput?.addEventListener("change", () => {
   const files = fileInput.files;
   if (files && files.length > 0) {
     const fileName = files[0].name;
@@ -22,9 +26,8 @@ document.getElementById("file")?.addEventListener("change", () => {
   }
 });
 
-uploadForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
+// アップロード処理
+async function handleUpload() {
   const formData = new FormData(uploadForm);
   const file = formData.get("file") as File;
   const title = formData.get("title") as string;
@@ -46,19 +49,50 @@ uploadForm.addEventListener("submit", async (event) => {
   const uploadEndPoint = "http://localhost:3000/api/post-manga-upload";
   const uploadData = new FormData();
   uploadData.append("file", file);
-  uploadData.append("data",JSON.stringify(mangaDataJson));
+  uploadData.append("data", JSON.stringify(mangaDataJson));
   
-  fetch(uploadEndPoint, {
-    method: "POST",
-    body:uploadData,
-  }).then(async (res) => {
+  try {
+    uploadButton.disabled = true;
+    uploadButton.textContent = "アップロード中...";
+    
+    const res = await fetch(uploadEndPoint, {
+      method: "POST",
+      body: uploadData,
+    });
+    
     const result = await res.json();
-    if(res.ok){
-      console.log(result.message);
-    }else{
-      console.error(result.message);
+    if (res.ok) {
+      alert("アップロードが完了しました！");
+      window.location.href = "../mangaList/mangaList.html";
+    } else {
+      alert(`アップロードに失敗しました: ${result.message}`);
     }
-  }).catch((e)=>{
+  } catch (e) {
     console.error(e);
-  });
+    alert("アップロード中にエラーが発生しました。");
+  } finally {
+    uploadButton.disabled = false;
+    uploadButton.textContent = "アップロード";
+  }
+}
+
+// イベントリスナーの設定
+uploadButton?.addEventListener("click", handleUpload);
+
+cancelButton?.addEventListener("click", () => {
+  if (confirm("入力内容を破棄しますか？")) {
+    uploadForm.reset();
+  }
+});
+
+backButton?.addEventListener("click", () => {
+  window.location.href = "../mangaList/mangaList.html";
+});
+
+// Enterキーでのアップロード
+uploadForm.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    handleUpload();
+  }
 });

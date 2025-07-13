@@ -2,8 +2,6 @@ import { Metadatas } from "../../types/metadata";
 import { RawMangaQuery } from "../../types/queries";
 import qs from "qs"
 
-const APIBase = "http://localhost:3000"
-
 async function loadMangaList() {
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -28,7 +26,7 @@ async function loadMangaList() {
 
   console.log(query);
 
-  const apiEndPoint = `${APIBase}/api/get-manga-list?${qs.stringify(query)}`;
+  const apiEndPoint = `/api/get-manga-list?${qs.stringify(query)}`;
 
   fetch(apiEndPoint)
     .then((response) => response.json())
@@ -39,11 +37,19 @@ async function loadMangaList() {
 
       displayMangaList(data);
       updatePagination(page, Math.ceil(total / limit));
+      updateMangaCount(total);
     })
     .catch((error) => {
       alert(error.message);
       console.error(error.message);
     });
+}
+
+function updateMangaCount(total: number) {
+  const mangaCountElement = document.getElementById("manga-count");
+  if (mangaCountElement) {
+    mangaCountElement.textContent = `${total}件の漫画`;
+  }
 }
 
 function displayMangaList(mangaDataList: Metadatas) {
@@ -237,4 +243,60 @@ window.addEventListener("popstate", () => {
 // ページ読み込み時にフォルダをロード
 document.addEventListener("DOMContentLoaded", () => {
   loadMangaList();
+  
+  // ボタンのイベントハンドラーを設定
+  setupEventHandlers();
 });
+
+function setupEventHandlers() {
+  // 更新ボタン
+  const refreshButton = document.getElementById("refresh-button");
+  if (refreshButton) {
+    refreshButton.addEventListener("click", () => {
+      loadMangaList();
+    });
+  }
+
+  // 戻るボタン
+  const backButton = document.getElementById("back-button");
+  if (backButton) {
+    backButton.addEventListener("click", () => {
+      // クエリパラメータをクリアして一覧に戻る
+      window.location.href = "mangaList.html";
+    });
+  }
+
+  // エクスポートボタン
+  const exportButton = document.getElementById("export-list");
+  if (exportButton) {
+    exportButton.addEventListener("click", () => {
+      exportMangaList();
+    });
+  }
+}
+
+function exportMangaList() {
+  // 現在のURLパラメータを取得
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentUrl = window.location.href;
+  
+  // エクスポート用のデータを作成
+  const exportData = {
+    url: currentUrl,
+    timestamp: new Date().toISOString(),
+    parameters: Object.fromEntries(urlParams.entries())
+  };
+  
+  // JSONファイルとしてダウンロード
+  const dataStr = JSON.stringify(exportData, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(dataBlob);
+  
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `manga-list-export-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}

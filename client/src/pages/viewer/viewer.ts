@@ -1,15 +1,14 @@
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id"); // フォルダ名を取得
-const APIBase = "http://localhost:3000"
 
-let images:string[] = [];
+let images: string[] = [];
 let currentIndex = 0;
 let viewerSettings: { pageDirection: 'right' | 'left' } = { pageDirection: 'right' };
 
 // 設定を読み込む
 async function loadViewerSettings() {
   try {
-    const response = await fetch(`${APIBase}/api/get-config`);
+    const response = await fetch(`/api/get-config`);
     if (response.ok) {
       const config = await response.json();
       if (config.viewer?.pageDirection) {
@@ -30,7 +29,7 @@ async function fetchImages() {
   if (imageElement) imageElement.style.display = "none";
   
   try {
-    const res = await fetch(`${APIBase}/api/get-pages/${id}`);
+    const res = await fetch(`/api/get-pages/${id}`);
     
     if (!res.ok) {
       if (res.status === 404) {
