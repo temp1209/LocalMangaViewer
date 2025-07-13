@@ -23,6 +23,19 @@ const PORT = 3000;
 
 const deafaultPageLimit = 10;
 
+// CORS設定
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.resolve("../client/dist")));
 app.use(bodyParser.json());
@@ -253,6 +266,93 @@ app.get("/search", (req, res) => {
 
   res.redirect(`/mangaList.html${queryString}`);
 });
+
+// 設定関連のAPI
+// 設定を取得
+app.get("/api/get-config", (req, res) => {
+  try {
+    const config = getConfig();
+    if (config) {
+      res.status(200).json(config);
+    } else {
+      res.status(404).json({ message: "設定ファイルが見つかりません" });
+    }
+  } catch (error) {
+    console.error("設定の取得に失敗しました:", error);
+    res.status(500).json({ message: "設定の取得に失敗しました" });
+  }
+});
+
+// 設定を保存
+app.post("/api/save-config", (req, res) => {
+  try {
+    const newConfig = req.body;
+    
+    // 設定ファイルのパスを取得
+    const configPath = path.resolve(__dirname, "../config/config.json");
+    
+    // 既存の設定を読み込み
+    let currentConfig = {};
+    try {
+      const existingData = fs.readFileSync(configPath, "utf-8");
+      currentConfig = JSON.parse(existingData);
+    } catch (error) {
+      console.warn("既存の設定ファイルが見つからないため、新規作成します");
+    }
+    
+    // 新しい設定をマージ
+    const updatedConfig = { ...currentConfig, ...newConfig };
+    
+    // 設定を保存
+    fs.writeFileSync(configPath, JSON.stringify(updatedConfig, null, 2));
+    
+    res.status(200).json({ message: "設定を保存しました" });
+  } catch (error) {
+    console.error("設定の保存に失敗しました:", error);
+    res.status(500).json({ message: "設定の保存に失敗しました" });
+  }
+});
+
+// キャッシュをクリア
+app.post("/api/clear-cache", (req, res) => {
+  try {
+    // ここでキャッシュクリアの処理を実装
+    // 現在はダミーの実装
+    console.log("キャッシュをクリアしました");
+    res.status(200).json({ message: "キャッシュをクリアしました" });
+  } catch (error) {
+    console.error("キャッシュのクリアに失敗しました:", error);
+    res.status(500).json({ message: "キャッシュのクリアに失敗しました" });
+  }
+});
+
+// 本番モードでのみクライアントのビルドファイルを配信
+if (process.env.NODE_ENV === "production") {
+  // クライアントのルートパスをハンドリング
+  app.get("/", (req, res) => {
+    res.sendFile(path.resolve("../client/dist/mangaList.html"));
+  });
+
+  app.get("/mangaList.html", (req, res) => {
+    res.sendFile(path.resolve("../client/dist/mangaList.html"));
+  });
+
+  app.get("/tagList.html", (req, res) => {
+    res.sendFile(path.resolve("../client/dist/tagList.html"));
+  });
+
+  app.get("/upload.html", (req, res) => {
+    res.sendFile(path.resolve("../client/dist/upload.html"));
+  });
+
+  app.get("/viewer.html", (req, res) => {
+    res.sendFile(path.resolve("../client/dist/viewer.html"));
+  });
+
+  app.get("/settings.html", (req, res) => {
+    res.sendFile(path.resolve("../client/dist/settings.html"));
+  });
+}
 
 console.log("NodeEnv:", process.env.NODE_ENV);
 

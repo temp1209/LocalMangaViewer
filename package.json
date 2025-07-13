@@ -4,24 +4,23 @@
   "workspaces": [
     "client",
     "server",
-    "electron",
     "shared"
   ],
   "devDependencies": {
-    "@types/electron": "^1.4.38",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
-    "electron": "^35.1.4",
-    "npm-run-all": "^4.1.5"
+    "rimraf": "^5.0.5"
   },
   "scripts": {
+    "clean": "rimraf client/dist server/dist",
     "build:server": "tsc --project server/tsconfig.json",
     "build:client": "cd client && vite build",
-    "build:electron": "cd electron && cross-env NODE_ENV=development npm run build",
-    "build": "concurrently \"npm:build:*\"",
+    "build": "npm run clean && concurrently \"npm:build:*\"",
     "dev:server": "cd server && cross-env NODE_ENV=development npm run dev",
     "dev:client": "cd client && cross-env NODE_ENV=development npm run dev",
-    "dev:electron": "cd electron && cross-env NODE_ENV=development npm run dev",
-    "dev": "concurrently \"npm:dev:*\""
+    "dev": "concurrently \"npm:dev:*\"",
+    "start": "cross-env NODE_ENV=production cd server && npm start",
+    "start:dev": "cross-env NODE_ENV=development cd server && npm run dev",
+    "preview": "npm run build && npm start"
   }
 }

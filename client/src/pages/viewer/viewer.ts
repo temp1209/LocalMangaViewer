@@ -4,14 +4,57 @@ const APIBase = "http://localhost:3000"
 
 let images:string[] = [];
 let currentIndex = 0;
+let viewerSettings: { pageDirection: 'right' | 'left' } = { pageDirection: 'right' };
+
+// 設定を読み込む
+async function loadViewerSettings() {
+  try {
+    const response = await fetch(`${APIBase}/api/get-config`);
+    if (response.ok) {
+      const config = await response.json();
+      if (config.viewer?.pageDirection) {
+        viewerSettings.pageDirection = config.viewer.pageDirection;
+      }
+    }
+  } catch (error) {
+    console.warn("設定の読み込みに失敗しました。デフォルト設定を使用します。");
+  }
+}
 
 async function fetchImages() {
-  const res = await fetch(`${APIBase}/api/get-pages/${id}`);
-  images = await res.json();
+  const loadingElement = document.getElementById("loading");
+  const imageElement = document.getElementById("comic-page") as HTMLImageElement;
+  
+  // ローディング開始
+  if (loadingElement) loadingElement.style.display = "block";
+  if (imageElement) imageElement.style.display = "none";
+  
+  try {
+    const res = await fetch(`${APIBase}/api/get-pages/${id}`);
+    
+    if (!res.ok) {
+      if (res.status === 404) {
+        alert("マンガが見つかりませんでした。");
+      } else {
+        alert("サーバーエラーが発生しました。");
+      }
+      return;
+    }
+    
+    images = await res.json();
 
-  if (images.length > 0) {
-    currentIndex = 0;
-    updateImage();
+    if (images.length > 0) {
+      currentIndex = 0;
+      updateImage();
+      // ローディング終了
+      if (loadingElement) loadingElement.style.display = "none";
+      if (imageElement) imageElement.style.display = "block";
+    } else {
+      alert("画像ファイルが見つかりませんでした。");
+    }
+  } catch (error) {
+    console.error("画像の取得に失敗しました:", error);
+    alert("画像の取得に失敗しました。ネットワーク接続を確認してください。");
   }
 }
 
@@ -36,10 +79,20 @@ function updateImage() {
 }
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowRight" || event.key === "d") {
-    prevPage();
-  } else if (event.key === "ArrowLeft" || event.key === "a") {
-    nextPage();
+  if (viewerSettings.pageDirection === 'right') {
+    // 右矢印で次のページ
+    if (event.key === "ArrowRight" || event.key === "d") {
+      nextPage();
+    } else if (event.key === "ArrowLeft" || event.key === "a") {
+      prevPage();
+    }
+  } else {
+    // 左矢印で次のページ
+    if (event.key === "ArrowLeft" || event.key === "a") {
+      nextPage();
+    } else if (event.key === "ArrowRight" || event.key === "d") {
+      prevPage();
+    }
   }
 });
 
@@ -47,4 +100,10 @@ document.getElementById('back-button')?.addEventListener('click', () => {
   window.history.back();
 });
 
-fetchImages();
+// 初期化
+async function init() {
+  await loadViewerSettings();
+  await fetchImages();
+}
+
+init();

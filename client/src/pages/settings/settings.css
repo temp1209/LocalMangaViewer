@@ -1,0 +1,249 @@
+/* 全体のスタイルリセット */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* 設定コンテナ */
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  min-height: 100vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ヘッダー */
+.settings-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.back-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #c0392b;
+}
+
+/* メインコンテンツ */
+.settings-content {
+  padding: 30px;
+}
+
+/* 設定セクション */
+.settings-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.settings-section h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 18px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+/* 設定アイテム */
+.setting-item {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setting-item label {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.setting-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+}
+
+.setting-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* ショートカット情報 */
+.shortcuts-info {
+  background-color: #ecf0f1;
+  padding: 15px;
+  border-radius: 4px;
+  border-left: 4px solid #3498db;
+}
+
+.shortcuts-info p {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.shortcuts-info ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.shortcuts-info li {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.shortcuts-info span {
+  font-weight: 600;
+  color: #e74c3c;
+}
+
+/* ボタンスタイル */
+.primary-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.primary-button:hover {
+  background-color: #2980b9;
+}
+
+.secondary-button {
+  background-color: #95a5a6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  margin-right: 10px;
+}
+
+.secondary-button:hover {
+  background-color: #7f8c8d;
+}
+
+.danger-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.danger-button:hover {
+  background-color: #c0392b;
+}
+
+/* フッター */
+.settings-footer {
+  background-color: #ecf0f1;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #ddd;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .settings-container {
+    margin: 0;
+    box-shadow: none;
+  }
+  
+  .settings-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .settings-content {
+    padding: 20px;
+  }
+  
+  .settings-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .settings-footer button {
+    margin-bottom: 10px;
+  }
+}
+
+/* ダークテーマ対応 */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+  
+  .settings-container {
+    background-color: #2d2d2d;
+  }
+  
+  .settings-section {
+    background-color: #3d3d3d;
+    border-color: #555;
+  }
+  
+  .setting-input {
+    background-color: #4d4d4d;
+    color: #e0e0e0;
+    border-color: #666;
+  }
+  
+  .shortcuts-info {
+    background-color: #3d3d3d;
+    border-left-color: #3498db;
+  }
+  
+  .settings-footer {
+    background-color: #3d3d3d;
+    border-top-color: #555;
+  }
+} 
