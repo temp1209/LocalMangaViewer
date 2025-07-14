@@ -19,7 +19,7 @@ export const MangaQuerySchema = z.object({
 
 export const RawMangaQuerySchema = z.object({
   search: RawSearchQuerySchema,
-  pageConf: PageConfSchema,
+  pageConf: PageConfSchema, 
 });
 
 export type RawSearchQuery = z.infer<typeof RawSearchQuerySchema>;

@@ -21,7 +21,7 @@ import { getConfig } from "./config/configManager";
 const app = express();
 const PORT = 3000;
 
-const deafaultPageLimit = 10;
+const defaultPageLimit = 10;
 
 // CORS設定
 app.use((req, res, next) => {
@@ -71,7 +71,7 @@ app.get("/api/get-manga-list", (req: Request, res: Response) => {
   const pageStr = query.pageConf.page;
   const limitStr = query.pageConf.limit;
   const page = pageStr ? parseInt(pageStr) : 1;
-  const limit = limitStr ? parseInt(limitStr) : deafaultPageLimit;
+  const limit = limitStr ? parseInt(limitStr) : defaultPageLimit;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 

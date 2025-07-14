@@ -1,5 +1,5 @@
 export type UserConfig = {
-  dataDirectory: string;
+  dataDirectory: string[];
   viewer?: {
     pageDirection: 'right' | 'left'; // 右矢印で次のページか左矢印で次のページか
     keyboardShortcuts: {
