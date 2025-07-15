@@ -1,7 +1,7 @@
 import { UserConfig } from "../schemas/userConfigSchema";
 
 export const defaultUserCongnfig:UserConfig = {
-  dataDirectory: ["K:\\Document\\Comic\\Data"],
+  dataDirectory: "K:\\Document\\Comic\\Data",
   viewer: {
     pageDirection: "left",
     keyboardShortcuts: {

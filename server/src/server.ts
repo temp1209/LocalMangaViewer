@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.resolve("../client/dist")));
 app.use(bodyParser.json());
 
-const dataDirectory = getConfig()?.dataDirectory!;
+const dataDirectory = getConfig().dataDirectory;
 const mangaDataPath = path.join(dataDirectory, "metadata", "metadata.json");
 const mangaDirectory = path.join(dataDirectory, "manga");
 const uploadDirectory = path.join(dataDirectory, "uploads");

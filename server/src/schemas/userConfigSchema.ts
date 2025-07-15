@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const userConfigSchema = z.object({
-  dataDirectory: z.array(z.string()),
+  dataDirectory: z.string(),
   viewer: z.object({
     pageDirection: z.enum(["right", "left"]),
     keyboardShortcuts: z.object({
