@@ -1,16 +1,17 @@
 import path from "path";
 import fs from "fs";
-import { UserConfig } from "../../src/types/userConfig";
+import { UserConfig } from "../schemas/userConfigSchema";
+import { defaultUserCongnfig } from "../constants/defaultUserConfig";
 
 const configPath = path.resolve(__dirname, "../../config/config.json");
 
-export function getConfig(): UserConfig | null {
+export function getConfig(): UserConfig {
   try {
     const configData = fs.readFileSync(configPath, "utf-8");
     return JSON.parse(configData);
   } catch (error) {
     console.error("config.jsonの読み込みに失敗しました:", error);
-    return null;
+    return defaultUserCongnfig;
   }
 }
 

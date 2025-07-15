@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const coverSchema = z.object({
+export const coverSchema = z.object({
   path: z.string(),
   isPortrait: z.boolean(),
 })
@@ -17,14 +17,15 @@ export const MetadataItemSchema = z.object({
 });
 
 export const MetadataSchema = z.array(MetadataItemSchema);
-export const SearchableKeysSchema = z.enum(["authors", "groups", "originals", "characters", "tags"]);
 
 export const RawMetadataItemSchema = MetadataItemSchema.extend({
-  id:z.string().optional(),
+  id:z.string().uuid().optional(),
   cover: coverSchema.optional(),
 })
 
-export type MetadataItem = z.infer<typeof MetadataItemSchema>;
-export type Metadata = z.infer<typeof MetadataSchema>;
-export type RawMetadataItem = z.infer<typeof RawMetadataItemSchema>
-export type SearchableKeys = z.infer<typeof SearchableKeysSchema>;
+
+type MetadataItem = z.infer<typeof MetadataItemSchema>;
+type Metadata = z.infer<typeof MetadataSchema>;
+type RawMetadataItem = z.infer<typeof RawMetadataItemSchema>;
+
+export type { Metadata, MetadataItem, RawMetadataItem };

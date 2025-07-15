@@ -6,17 +6,18 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import crypto from "crypto";
 import fileUploadHandlers from "./utils/fileUploadHandlers";
-import { MangaQuery, RawMangaQuerySchema } from "./types/queries";
+import { MangaQuery, RawMangaQuerySchema } from "./schemas/queriesSchema";
 import { decodeQueryParamArray } from "./utils/query";
 import {
   Metadata,
   MetadataItem,
-  SearchableKeys,
   MetadataSchema,
   RawMetadataItemSchema,
   RawMetadataItem,
-} from "./types/metadata";
+} from "./schemas/metadataSchema";
+import { SearchableKey } from "./types/SearchableKey";
 import { getConfig } from "./config/configManager";
+import { error } from "console";
 
 const app = express();
 const PORT = 3000;
@@ -63,15 +64,13 @@ const multerUpload = multer({ storage: multerStorage });
 app.get("/api/get-manga-list", (req: Request, res: Response) => {
   const resultReqParse = RawMangaQuerySchema.safeParse(req.query);
   if (!resultReqParse.success) {
-    res.status(400).json({ message: "クエリの形式が不正です" });
+    res.status(400).json({ error: "クエリの形式が不正です" });
     return;
   }
   const query = resultReqParse.data;
 
-  const pageStr = query.pageConf.page;
-  const limitStr = query.pageConf.limit;
-  const page = pageStr ? parseInt(pageStr) : 1;
-  const limit = limitStr ? parseInt(limitStr) : defaultPageLimit;
+  const page = query.pageConf.page
+  const limit = query.pageConf.limit;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
@@ -104,7 +103,7 @@ app.get("/api/get-manga-list", (req: Request, res: Response) => {
       ) as MangaQuery["search"];
 
       for (const key in decodedSearchQuery) {
-        const typedKey = key as SearchableKeys;
+        const typedKey = key as SearchableKey;
         const queryValues = decodedSearchQuery[typedKey];
         if (!queryValues) continue;
 
