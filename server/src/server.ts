@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
 import bodyParser from "body-parser";
-import { getConfig } from "./config/configManager";
+import router from "./routes/routes";
 
 const app = express();
 const PORT = 3000;
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.resolve("../client/dist")));
 app.use(bodyParser.json());
-
+app.use("/api",router)
 
 //検索結果へのリダイレクト
 //実際の検索は検索結果画面から/api/get-manga-listを呼び出して行う
@@ -32,52 +32,6 @@ app.get("/search", (req, res) => {
   const queryString = index !== -1 ? req.originalUrl.slice(index) : "";
 
   res.redirect(`/mangaList.html${queryString}`);
-});
-
-// 設定関連のAPI
-// 設定を取得
-app.get("/api/get-config", (req, res) => {
-  try {
-    const config = getConfig();
-    if (config) {
-      res.status(200).json(config);
-    } else {
-      res.status(404).json({ message: "設定ファイルが見つかりません" });
-    }
-  } catch (error) {
-    console.error("設定の取得に失敗しました:", error);
-    res.status(500).json({ message: "設定の取得に失敗しました" });
-  }
-});
-
-// 設定を保存
-app.post("/api/save-config", (req, res) => {
-  try {
-    const newConfig = req.body;
-    
-    // 設定ファイルのパスを取得
-    const configPath = path.resolve(__dirname, "../config/config.json");
-    
-    // 既存の設定を読み込み
-    let currentConfig = {};
-    try {
-      const existingData = fs.readFileSync(configPath, "utf-8");
-      currentConfig = JSON.parse(existingData);
-    } catch (error) {
-      console.warn("既存の設定ファイルが見つからないため、新規作成します");
-    }
-    
-    // 新しい設定をマージ
-    const updatedConfig = { ...currentConfig, ...newConfig };
-    
-    // 設定を保存
-    fs.writeFileSync(configPath, JSON.stringify(updatedConfig, null, 2));
-    
-    res.status(200).json({ message: "設定を保存しました" });
-  } catch (error) {
-    console.error("設定の保存に失敗しました:", error);
-    res.status(500).json({ message: "設定の保存に失敗しました" });
-  }
 });
 
 
