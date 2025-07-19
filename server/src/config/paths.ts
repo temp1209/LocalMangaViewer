@@ -1,7 +1,7 @@
 import path from "path";
-import { getConfig } from "./configManager";
+import { getServerConfig } from "../services/config/getServerConfig";
 
-const dataDirectory = getConfig().dataDirectory;
+const dataDirectory = "K:\\Document\\Comic\\Data"
 
 export const paths = {
   data: {
