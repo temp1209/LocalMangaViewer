@@ -1,0 +1,19 @@
+{
+  "viewer": {
+    "pageDirection": "left",
+    "keyboardShortcuts": {
+      "nextPage": [
+        "ArrowLeft",
+        "a"
+      ],
+      "prevPage": [
+        "ArrowRight",
+        "d"
+      ]
+    }
+  },
+  "ui": {
+    "theme": "dark",
+    "pageLimit": 10
+  }
+}
