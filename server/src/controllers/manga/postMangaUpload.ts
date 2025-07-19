@@ -3,7 +3,7 @@ import path from "path";
 import { Request , Response } from "express";
 import sizeOf from "image-size";
 
-import { RawMetadataItemSchema,MetadataSchema ,RawMetadataItem,Metadata,MetadataItem } from "../../schemas/metadataSchema";
+import { RawMetadataItemSchema,MetadataListSchema ,RawMetadataItem,MetadataList,MetadataItem } from "../../schemas/metadataSchema";
 import { paths } from "../../config/paths";
 import fileUploadHandlers from "../../utils/fileUploadHandlers";
 
@@ -87,11 +87,11 @@ export const postMangaUpload =  async (req:Request, res:Response) => {
   }
 
   try {
-    const resultMetadataParse = MetadataSchema.safeParse(JSON.parse(fs.readFileSync(paths.data.metadataFile, "utf-8")));
+    const resultMetadataParse = MetadataListSchema.safeParse(JSON.parse(fs.readFileSync(paths.data.metadataFile, "utf-8")));
     if (!resultMetadataParse.success) {
       throw new Error("metadata.jsonのパースに失敗しました");
     }
-    const currentMangaData: Metadata = resultMetadataParse.data;
+    const currentMangaData: MetadataList = resultMetadataParse.data;
     currentMangaData.push(newMangaData);
     fs.writeFileSync(paths.data.metadataFile, JSON.stringify(currentMangaData, null, 2));
     console.log("アップロードに成功しました:", file.filename);

@@ -1,7 +1,6 @@
-import fs from "fs";
 import { Request, Response } from "express";
 import { RawMangaQuerySchema, MangaQuery, SearchQuery, SearchQuerySchema } from "../../schemas/queriesSchema";
-import { Metadata, MetadataSchema } from "../../schemas/metadataSchema";
+import { MetadataList, MetadataListSchema } from "../../schemas/metadataSchema";
 import { decodeQueryParamArray } from "../../utils/query";
 import { SearchableKey } from "../../types/SearchableKey";
 import { paths } from "../../config/paths";
@@ -26,9 +25,9 @@ export const getMangaList = async (req: Request, res: Response) => {
 
   const decodedSearchQuery = mapObjectValues(query.search,decodeQueryParamArray);
 
-  let resultData:Metadata = [];
+  let resultData:MetadataList = [];
   try {
-    const metadata = await readJsonWithSchema(paths.data.metadataFile, MetadataSchema, []);
+    const metadata = await readJsonWithSchema(paths.data.metadataFile, MetadataListSchema, []);
     resultData = metadata;
 
     for (const key in decodedSearchQuery) {

@@ -1,7 +1,7 @@
 import fs from "fs";
 import { Request , Response } from "express";
 import { paths } from "../../config/paths";
-import { Metadata } from "../../schemas/metadataSchema";
+import { MetadataList } from "../../schemas/metadataSchema";
 
 // Get
 // タグとその登録数を返すAPI
@@ -11,7 +11,7 @@ export const getTagList = (req:Request, res:Response) => {
       console.error(err);
       return res.status(500).json({ error: "Failed to load metadata." });
     }
-    const allMangaData = JSON.parse(data) as Metadata;
+    const allMangaData = JSON.parse(data) as MetadataList;
     const allTagData = allMangaData.map((item) => item.tags).flat();
     const tagFrequency = allTagData.reduce<Record<string, number>>((acc, str) => {
       acc[str] = (acc[str] || 0) + 1;

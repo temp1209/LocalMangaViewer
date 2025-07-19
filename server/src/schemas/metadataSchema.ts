@@ -16,7 +16,7 @@ export const MetadataItemSchema = z.object({
   cover: coverSchema,
 });
 
-export const MetadataSchema = z.array(MetadataItemSchema);
+export const MetadataListSchema = z.array(MetadataItemSchema);
 
 export const RawMetadataItemSchema = MetadataItemSchema.extend({
   id:z.string().uuid().optional(),
@@ -25,7 +25,7 @@ export const RawMetadataItemSchema = MetadataItemSchema.extend({
 
 
 type MetadataItem = z.infer<typeof MetadataItemSchema>;
-type Metadata = z.infer<typeof MetadataSchema>;
+type MetadataList = z.infer<typeof MetadataListSchema>;
 type RawMetadataItem = z.infer<typeof RawMetadataItemSchema>;
 
-export type { Metadata, MetadataItem, RawMetadataItem };
+export type { MetadataList, MetadataItem, RawMetadataItem };
