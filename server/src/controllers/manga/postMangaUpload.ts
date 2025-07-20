@@ -1,15 +1,15 @@
 import fs from "fs";
 import path from "path";
-import { Request , Response } from "express";
+import { Request, Response } from "express";
 import sizeOf from "image-size";
 
-import { RawMetadataItemSchema,MetadataListSchema ,RawMetadataItem,MetadataList,MetadataItem } from "../../schemas/metadataSchema";
+import { MetadataListSchema, MetadataList, MetadataItem, MetadataItemSchema } from "../../schemas/metadataSchema";
 import { paths } from "../../config/paths";
 import fileUploadHandlers from "../../utils/fileUploadHandlers";
 
 //POST
 //漫画のアップロードAPI
-export const postMangaUpload =  async (req:Request, res:Response) => {
+export const postMangaUpload = async (req: Request, res: Response) => {
   console.log("reqData:", req.body.data);
   let rawData: unknown;
   try {
@@ -19,14 +19,14 @@ export const postMangaUpload =  async (req:Request, res:Response) => {
     return;
   }
   console.log("rawData:", rawData);
-  const resultReqParse = RawMetadataItemSchema.safeParse(rawData);
+  const resultReqParse = MetadataItemSchema.safeParse(rawData);
   if (!resultReqParse.success) {
     console.error("リクエストデータ形式が不正です");
     res.status(400).json({ message: "リクエストデータ形式が不正です" });
     return;
   }
 
-  const getMangaCover = (manga: RawMetadataItem, id: string): { path: string; isPortrait: boolean } => {
+  const getMangaCover = (manga: MetadataItem, id: string): { path: string; isPortrait: boolean } => {
     const dummyCoverName = "DummyCover.png";
     const dummyCoverPath = path.join(paths.data.manga, dummyCoverName);
     const mangaFolder = path.join(paths.data.manga, id);
@@ -55,7 +55,7 @@ export const postMangaUpload =  async (req:Request, res:Response) => {
     }
   };
 
-  const reqMangaData: RawMetadataItem = resultReqParse.data;
+  const reqMangaData: MetadataItem = resultReqParse.data;
   const newMangaID = crypto.randomUUID().toString();
   const newMangaData: MetadataItem = {
     ...reqMangaData,
@@ -87,7 +87,9 @@ export const postMangaUpload =  async (req:Request, res:Response) => {
   }
 
   try {
-    const resultMetadataParse = MetadataListSchema.safeParse(JSON.parse(fs.readFileSync(paths.data.metadataFile, "utf-8")));
+    const resultMetadataParse = MetadataListSchema.safeParse(
+      JSON.parse(fs.readFileSync(paths.data.metadataFile, "utf-8"))
+    );
     if (!resultMetadataParse.success) {
       throw new Error("metadata.jsonのパースに失敗しました");
     }

@@ -12,20 +12,14 @@ export const MetadataItemSchema = z.object({
   originals: z.array(z.string()),
   characters: z.array(z.string()),
   tags: z.array(z.string()),
-  id: z.string(),
+  id: z.string().uuid(),
   cover: coverSchema,
 });
 
 export const MetadataListSchema = z.array(MetadataItemSchema);
 
-export const RawMetadataItemSchema = MetadataItemSchema.extend({
-  id:z.string().uuid().optional(),
-  cover: coverSchema.optional(),
-})
-
 
 type MetadataItem = z.infer<typeof MetadataItemSchema>;
 type MetadataList = z.infer<typeof MetadataListSchema>;
-type RawMetadataItem = z.infer<typeof RawMetadataItemSchema>;
 
-export type { MetadataList, MetadataItem, RawMetadataItem };
+export type { MetadataList, MetadataItem };
