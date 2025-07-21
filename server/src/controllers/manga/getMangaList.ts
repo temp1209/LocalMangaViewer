@@ -3,7 +3,7 @@ import { RawMangaQuerySchema } from "../../schemas/queriesSchema";
 import { MetadataListSchema } from "../../schemas/metadataSchema";
 import { decodeQueryParamArray } from "../../utils/query";
 import { paths } from "../../config/paths";
-import { readJsonWithSchema } from "../../utils/readJsonWithSchema";
+import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
 import { mapObjectValues } from "../../utils/mapObjectValues";
 import { searchManga } from "../../services/manga/searchManga";
 
@@ -19,7 +19,7 @@ export const getMangaListAPI = async (req: Request, res: Response) => {
   const query = resultReqParse.data;
 
   const decodedSearchQuery = mapObjectValues(query.search, decodeQueryParamArray);
-  const metadataList = await readJsonWithSchema(paths.data.metadataFile, MetadataListSchema, []);
+  const metadataList = await readJsonWithSchemaSafe(paths.data.metadataFile, MetadataListSchema, []);
   const searchResult = searchManga(metadataList,decodedSearchQuery);
 
   //ページに切り取り

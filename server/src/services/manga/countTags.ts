@@ -1,9 +1,9 @@
 import { paths } from "../../config/paths";
 import { MetadataListSchema } from "../../schemas/metadataSchema";
-import { readJsonWithSchema } from "../../utils/readJsonWithSchema";
+import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
 
 export const countTags = async () => {
-  const metadataList = await readJsonWithSchema(paths.data.metadataFile, MetadataListSchema, []);
+  const metadataList = await readJsonWithSchemaSafe(paths.data.metadataFile, MetadataListSchema, []);
   const allTagData = metadataList.map((item) => item.tags).flat();
   const tagFrequency = allTagData.reduce<Record<string, number>>((acc, str) => {
     acc[str] = (acc[str] || 0) + 1;
