@@ -5,7 +5,7 @@ import { paths } from "../../config/paths";
 
 // Get
 // 指定されたフォルダ内の画像一覧を返すAPI
-export const getPages = (req: Request, res: Response) => {
+export const getPageList = (req: Request, res: Response) => {
   const mangaID = req.params.mangaID;
   const mangaPath = path.join(paths.data.manga, mangaID);
 
