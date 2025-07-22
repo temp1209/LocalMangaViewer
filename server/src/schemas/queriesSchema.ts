@@ -16,11 +16,6 @@ export const MangaQuerySchema = z.object({
   pageConf: PageConfSchema,
 });
 
-export const RawMangaQuerySchema = z.object({
-  search: RawSearchQuerySchema,
-  pageConf: PageConfSchema, 
-});
-
 export const PageDataSchema = z.object({
   pageID: z.number().positive(),
   url : z.string().url()
@@ -29,19 +24,15 @@ export const PageDataSchema = z.object({
 export const PageDataListSchema = z.array(PageDataSchema);
 
 export type {
-  RawSearchQuery,
   SearchQuery,
   PageConf,
   MangaQuery,
-  RawMangaQuery,
   PageData,
   PageDataList
 };
 
-type RawSearchQuery = z.infer<typeof RawSearchQuerySchema>;
 type SearchQuery = z.infer<typeof SearchQuerySchema>;
 type PageConf = z.infer<typeof PageConfSchema>;
 type MangaQuery = z.infer<typeof MangaQuerySchema>;
-type RawMangaQuery = z.infer<typeof RawMangaQuerySchema>;
 type PageData = z.infer<typeof PageDataSchema>;
 type PageDataList = z.infer<typeof PageDataListSchema>;

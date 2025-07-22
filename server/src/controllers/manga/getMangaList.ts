@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { RawMangaQuerySchema } from "../../schemas/queriesSchema";
+import { MangaQuerySchema } from "../../schemas/queriesSchema";
 import { MetadataListSchema } from "../../schemas/metadataSchema";
 import { decodeQueryParamArray } from "../../utils/query";
 import { paths } from "../../config/paths";
@@ -10,7 +10,7 @@ import { searchManga } from "../../services/manga/searchManga";
 // Get
 // クエリから検索しマンガ情報を返すAPI
 export const getMangaListAPI = async (req: Request, res: Response) => {
-  const resultReqParse = RawMangaQuerySchema.safeParse(req.query);
+  const resultReqParse = MangaQuerySchema.safeParse(req.query);
   if (!resultReqParse.success) {
     console.error(resultReqParse.error.message);
     res.status(400).json({ error: "クエリの形式が不正です" });
