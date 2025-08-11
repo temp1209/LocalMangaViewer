@@ -4,14 +4,14 @@ const router = express.Router();
 
 //manga
 import { getMangaListAPI } from "../controllers/manga/getMangaList";
-import { getPageList } from "../controllers/manga/getPageList";
-import { getTagList } from "../controllers/manga/getTagList";
+import { getPageListAPI } from "../controllers/manga/getPageList";
+import { getTagListAPI } from "../controllers/manga/getTagList";
 import { postMangaUpload } from "../controllers/manga/postMangaUpload";
 import { multerUpload } from "../middlewares/multerUpload";
 
 router.get("/get-manga-list", getMangaListAPI);
-router.get("/get-page/:mangaID", getPageList);
-router.get("/get-tag-list", getTagList);
+router.get("/get-page-list/:mangaID", getPageListAPI);
+router.get("/get-tag-list", getTagListAPI);
 router.post("/post-manga-upload", multerUpload.single("file"), postMangaUpload);
 
 
