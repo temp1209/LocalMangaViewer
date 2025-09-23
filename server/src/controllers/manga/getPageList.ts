@@ -1,7 +1,4 @@
-import fs from "fs";
-import path from "path";
 import { Request , Response } from "express";
-import { paths } from "../../config/paths";
 import { getPageList } from "../../services/manga/getMangaPageList";
 
 // Get

@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 import { promises as fs } from "fs";
 
 export const readJsonWithSchemaSafe = async <T>(filePath: string, schema: z.ZodSchema<T>, fallback: T): Promise<T> => {

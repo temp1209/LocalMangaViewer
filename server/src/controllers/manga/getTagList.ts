@@ -1,4 +1,3 @@
-import fs from "fs";
 import { Request, Response } from "express";
 import { countTags } from "../../services/manga/countTags";
 

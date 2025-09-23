@@ -12,7 +12,7 @@ import { searchManga } from "../../services/manga/searchManga";
 export const getMangaListAPI = async (req: Request, res: Response) => {
   const resultReqParse = MangaQuerySchema.safeParse(req.query);
   if (!resultReqParse.success) {
-    console.error(resultReqParse.error.message);
+    console.error(`パースエラー${resultReqParse.error.message}`);
     res.status(400).json({ error: "クエリの形式が不正です" });
     return;
   }
