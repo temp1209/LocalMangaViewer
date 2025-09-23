@@ -1,29 +1,24 @@
-import { ServerConfig, UserConfig } from "../schemas/configSchema";
+import { Config } from "../schemas/configSchema";
 
-export const defaultUserCongfig:UserConfig = {
-  viewer: {
-    pageDirection: "left",
-    keyboardShortcuts: {
-      nextPage: [
-        "ArrowLeft",
-        "a"
-      ],
-      prevPage: [
-        "ArrowRight",
-        "d"
-      ]
-    }
+export const defaultCongfig: Config = {
+  user: {
+    viewer: {
+      pageDirection: "left",
+      keyboardShortcuts: {
+        nextPage: ["ArrowLeft", "a"],
+        prevPage: ["ArrowRight", "d"],
+      },
+    },
+    ui: {
+      theme: "dark",
+      pageLimit: 10,
+    },
   },
-  ui: {
-    theme: "dark",
-    pageLimit: 10
-  }
-}
-
-export const defaultServerCongfig:ServerConfig = {
-  dataDirectory: "K:\\Document\\Comic\\Data",
-  cache: {
-    enable: true,
-    size: 100
-  }
-}
+  server: {
+    dataDirectory: "K:\\Document\\Comic\\Data",
+    cache: {
+      enable: true,
+      size: 100,
+    },
+  },
+};
