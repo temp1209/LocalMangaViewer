@@ -9,16 +9,18 @@ import { getTagListAPI } from "../controllers/manga/getTagList";
 import { postMangaUpload } from "../controllers/manga/postMangaUpload";
 import { multerUpload } from "../middlewares/multerUpload";
 
-router.get("/get-manga-list", getMangaListAPI);
-router.get("/get-page-list/:mangaID", getPageListAPI);
-router.get("/get-tag-list", getTagListAPI);
-router.post("/post-manga-upload", multerUpload.single("file"), postMangaUpload);
+router.get("/manga", getMangaListAPI);
+router.get("/manga/:mangaID/pages", getPageListAPI);
+router.get("/tag", getTagListAPI);
+router.post("/manga", multerUpload.single("file"), postMangaUpload);
 
 
 
 //config
-import { getServerConfigAPI } from "../controllers/config/getServerConfig";
+import { getConfigAPI } from "../controllers/config/getConfig";
+import { setConfigAPI } from "../controllers/config/setConfig";
 
-router.get("/get-user-config", getServerConfigAPI);
+router.get("/config", getConfigAPI);
+router.post("/config", setConfigAPI);
 
 export default router;
