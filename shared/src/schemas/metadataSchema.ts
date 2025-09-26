@@ -17,9 +17,3 @@ export const MetadataItemSchema = z.object({
 });
 
 export const MetadataListSchema = z.array(MetadataItemSchema);
-
-
-type MetadataItem = z.infer<typeof MetadataItemSchema>;
-type MetadataList = z.infer<typeof MetadataListSchema>;
-
-export type { MetadataList, MetadataItem };

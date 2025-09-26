@@ -1,8 +1,8 @@
 {
-  "name": "shared",
+  "name": "@types/shared",
   "version": "1.0.0",
-  "main": "index.ts",
-  "types":"index.ts",
+  "main": "src/index.js",
+  "types":"src/index.ts",
   "scripts": {
     "build": "tsc"
   },

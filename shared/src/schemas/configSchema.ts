@@ -13,7 +13,6 @@ const userConfigSchema = z.object({
     pageLimit: z.number().positive(),
   })
 });
-type UserConfig = z.infer<typeof userConfigSchema>;
 
 const serverConfigSchema = z.object({
   dataDirectory: z.string(),
@@ -22,11 +21,8 @@ const serverConfigSchema = z.object({
     size: z.number(),
   })
 });
-type ServerConfig = z.infer<typeof serverConfigSchema>;
 
 export const configSchema = z.object({
   user:userConfigSchema,
   server:serverConfigSchema
 });
-
-export type Config = z.infer<typeof configSchema>;

@@ -1,5 +1,5 @@
 {
-  "name": "comic-viewer-server",
+  "name": "@comic-viewer/server",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",
