@@ -1,5 +1,5 @@
 import { searchableKeysArray } from "../constants/searchableKeys";
-import { defaultUserCongfig } from "../constants/defaultConfig";
+import { defaultCongfig } from "../constants/defaultConfig";
 import { z } from "zod";
 
 export const SearchQuerySchema = z.record(z.enum(searchableKeysArray),z.array(z.string()));
@@ -8,7 +8,7 @@ export const RawSearchQuerySchema = z.record(z.enum(searchableKeysArray), z.unio
 
 export const PageConfSchema = z.object({
   page: z.coerce.number().positive().default(1),
-  limit: z.coerce.number().positive().default(defaultUserCongfig.ui.pageLimit),
+  limit: z.coerce.number().positive().default(defaultCongfig.user.ui.pageLimit),
 });
 
 export const MangaQuerySchema = z.object({

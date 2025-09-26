@@ -1,5 +1,4 @@
 import path from "path";
-import { getServerConfig } from "../services/config/getServerConfig";
 
 const dataDirectory = "K:\\Document\\Comic\\Data"
 
