@@ -8,7 +8,11 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declarationMap": true,
+    "allowJs": false,
+    "declarationDir": "./dist/dts"
   },
-  "include": ["src"]
+  "include": ["./src"],
+  "exclude": ["./dist"]
 }
