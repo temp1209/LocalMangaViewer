@@ -1,5 +1,5 @@
 import { paths } from "../../config/paths";
-import { MetadataItem } from "../../schemas/metadataSchema";
+import { MetadataItem } from "shared";
 import fileUploadHandlers from "../../utils/fileUploadHandlers";
 import { writeJson } from "../../utils/writeJson";
 import { getMangaCover } from "./getMangaCover";

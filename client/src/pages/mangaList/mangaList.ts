@@ -1,5 +1,4 @@
-import { Metadatas } from "../../types/metadata";
-import { RawMangaQuery } from "../../types/queries";
+import { MetadataList,SearchQuery } from "shared";
 import qs from "qs"
 
 async function loadMangaList() {
@@ -12,7 +11,7 @@ async function loadMangaList() {
   const character = urlParams.get("character");
   const tag = urlParams.get("tag");
 
-  const query:RawMangaQuery = {
+  const query:SearchQuery = {
     search:{
       authors:author,
       originals:original,
@@ -52,7 +51,7 @@ function updateMangaCount(total: number) {
   }
 }
 
-function displayMangaList(mangaDataList: Metadatas) {
+function displayMangaList(mangaDataList: MetadataList) {
   const mangaListContainer = document.getElementById("manga-list-container");
 
   if (!mangaListContainer) {

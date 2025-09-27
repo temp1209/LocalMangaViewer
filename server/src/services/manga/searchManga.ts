@@ -1,8 +1,6 @@
-import { MetadataList } from "../../schemas/metadataSchema"
-import { SearchQuery } from "../../schemas/queriesSchema"
-import { SearchableKey } from "../../types/SearchableKey";
+import { MetadataList, SearchQuery, SearchableKey } from "shared";
 
-export const searchManga = (dataList:MetadataList,query:SearchQuery) => {
+export const searchManga = (dataList: MetadataList, query: SearchQuery) => {
   let resultData = dataList;
   for (const key in query) {
     const typedKey = key as SearchableKey;
@@ -12,4 +10,4 @@ export const searchManga = (dataList:MetadataList,query:SearchQuery) => {
     resultData = resultData.filter((item) => queryValues.every((v) => item[typedKey].includes(v)));
   }
   return resultData;
-}
+};

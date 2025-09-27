@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { setConfig } from "../../services/config/setConfig";
-import { configSchema } from "../../schemas/configSchema";
+import { configSchema } from "shared";
 
 export const setConfigAPI = async (req: Request, res: Response) => {
   const parse = configSchema.safeParse(req.body);

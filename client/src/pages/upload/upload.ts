@@ -2,8 +2,8 @@ const uploadForm = document.getElementById("upload-form")! as HTMLFormElement;
 const fileInput = document.getElementById("file")! as HTMLInputElement;
 const titleInput = document.getElementById("title")! as HTMLInputElement;
 const uploadButton = document.getElementById("upload-button") as HTMLButtonElement;
-const cancelButton = document.getElementById("cancel-button") as HTMLButtonElement;
-const backButton = document.getElementById("back-button") as HTMLButtonElement;
+const cancelButtonUploadPage = document.getElementById("cancel-button") as HTMLButtonElement;
+const backButtonUploadPage = document.getElementById("back-button") as HTMLButtonElement;
 
 function splitComma(str:string | null | undefined) {
   if (!str) {
@@ -79,7 +79,7 @@ async function handleUpload() {
 // イベントリスナーの設定
 uploadButton?.addEventListener("click", handleUpload);
 
-cancelButton?.addEventListener("click", () => {
+cancelButtonUploadPage?.addEventListener("click", () => {
   if (confirm("入力内容を破棄しますか？")) {
     uploadForm.reset();
   }

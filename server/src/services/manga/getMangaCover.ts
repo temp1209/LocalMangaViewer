@@ -1,5 +1,5 @@
 import path from "path";
-import { MetadataItem } from "../../schemas/metadataSchema";
+import { MetadataItem } from "shared";
 import { paths } from "../../config/paths";
 import sizeOf from "image-size";
 import fs from "fs";

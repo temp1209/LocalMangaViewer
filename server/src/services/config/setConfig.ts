@@ -1,6 +1,6 @@
 import path from "path";
 
-import { Config } from "../../schemas/configSchema";
+import { Config } from "shared";
 import { writeJson } from "../../utils/writeJson";
 
 const configPath = path.resolve(__dirname, "../../config/config.json");

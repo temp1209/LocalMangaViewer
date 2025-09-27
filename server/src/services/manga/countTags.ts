@@ -1,5 +1,5 @@
 import { paths } from "../../config/paths";
-import { MetadataListSchema } from "../../schemas/metadataSchema";
+import { MetadataListSchema } from "shared";
 import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
 
 export const countTags = async () => {

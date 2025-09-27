@@ -1,7 +1,7 @@
-import { UserConfig } from "../../../../shared/src/types";
+import { Config } from "shared"
 
 // デフォルト設定
-const defaultConfig: UserConfig = {
+const defaultConfig: Config = {
   viewer: {
     pageDirection: 'right'
   },
@@ -11,7 +11,7 @@ const defaultConfig: UserConfig = {
 };
 
 // 設定をサーバーから読み込む
-async function loadSettings(): Promise<UserConfig> {
+async function loadSettings(): Promise<Config> {
   try {
     const response = await fetch('/api/get-config');
     if (response.ok) {
@@ -25,7 +25,7 @@ async function loadSettings(): Promise<UserConfig> {
 }
 
 // 設定をサーバーに保存する
-async function saveSettings(config: UserConfig): Promise<boolean> {
+async function saveSettings(config: Config): Promise<boolean> {
   try {
     const response = await fetch('/api/save-config', {
       method: 'POST',
@@ -42,7 +42,7 @@ async function saveSettings(config: UserConfig): Promise<boolean> {
 }
 
 // 設定をUIに反映する
-function applySettingsToUI(config: UserConfig) {
+function applySettingsToUI(config: Config) {
   const pageDirectionSelect = document.getElementById('page-direction') as HTMLSelectElement;
   const themeSelect = document.getElementById('theme') as HTMLSelectElement;
   const pageLimitSelect = document.getElementById('page-limit') as HTMLSelectElement;
@@ -80,7 +80,7 @@ function updateShortcutsDisplay(pageDirection: 'right' | 'left') {
 }
 
 // UIから設定を取得する
-function getSettingsFromUI(): UserConfig {
+function getSettingsFromUI(): Config {
   const pageDirectionSelect = document.getElementById('page-direction') as HTMLSelectElement;
   const themeSelect = document.getElementById('theme') as HTMLSelectElement;
   const pageLimitSelect = document.getElementById('page-limit') as HTMLSelectElement;
