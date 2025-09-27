@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@comic-viewer/shared": "file:../shared",
     "adm-zip": "^0.5.16",
     "body-parser": "^2.2.0",
     "express": "^4.21.2",
