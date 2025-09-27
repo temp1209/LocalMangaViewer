@@ -1,14 +1,4 @@
-import { Config } from "shared"
-
-// デフォルト設定
-const defaultConfig: Config = {
-  viewer: {
-    pageDirection: 'right'
-  },
-  theme: 'auto',
-  pageLimit: 20,
-  dataDirectory: ''
-};
+import { Config,defaultConfig } from "shared"
 
 // 設定をサーバーから読み込む
 async function loadSettings(): Promise<Config> {

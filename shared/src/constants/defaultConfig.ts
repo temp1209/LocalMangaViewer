@@ -1,6 +1,6 @@
-import { Config } from "../schemas/configSchema";
+import { Config } from "../types/config";
 
-export const defaultCongfig: Config = {
+export const defaultConfig: Config = {
   user: {
     viewer: {
       pageDirection: "left",
