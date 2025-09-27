@@ -16,9 +16,5 @@ export const defaultConfig: Config = {
   },
   server: {
     dataDirectory: "K:\\Document\\Comic\\Data",
-    cache: {
-      enable: true,
-      size: 100,
-    },
   },
 };

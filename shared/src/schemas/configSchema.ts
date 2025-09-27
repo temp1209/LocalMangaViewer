@@ -15,11 +15,7 @@ const userConfigSchema = z.object({
 });
 
 const serverConfigSchema = z.object({
-  dataDirectory: z.string(),
-  cache: z.object({
-    enable: z.boolean(),
-    size: z.number(),
-  })
+  dataDirectory: z.string()
 });
 
 export const configSchema = z.object({
