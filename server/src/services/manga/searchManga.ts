@@ -1,4 +1,4 @@
-import { MetadataList, SearchQuery, SearchableKey } from "shared";
+import { MetadataList, SearchQuery, SearchableKey } from "@comic-viewer/shared";
 
 export const searchManga = (dataList: MetadataList, query: SearchQuery) => {
   let resultData = dataList;

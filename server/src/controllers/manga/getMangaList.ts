@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { MangaQuerySchema , MetadataListSchema } from "shared";
+import { MangaQuerySchema , MetadataListSchema } from "@comic-viewer/shared";
 import { decodeQueryParamArray } from "../../utils/query";
 import { paths } from "../../config/paths";
 import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";

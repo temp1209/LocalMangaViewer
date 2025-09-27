@@ -1,4 +1,4 @@
-import { MetadataList,SearchQuery } from "shared";
+import { MetadataList,SearchQuery } from "@comic-viewer/shared";
 import qs from "qs"
 
 async function loadMangaList() {

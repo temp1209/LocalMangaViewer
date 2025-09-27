@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { MetadataItemSchema } from "shared";
+import { MetadataItemSchema } from "@comic-viewer/shared";
 import fileUploadHandlers from "../../utils/fileUploadHandlers";
 import { uploadManga } from "../../services/manga/uploadManga";
 

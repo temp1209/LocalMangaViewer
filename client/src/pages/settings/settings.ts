@@ -1,4 +1,4 @@
-import { Config,defaultConfig } from "shared"
+import { Config,defaultConfig } from "@comic-viewer/shared"
 
 // 設定をサーバーから読み込む
 async function loadSettings(): Promise<Config> {
