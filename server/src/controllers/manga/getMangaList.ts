@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { MangaQuerySchema } from "../../schemas/queriesSchema";
-import { MetadataListSchema } from "../../schemas/metadataSchema";
+import { MangaQuerySchema , MetadataListSchema } from "shared";
 import { decodeQueryParamArray } from "../../utils/query";
 import { paths } from "../../config/paths";
 import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
