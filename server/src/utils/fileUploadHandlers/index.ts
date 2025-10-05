@@ -1,5 +1,5 @@
-import { handleZipUpload } from "./handleZip";
-import { handlePdfUpload } from "./handlePdf";
+import { handleZipUpload } from "./handleZip.js";
+import { handlePdfUpload } from "./handlePdf.js";
 
 type UploadHandler = (file: Express.Multer.File, id: string, extractDirectory: string) => Promise<boolean>;
 

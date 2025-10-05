@@ -2,8 +2,8 @@ import express, { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
 import bodyParser from "body-parser";
-import router from "./routes/routes";
-import { paths } from "./config/paths";
+import router from "./routes/routes.js";
+import { paths } from "./config/paths.js";
 
 const app = express();
 const PORT = 3000;
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(import.meta.dirname, "public")));
 app.use(express.static(path.resolve("../client/dist")));
 app.use(express.static(paths.data.manga));
 app.use(bodyParser.json());

@@ -1,6 +1,6 @@
-import { paths } from "../../config/paths";
+import { paths } from "../../config/paths.js";
 import { MetadataListSchema } from "@comic-viewer/shared";
-import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
+import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema.js";
 
 export const countTags = async () => {
   const metadataList = await readJsonWithSchemaSafe(paths.data.metadataFile, MetadataListSchema, []);

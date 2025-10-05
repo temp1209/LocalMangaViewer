@@ -1,6 +1,7 @@
 {
   "name": "@comic-viewer/shared",
   "version": "1.0.0",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/dts/index.d.ts",
   "scripts": {

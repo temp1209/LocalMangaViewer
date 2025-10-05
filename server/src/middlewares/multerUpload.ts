@@ -1,6 +1,6 @@
 import multer from "multer";
 
-import { paths } from "../config/paths";
+import { paths } from "../config/paths.js";
 
 //アップロードされたデータの一時保存先
 //バックアップとして取っておく

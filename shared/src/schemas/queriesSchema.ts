@@ -1,5 +1,5 @@
-import { searchableKeysArray } from "../constants/searchableKeys";
-import { defaultConfig } from "../constants/defaultConfig";
+import { searchableKeysArray } from "../constants/searchableKeys.js";
+import { defaultConfig } from "../constants/defaultConfig.js";
 import { z } from "zod";
 
 export const SearchQuerySchema = z.record(z.enum(searchableKeysArray),z.array(z.string()));

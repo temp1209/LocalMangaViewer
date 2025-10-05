@@ -1,8 +1,8 @@
-import { paths } from "../../config/paths";
+import { paths } from "../../config/paths.js";
 import { MetadataItem } from "@comic-viewer/shared";
-import fileUploadHandlers from "../../utils/fileUploadHandlers";
-import { writeJson } from "../../utils/writeJson";
-import { getMangaCover } from "./getMangaCover";
+import fileUploadHandlers from "../../utils/fileUploadHandlers/index.js";
+import { writeJson } from "../../utils/writeJson.js";
+import { getMangaCover } from "./getMangaCover.js";
 
 export const uploadManga = async (mangaData: MetadataItem, file: Express.Multer.File) => {
   const newMangaID = crypto.randomUUID().toString();

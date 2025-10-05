@@ -1,6 +1,6 @@
 import path from "path";
 import { MetadataItem } from "@comic-viewer/shared";
-import { paths } from "../../config/paths";
+import { paths } from "../../config/paths.js";
 import sizeOf from "image-size";
 import fs from "fs";
 
@@ -20,7 +20,7 @@ export const getMangaCover = (manga: MetadataItem, id: string): { path: string; 
 
     let isPortrait = false;
     try {
-      const { width, height } = sizeOf(coverImagePath);
+      const { width, height } = sizeOf.imageSize(coverImagePath);
       isPortrait = height && width ? height > width * 1.2 : false;
     } catch (error) {
       console.warn(`画像サイズ取得に失敗しました: ${coverImagePath}`, error);

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { MangaQuerySchema , MetadataListSchema } from "@comic-viewer/shared";
-import { decodeQueryParamArray } from "../../utils/query";
-import { paths } from "../../config/paths";
-import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
-import { mapObjectValues } from "../../utils/mapObjectValues";
-import { searchManga } from "../../services/manga/searchManga";
+import { decodeQueryParamArray } from "../../utils/query.js";
+import { paths } from "../../config/paths.js";
+import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema.js";
+import { mapObjectValues } from "../../utils/mapObjectValues.js";
+import { searchManga } from "../../services/manga/searchManga.js";
 
 // Get
 // クエリから検索しマンガ情報を返すAPI

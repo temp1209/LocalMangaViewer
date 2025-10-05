@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { getPageList } from "../../services/manga/getMangaPageList";
+import { getPageList } from "../../services/manga/getMangaPageList.js";
 
 // Get
 // 指定されたフォルダ内の画像一覧を返すAPI

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
 import { MetadataItemSchema } from "@comic-viewer/shared";
-import fileUploadHandlers from "../../utils/fileUploadHandlers";
-import { uploadManga } from "../../services/manga/uploadManga";
+import fileUploadHandlers from "../../utils/fileUploadHandlers/index.js";
+import { uploadManga } from "../../services/manga/uploadManga.js";
 
 //POST
 //漫画のアップロードAPI

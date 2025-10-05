@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { searchableKeysArray } from "../constants/searchableKeys";
+import { searchableKeysArray } from "../constants/searchableKeys.js";
 import {
   MangaQuerySchema,
   PageConfSchema,
   PageDataListSchema,
   PageDataSchema,
   SearchQuerySchema,
-} from "../schemas/queriesSchema";
+} from "../schemas/queriesSchema.js";
 
 export type { SearchQuery, PageConf, MangaQuery, PageData, PageDataList };
 

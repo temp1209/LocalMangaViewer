@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { getConfig } from "../../services/config/getConfig";
+import { getConfig } from "../../services/config/getConfig.js";
 
 export const getConfigAPI = async (req: Request, res: Response) => {
   const config = await getConfig();

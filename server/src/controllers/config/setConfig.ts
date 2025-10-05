@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { setConfig } from "../../services/config/setConfig";
+import { setConfig } from "../../services/config/setConfig.js";
 import { configSchema } from "@comic-viewer/shared";
 
 export const setConfigAPI = async (req: Request, res: Response) => {

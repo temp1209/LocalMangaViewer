@@ -1,5 +1,5 @@
 import { Config, configSchema, defaultConfig } from "@comic-viewer/shared";
-import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
+import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema.js";
 
 const relativePath = "../../config/config.json";
 
