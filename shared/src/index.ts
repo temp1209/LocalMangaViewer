@@ -1,5 +1,6 @@
 export * from "./constants/defaultConfig";
 export * from "./constants/searchableKeys";
+export * from "./constants/apiEndpoints";
 
 export * from "./schemas/configSchema";
 export * from "./schemas/metadataSchema";
