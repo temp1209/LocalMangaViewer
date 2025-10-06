@@ -2,7 +2,9 @@ import { searchableKeysArray } from "../constants/searchableKeys.js";
 import { defaultConfig } from "../constants/defaultConfig.js";
 import { z } from "zod";
 
-export const SearchQuerySchema = z.record(z.enum(searchableKeysArray),z.array(z.string()));
+const emptySearchQuery = Object.fromEntries(searchableKeysArray.map((key)=>[key,[]]));
+
+export const SearchQuerySchema = z.record(z.enum(searchableKeysArray), z.array(z.string()).default([])).default(emptySearchQuery);
 
 export const RawSearchQuerySchema = z.record(z.enum(searchableKeysArray), z.union([z.string(), z.array(z.string())]).optional());
 
@@ -15,7 +17,7 @@ export const MangaQuerySchema = z.object({
   search: SearchQuerySchema,
   pageConf: PageConfSchema,
 });
-
+ 
 export const PageDataSchema = z.object({
   pageID: z.number().positive(),
   url : z.string().url()
