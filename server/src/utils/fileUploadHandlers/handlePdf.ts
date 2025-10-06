@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { pdfToPng } from "pdf-to-png-converter";
+import { logger } from "../logger.js";
 
 export async function handlePdfUpload(
   file: Express.Multer.File,
@@ -8,10 +9,10 @@ export async function handlePdfUpload(
   extractDirectory: string
 ): Promise<boolean> {
   const pdfPath = file.path;
-  console.log(`[PDF Upload] PDFファイルを受け取りました: ${pdfPath}`);
+  logger.log(`[PDF Upload]PDFファイルを受け取りました: ${pdfPath}`);
 
   if (!extractDirectory) {
-    console.error("[PDF Upload] アップロードディレクトリが指定されていません");
+    logger.error("[PDF Upload]アップロードディレクトリが指定されていません");
     return false;
   }
 
@@ -19,7 +20,7 @@ export async function handlePdfUpload(
   try {
     fs.mkdirSync(outputDir, { recursive: true });
   } catch (err) {
-    console.error("[PDF Upload] 出力ディレクトリの作成に失敗しました:", err);
+    logger.error("[PDF Upload]出力ディレクトリの作成に失敗しました:", err);
     return false;
   }
 
@@ -29,10 +30,10 @@ export async function handlePdfUpload(
       outputFolder: outputDir,
       outputFileMaskFunc: (pageNum) => `page_${pageNum}.png`,
     });
-    console.log("[PDF Upload] PDFファイルを分割しました:", outputDir);
+    logger.log("[PDF Upload]PDFファイルを分割しました:", outputDir);
     return true;
   } catch (err) {
-    console.error("[PDF Upload] PDFの変換に失敗しました:", err);
+    logger.error("[PDF Upload]PDFの変換に失敗しました:", err);
     return false;
   }
 }

@@ -1,15 +1,19 @@
-export const log = (...args:any[])=>{
+const log = (...args:any[])=>{
   console.log("[log]",...args);
 }
 
-export const error = (...args:any[])=>{
+const error = (...args:any[])=>{
   console.error("[error]",...args);
 }
 
-export const info = (...args:any[])=>{
+const info = (...args:any[])=>{
   console.info("[info]",...args);
 }
 
-export const warn = (...args:any[])=>{
+const warn = (...args:any[])=>{
   console.warn("[warn]",...args);
+}
+
+export const logger = {
+  log,error,info,warn
 }

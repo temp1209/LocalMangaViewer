@@ -3,6 +3,7 @@ import { MetadataItem } from "@comic-viewer/shared";
 import { paths } from "../../config/paths.js";
 import sizeOf from "image-size";
 import fs from "fs";
+import { logger } from "../../utils/logger.js";
 
 export const getMangaCover = (manga: MetadataItem, id: string): { path: string; isPortrait: boolean } => {
   const dummyCoverName = "DummyCover.png";
@@ -23,12 +24,12 @@ export const getMangaCover = (manga: MetadataItem, id: string): { path: string; 
       const { width, height } = sizeOf.imageSize(coverImagePath);
       isPortrait = height && width ? height > width * 1.2 : false;
     } catch (error) {
-      console.warn(`画像サイズ取得に失敗しました: ${coverImagePath}`, error);
+      logger.warn(`[getMangaCover]画像サイズ取得に失敗しました: ${coverImagePath}`, error);
     }
 
     return { path: coverImagePath, isPortrait };
   } catch (error) {
-    console.warn(`フォルダが見つかりませんでした:\ntitle:${manga.title}\nid:${id}\n`, error);
+    logger.warn(`[getMangaCover]該当する漫画フォルダが見つかりませんでした:\ntitle:${manga.title}\nid:${id}\n`, error);
     return { path: dummyCoverPath, isPortrait: false };
   }
 };

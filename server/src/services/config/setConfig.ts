@@ -6,5 +6,6 @@ import { writeJson } from "../../utils/writeJson.js";
 const configPath = path.resolve(import.meta.dirname, "../../../config/config.json");
 
 export const setConfig = async (newConfig: Config) => {
-  return await writeJson(configPath, newConfig);
+  const result = await writeJson(configPath, newConfig);
+  return result;
 };

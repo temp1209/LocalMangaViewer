@@ -1,9 +1,9 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import path from "path";
-import fs from "fs";
 import bodyParser from "body-parser";
 import router from "./routes/routes.js";
 import { paths } from "./config/paths.js";
+import { logger } from "./utils/logger.js";
 
 const app = express();
 const PORT = 3000;
@@ -68,7 +68,7 @@ if (process.env.NODE_ENV === "production") {
 if (process.env.NODE_ENV === "development") {
   // 開発中はサーバーのプロセスから起動
   app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    logger.log(`Server running at http://localhost:${PORT}`);
   });
 }
 

@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import AdmZip from "adm-zip";
+import { logger } from "../logger.js";
 
 export async function handleZipUpload(file: Express.Multer.File, id: string, extractDirectory: string) {
   const outputDir = path.join(extractDirectory, id);
@@ -8,10 +9,10 @@ export async function handleZipUpload(file: Express.Multer.File, id: string, ext
     fs.mkdirSync(outputDir);
     const zip = new AdmZip(file.buffer);
     zip.extractAllTo(outputDir, true);
-    console.log("ZIPファイルを解凍しました:", outputDir);
+    logger.log("[ZIP Upload]ZIPファイルを解凍しました:", outputDir);
     return true;
   }catch(err){
-    console.error("[ZIP Upload] ZIPファイルの解凍に失敗しました",err)
+    logger.error("[ZIP Upload]ZIPファイルの解凍に失敗しました:",err);
     return false;
   }
 }
