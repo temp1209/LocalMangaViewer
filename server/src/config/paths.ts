@@ -8,6 +8,6 @@ export const paths = {
     manga: path.join(dataDirectory, "manga"),
     metadataFile: path.join(dataDirectory, "metadata", "metadata.json"),
     uploads: path.join(dataDirectory, "uploads"),
-    dummyCover: path.join(dataDirectory, "manga", "DummyCover.png"),
+    dummyCoverFile: path.join(dataDirectory, "manga", "DummyCover.png"),
   },
 };

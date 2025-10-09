@@ -7,11 +7,6 @@ import { logger } from "../../utils/logger.js";
 
 export const uploadManga = async (mangaData: MetadataItem, file: Express.Multer.File) => {
   const newMangaID = crypto.randomUUID().toString();
-  const newMangaData: MetadataItem = {
-    ...mangaData,
-    id: newMangaID,
-    cover: getMangaCover(mangaData, newMangaID),
-  };
 
   logger.log("[MangaUpload]受信したマンガデータ:", mangaData);
   logger.log("[MangaUpload]受信したファイルデータ:", file.filename);
@@ -21,6 +16,18 @@ export const uploadManga = async (mangaData: MetadataItem, file: Express.Multer.
     logger.error("[MangaUpload]新しい漫画ファイルの書き込みに失敗しました");
     return false;
   }
+
+  const cover = await getMangaCover(newMangaID);
+  if(!cover){
+    logger.error("[MangaUpload]サムネイル画像の取得に失敗しました");
+    return false;
+  }
+
+  const newMangaData: MetadataItem = {
+    ...mangaData,
+    id: newMangaID,
+    cover: cover,
+  };
 
   const writeMetadataOk = await writeJson(paths.data.metadataFile, newMangaData);
   if (!writeMetadataOk) {

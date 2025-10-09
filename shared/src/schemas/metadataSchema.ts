@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const coverSchema = z.object({
-  path: z.string(),
+  name: z.string(),
   isPortrait: z.boolean(),
 })
 
