@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "@comic-viewer/shared";
+import { API_ENDPOINTS,configSchema } from "@comic-viewer/shared";
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id"); // フォルダ名を取得
@@ -12,9 +12,10 @@ async function loadViewerSettings() {
   try {
     const response = await fetch(API_ENDPOINTS.config);
     if (response.ok) {
-      const config = await response.json();
-      if (config.viewer?.pageDirection) {
-        viewerSettings.pageDirection = config.viewer.pageDirection;
+      const config = configSchema.safeParse(await response.json());
+      if (config.success) {
+        viewerSettings.pageDirection = config.data.user.viewer.pageDirection;
+        console.log("設定を読み込みました:現在のページ送り方向",viewerSettings.pageDirection);
       }
     }
   } catch (error) {
