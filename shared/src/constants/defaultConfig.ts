@@ -5,8 +5,8 @@ export const defaultConfig: Config = {
     viewer: {
       pageDirection: "left",
       keyboardShortcuts: {
-        nextPage: ["ArrowLeft", "a"],
-        prevPage: ["ArrowRight", "d"],
+        right: ["ArrowRight", "d"],
+        left: ["ArrowLeft", "a"],
       },
     },
     ui: {

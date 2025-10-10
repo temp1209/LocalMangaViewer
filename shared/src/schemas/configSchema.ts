@@ -4,8 +4,8 @@ const userConfigSchema = z.object({
   viewer: z.object({
     pageDirection: z.enum(["right", "left"]),
     keyboardShortcuts: z.object({
-      nextPage: z.array(z.string()),
-      prevPage: z.array(z.string()),
+      right: z.array(z.string()),
+      left: z.array(z.string()),
     }),
   }),
   ui: z.object({
