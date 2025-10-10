@@ -23,9 +23,9 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(import.meta.dirname, "public")));
 app.use(express.static(path.resolve("../client/dist")));
-app.use(express.static(paths.data.manga));
+app.use("/files",express.static(paths.data.manga));
 app.use(bodyParser.json());
-app.use("/api",router)
+app.use("/api",router);
 
 //検索結果へのリダイレクト
 //実際の検索は検索結果画面から/api/get-manga-listを呼び出して行う

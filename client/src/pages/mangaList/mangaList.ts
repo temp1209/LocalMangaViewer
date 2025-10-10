@@ -76,7 +76,7 @@ function displayMangaList(mangaDataList: MetadataList) {
       } else {
         coverImage.className = "cover__landscape";
       }
-      coverImage.src = `http://localhost:3000/${mangaDataItem.id}/${mangaDataItem.cover.name}`;
+      coverImage.src = `/files/${mangaDataItem.id}/${mangaDataItem.cover.name}`;
     }
     coverImage.alt = mangaDataItem.title;
     coverImage.addEventListener("click", () => {

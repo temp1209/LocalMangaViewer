@@ -8,7 +8,7 @@ export const getPageList = async (mangaID:string) => {
 
   const pageFiles = fileList
       .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file))
-      .map((file) => path.join(mangaPath, encodeURI(file)));
+      .map((file) => encodeURI(file));
   
   return pageFiles;
 }

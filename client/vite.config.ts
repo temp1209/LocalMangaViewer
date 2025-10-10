@@ -29,6 +29,11 @@ export default defineConfig(({ command }) => {
           changeOrigin: true,
           rewrite: (path) => path,
         },
+        "/files":{
+          target:"http://localhost:3000",
+          changeOrigin:true,
+          rewrite: (path) => path,
+        }
       },
     },
   };
