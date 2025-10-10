@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { MetadataItemSchema } from "@comic-viewer/shared";
+import { MetadataUploadSchema } from "@comic-viewer/shared";
 import fileUploadHandlers from "../../utils/fileUploadHandlers/index.js";
 import { uploadManga } from "../../services/manga/uploadManga.js";
 import { logger } from "../../utils/logger.js";
@@ -12,7 +12,7 @@ export const postMangaUpload = async (req: Request, res: Response) => {
   const file = req.file;
   logger.info("[mangaUpload]アップロード漫画生データ:", rawData);
 
-  const resultReqParse = MetadataItemSchema.safeParse(JSON.parse(rawData));
+  const resultReqParse = MetadataUploadSchema.safeParse(JSON.parse(rawData));
   if (!resultReqParse.success) {
     logger.error("[mangaUpload]データパースエラー:",resultReqParse.error.message);
     res.status(400).json({ message: "リクエストデータ形式が不正です" });

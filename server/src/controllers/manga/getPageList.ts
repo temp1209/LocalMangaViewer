@@ -1,14 +1,16 @@
-import { Request , Response } from "express";
+import { Request, Response } from "express";
 import { getPageList } from "../../services/manga/getMangaPageList.js";
 import { logger } from "../../utils/logger.js";
 
 // Get
 // 指定されたフォルダ内の画像一覧を返すAPI
 export const getPageListAPI = async (req: Request, res: Response) => {
+  logger.info("[getPageList]ページ一覧取得APIにアクセスしました");
+
   const mangaID = req.params.mangaID;
   const pageList = await getPageList(mangaID);
 
   logger.info("[getPageList]漫画のページ一覧を取得しました");
-  logger.log("[getPageList]総ページ数:",pageList.length);
+  logger.log("[getPageList]総ページ数:", pageList.length);
   res.status(200).json(pageList);
 };

@@ -1,3 +1,5 @@
+import { API_ENDPOINTS,MetadataUpload } from "@comic-viewer/shared";
+
 const uploadForm = document.getElementById("upload-form")! as HTMLFormElement;
 const fileInput = document.getElementById("file")! as HTMLInputElement;
 const titleInput = document.getElementById("title")! as HTMLInputElement;
@@ -37,7 +39,7 @@ async function handleUpload() {
   const characters = splitComma(formData.get("characters")?.toString());
   const tags = splitComma(formData.get("tags")?.toString());
 
-  const mangaDataJson = {
+  const mangaDataJson:MetadataUpload = {
     title,
     authors,
     groups,
@@ -46,7 +48,7 @@ async function handleUpload() {
     tags
   };
 
-  const uploadEndPoint = "http://localhost:3000/api/post-manga-upload";
+  const uploadEndPoint = API_ENDPOINTS.manga.upload;
   const uploadData = new FormData();
   uploadData.append("file", file);
   uploadData.append("data", JSON.stringify(mangaDataJson));
@@ -85,7 +87,7 @@ cancelButtonUploadPage?.addEventListener("click", () => {
   }
 });
 
-backButton?.addEventListener("click", () => {
+backButtonUploadPage?.addEventListener("click", () => {
   window.location.href = "../mangaList/mangaList.html";
 });
 

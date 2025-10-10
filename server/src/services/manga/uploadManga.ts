@@ -1,11 +1,11 @@
 import { paths } from "../../config/paths.js";
-import { MetadataItem } from "@comic-viewer/shared";
+import { MetadataItem, MetadataUpload } from "@comic-viewer/shared";
 import fileUploadHandlers from "../../utils/fileUploadHandlers/index.js";
-import { writeJson } from "../../utils/writeJson.js";
+import { appendArrayJson } from "../../utils/appendJson.js";
 import { getMangaCover } from "./getMangaCover.js";
 import { logger } from "../../utils/logger.js";
 
-export const uploadManga = async (mangaData: MetadataItem, file: Express.Multer.File) => {
+export const uploadManga = async (mangaData: MetadataUpload, file: Express.Multer.File) => {
   const newMangaID = crypto.randomUUID().toString();
 
   logger.log("[MangaUpload]受信したマンガデータ:", mangaData);
@@ -29,7 +29,7 @@ export const uploadManga = async (mangaData: MetadataItem, file: Express.Multer.
     cover: cover,
   };
 
-  const writeMetadataOk = await writeJson(paths.data.metadataFile, newMangaData);
+  const writeMetadataOk = await appendArrayJson(paths.data.metadataFile, newMangaData);
   if (!writeMetadataOk) {
     logger.error("[MangaUpload]新しい漫画データの書き込みに失敗しました");
     return false;
