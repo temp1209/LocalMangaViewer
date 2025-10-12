@@ -1,9 +1,11 @@
+import { API_ENDPOINTS,MetadataUpload } from "@comic-viewer/shared";
+
 const uploadForm = document.getElementById("upload-form")! as HTMLFormElement;
 const fileInput = document.getElementById("file")! as HTMLInputElement;
 const titleInput = document.getElementById("title")! as HTMLInputElement;
 const uploadButton = document.getElementById("upload-button") as HTMLButtonElement;
-const cancelButton = document.getElementById("cancel-button") as HTMLButtonElement;
-const backButton = document.getElementById("back-button") as HTMLButtonElement;
+const cancelButtonUploadPage = document.getElementById("cancel-button") as HTMLButtonElement;
+const backButtonUploadPage = document.getElementById("back-button") as HTMLButtonElement;
 
 function splitComma(str:string | null | undefined) {
   if (!str) {
@@ -37,7 +39,7 @@ async function handleUpload() {
   const characters = splitComma(formData.get("characters")?.toString());
   const tags = splitComma(formData.get("tags")?.toString());
 
-  const mangaDataJson = {
+  const mangaDataJson:MetadataUpload = {
     title,
     authors,
     groups,
@@ -46,7 +48,7 @@ async function handleUpload() {
     tags
   };
 
-  const uploadEndPoint = "http://localhost:3000/api/post-manga-upload";
+  const uploadEndPoint = API_ENDPOINTS.manga.upload;
   const uploadData = new FormData();
   uploadData.append("file", file);
   uploadData.append("data", JSON.stringify(mangaDataJson));
@@ -79,13 +81,13 @@ async function handleUpload() {
 // イベントリスナーの設定
 uploadButton?.addEventListener("click", handleUpload);
 
-cancelButton?.addEventListener("click", () => {
+cancelButtonUploadPage?.addEventListener("click", () => {
   if (confirm("入力内容を破棄しますか？")) {
     uploadForm.reset();
   }
 });
 
-backButton?.addEventListener("click", () => {
+backButtonUploadPage?.addEventListener("click", () => {
   window.location.href = "../mangaList/mangaList.html";
 });
 

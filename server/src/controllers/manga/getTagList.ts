@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { countTags } from "../../services/manga/countTags";
+import { countTags } from "../../services/manga/countTags.js";
 
 // Get
 // タグとその登録数を返すAPI

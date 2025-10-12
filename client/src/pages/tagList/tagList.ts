@@ -1,13 +1,13 @@
+import { API_ENDPOINTS } from "@comic-viewer/shared";
+
 // DOM要素の取得
 const backButton = document.getElementById("back-button") as HTMLButtonElement;
 const refreshButton = document.getElementById("refresh-button") as HTMLButtonElement;
 const exportButton = document.getElementById("export-button") as HTMLButtonElement;
 
 async function loadTagList() {
-  const tagListApiEndPoint = `/api/get-tag-list`;
-
   try {
-    const response = await fetch(tagListApiEndPoint);
+    const response = await fetch(API_ENDPOINTS.tag.list);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -99,9 +99,9 @@ function setupEventListeners() {
 }
 
 // 初期化
-function init() {
+function initTaglist() {
   loadTagList();
   setupEventListeners();
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", initTaglist);

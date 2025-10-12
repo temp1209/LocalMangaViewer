@@ -1,10 +1,11 @@
 import path from "path";
 
-import { Config } from "../../schemas/configSchema";
-import { writeJson } from "../../utils/writeJson";
+import { Config } from "@comic-viewer/shared";
+import { writeJson } from "../../utils/writeJson.js";
 
-const configPath = path.resolve(__dirname, "../../config/config.json");
+const configPath = path.resolve(import.meta.dirname, "../../../config/config.json");
 
 export const setConfig = async (newConfig: Config) => {
-  return await writeJson(configPath, newConfig);
+  const result = await writeJson(configPath, newConfig);
+  return result;
 };

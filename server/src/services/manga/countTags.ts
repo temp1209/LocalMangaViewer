@@ -1,6 +1,7 @@
-import { paths } from "../../config/paths";
-import { MetadataListSchema } from "../../schemas/metadataSchema";
-import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
+import { paths } from "../../config/paths.js";
+import { MetadataListSchema } from "@comic-viewer/shared";
+import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema.js";
+import { logger } from "../../utils/logger.js";
 
 export const countTags = async () => {
   const metadataList = await readJsonWithSchemaSafe(paths.data.metadataFile, MetadataListSchema, []);
@@ -15,5 +16,6 @@ export const countTags = async () => {
     return { str, count };
   });
 
+  logger.log("[CountTag]タグを集計しました タグ総数:",tagDataWithCount.length);
   return tagDataWithCount;
 };

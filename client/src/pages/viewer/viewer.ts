@@ -1,3 +1,5 @@
+import { API_ENDPOINTS,configSchema } from "@comic-viewer/shared";
+
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id"); // フォルダ名を取得
 
@@ -8,11 +10,12 @@ let viewerSettings: { pageDirection: 'right' | 'left' } = { pageDirection: 'righ
 // 設定を読み込む
 async function loadViewerSettings() {
   try {
-    const response = await fetch(`/api/get-config`);
+    const response = await fetch(API_ENDPOINTS.config);
     if (response.ok) {
-      const config = await response.json();
-      if (config.viewer?.pageDirection) {
-        viewerSettings.pageDirection = config.viewer.pageDirection;
+      const config = configSchema.safeParse(await response.json());
+      if (config.success) {
+        viewerSettings.pageDirection = config.data.user.viewer.pageDirection;
+        console.log("設定を読み込みました:現在のページ送り方向",viewerSettings.pageDirection);
       }
     }
   } catch (error) {
@@ -23,13 +26,18 @@ async function loadViewerSettings() {
 async function fetchImages() {
   const loadingElement = document.getElementById("loading");
   const imageElement = document.getElementById("comic-page") as HTMLImageElement;
+
+  if(!id){
+    alert("IDが指定されていません");
+    return;
+  }
   
   // ローディング開始
   if (loadingElement) loadingElement.style.display = "block";
   if (imageElement) imageElement.style.display = "none";
   
   try {
-    const res = await fetch(`/api/get-pages/${id}`);
+    const res = await fetch(API_ENDPOINTS.manga.pageList(id));
     
     if (!res.ok) {
       if (res.status === 404) {
@@ -73,7 +81,7 @@ function prevPage() {
 
 function updateImage() {
   const currentImageElement = document.getElementById("comic-page")! as HTMLImageElement;
-  currentImageElement.src = `${images[currentIndex]}`;
+  currentImageElement.src = `/files/${id}/${images[currentIndex]}`;
   console.log(images[currentIndex]);
 }
 
@@ -100,9 +108,9 @@ document.getElementById('back-button')?.addEventListener('click', () => {
 });
 
 // 初期化
-async function init() {
+async function initViewer() {
   await loadViewerSettings();
   await fetchImages();
 }
 
-init();
+initViewer();

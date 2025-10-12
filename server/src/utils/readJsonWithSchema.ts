@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { promises as fs } from "fs";
+import { logger } from "./logger.js";
 
 export const readJsonWithSchemaSafe = async <T>(filePath: string, schema: z.ZodSchema<T>, fallback: T): Promise<T> => {
   try {
@@ -9,7 +10,7 @@ export const readJsonWithSchemaSafe = async <T>(filePath: string, schema: z.ZodS
 
     return parsed.success ? parsed.data : fallback;
   } catch (e) {
-    console.error(`[error:readJsonWithSchema]ファイルの読み込みに失敗しました\nfilepath:${filePath}`);
+    logger.error(`[readJsonWithSchema]ファイルの読み込みに失敗しました\nfilepath:${filePath}`);
     return fallback;
   }
 };

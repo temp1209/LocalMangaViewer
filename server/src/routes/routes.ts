@@ -3,11 +3,11 @@ const router = express.Router();
 
 
 //manga
-import { getMangaListAPI } from "../controllers/manga/getMangaList";
-import { getPageListAPI } from "../controllers/manga/getPageList";
-import { getTagListAPI } from "../controllers/manga/getTagList";
-import { postMangaUpload } from "../controllers/manga/postMangaUpload";
-import { multerUpload } from "../middlewares/multerUpload";
+import { getMangaListAPI } from "../controllers/manga/getMangaList.js";
+import { getPageListAPI } from "../controllers/manga/getPageList.js";
+import { getTagListAPI } from "../controllers/manga/getTagList.js";
+import { postMangaUpload } from "../controllers/manga/postMangaUpload.js";
+import { multerUpload } from "../middlewares/multerUpload.js";
 
 router.get("/manga", getMangaListAPI);
 router.get("/manga/:mangaID/pages", getPageListAPI);
@@ -17,8 +17,8 @@ router.post("/manga", multerUpload.single("file"), postMangaUpload);
 
 
 //config
-import { getConfigAPI } from "../controllers/config/getConfig";
-import { setConfigAPI } from "../controllers/config/setConfig";
+import { getConfigAPI } from "../controllers/config/getConfig.js";
+import { setConfigAPI } from "../controllers/config/setConfig.js";
 
 router.get("/config", getConfigAPI);
 router.post("/config", setConfigAPI);

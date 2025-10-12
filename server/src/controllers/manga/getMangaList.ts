@@ -1,18 +1,22 @@
 import { Request, Response } from "express";
-import { MangaQuerySchema } from "../../schemas/queriesSchema";
-import { MetadataListSchema } from "../../schemas/metadataSchema";
-import { decodeQueryParamArray } from "../../utils/query";
-import { paths } from "../../config/paths";
-import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema";
-import { mapObjectValues } from "../../utils/mapObjectValues";
-import { searchManga } from "../../services/manga/searchManga";
+import { MangaQuerySchema , MetadataListSchema } from "@comic-viewer/shared";
+import { decodeQueryParamArray } from "../../utils/query.js";
+import { paths } from "../../config/paths.js";
+import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema.js";
+import { mapObjectValues } from "../../utils/mapObjectValues.js";
+import { searchManga } from "../../services/manga/searchManga.js";
+import { logger } from "../../utils/logger.js";
 
 // Get
 // クエリから検索しマンガ情報を返すAPI
 export const getMangaListAPI = async (req: Request, res: Response) => {
+
+  logger.info("[getMangaList]漫画一覧取得APIにアクセスしました");
+  logger.log("[getMangaList]受信したクエリ:",req.query);
+
   const resultReqParse = MangaQuerySchema.safeParse(req.query);
   if (!resultReqParse.success) {
-    console.error(`パースエラー${resultReqParse.error.message}`);
+    logger.error(`[getMangaList]漫画検索クエリパースエラー:${resultReqParse.error.message}`);
     res.status(400).json({ error: "クエリの形式が不正です" });
     return;
   }
@@ -29,5 +33,7 @@ export const getMangaListAPI = async (req: Request, res: Response) => {
   const endIndex = page * limit;
   const mangaListPageData = searchResult.slice(startIndex, endIndex);
 
+  logger.info("[getMangaList]漫画リストを取得しました");
+  logger.log(`[getMangaList]漫画総数:${metadataList.length},ヒット件数:${searchResult.length}`);
   res.status(200).json({ page, limit, total: searchResult.length, data: mangaListPageData });
 };

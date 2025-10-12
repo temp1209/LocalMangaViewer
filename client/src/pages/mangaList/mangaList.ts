@@ -1,34 +1,36 @@
-import { Metadatas } from "../../types/metadata";
-import { RawMangaQuery } from "../../types/queries";
+import { MetadataList,MangaQuery,API_ENDPOINTS } from "@comic-viewer/shared";
 import qs from "qs"
 
 async function loadMangaList() {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const paramPage = urlParams.get("page")
-  const currentPage = paramPage ? parseInt(paramPage) : 1;
+  const paramPage = urlParams.get("page");
+  const page = paramPage ? parseInt(paramPage) : 1;
+  const paramLimit = urlParams.get("limit");
+  const limit = paramLimit ? parseInt(paramLimit) : 10;
   const author = urlParams.get("author");
   const original = urlParams.get("original");
   const character = urlParams.get("character");
   const tag = urlParams.get("tag");
 
-  const query:RawMangaQuery = {
+  const query:MangaQuery = {
     search:{
-      authors:author,
-      originals:original,
-      characters:character,
-      tags:tag
+      authors:author?.split(","),
+      originals:original?.split(","),
+      characters:character?.split(","),
+      tags:tag?.split(",")
     },
     pageConf:{
-      page:currentPage.toString()
+      page:page,
+      limit:limit
     }
   }
 
-  console.log(query);
+  console.log("現在のクエリ:",query);
 
-  const apiEndPoint = `/api/get-manga-list?${qs.stringify(query)}`;
+  const apiEndPointWithQuery = `${API_ENDPOINTS.manga.list}?${qs.stringify(query)}`;
 
-  fetch(apiEndPoint)
+  fetch(apiEndPointWithQuery)
     .then((response) => response.json())
     .then((resdata) => {
       console.log(resdata);
@@ -52,7 +54,7 @@ function updateMangaCount(total: number) {
   }
 }
 
-function displayMangaList(mangaDataList: Metadatas) {
+function displayMangaList(mangaDataList: MetadataList) {
   const mangaListContainer = document.getElementById("manga-list-container");
 
   if (!mangaListContainer) {
@@ -74,7 +76,7 @@ function displayMangaList(mangaDataList: Metadatas) {
       } else {
         coverImage.className = "cover__landscape";
       }
-      coverImage.src = mangaDataItem.cover.path;
+      coverImage.src = `/files/${mangaDataItem.id}/${mangaDataItem.cover.name}`;
     }
     coverImage.alt = mangaDataItem.title;
     coverImage.addEventListener("click", () => {

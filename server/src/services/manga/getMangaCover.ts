@@ -1,34 +1,44 @@
 import path from "path";
-import { MetadataItem } from "../../schemas/metadataSchema";
-import { paths } from "../../config/paths";
-import sizeOf from "image-size";
-import fs from "fs";
+import { Cover } from "@comic-viewer/shared";
+import { paths } from "../../config/paths.js";
+import { promises as fs } from "fs";
+import { logger } from "../../utils/logger.js";
+import { imageSizeFromFile } from "image-size/fromFile";
 
-export const getMangaCover = (manga: MetadataItem, id: string): { path: string; isPortrait: boolean } => {
-  const dummyCoverName = "DummyCover.png";
-  const dummyCoverPath = path.join(paths.data.manga, dummyCoverName);
+export const getMangaCover = async (id: string): Promise<Cover | null> => {
   const mangaFolder = path.join(paths.data.manga, id);
+
   try {
-    const imageFiles = fs.readdirSync(mangaFolder).filter((file) => /\.(png|jpe?g|gif|webp)$/i.test(file));
-
-    if (imageFiles.length === 0) {
-      return { path: dummyCoverPath, isPortrait: false };
+    const stat = await fs.stat(mangaFolder);
+    if (!stat.isDirectory()) {
+      logger.warn(`[getMangaCover]該当する漫画フォルダが見つかりませんでした:id:${id}`);
+      return null;
     }
 
+    const files = await fs.readdir(mangaFolder);
+    const imageFiles = files.filter((file) => /\.(png|jpe?g|gif|webp)$/i.test(file));
+
+    if (imageFiles.length == 0) {
+      logger.warn(`[getMangaCover]フォルダ内に画像がありません\nmangaID:${id}`);
+      return null;
+    }
+
+    //便宜的に先頭の画像をサムネイルとして選択するように
+    //TODO:アップロード時にサムネイルを選択できるようにする
     const coverImageName = imageFiles[0];
-    const coverImagePath = path.join(mangaFolder, coverImageName);
-
-    let isPortrait = false;
+    const coverImageFullPath = path.join(paths.data.manga, id, coverImageName);
+    
     try {
-      const { width, height } = sizeOf(coverImagePath);
-      isPortrait = height && width ? height > width * 1.2 : false;
+      const { width, height } = await imageSizeFromFile(coverImageFullPath);
+      const isPortrait = height && width ? height > width * 1.2 : false;
+      logger.info(`[getMangaCover]サムネイルの取得に成功しました`);
+      return { name: coverImageName, isPortrait };
     } catch (error) {
-      console.warn(`画像サイズ取得に失敗しました: ${coverImagePath}`, error);
+      logger.warn(`[getMangaCover]画像サイズ取得に失敗しました: ${coverImageFullPath}`, error);
+      return null;
     }
-
-    return { path: coverImagePath, isPortrait };
   } catch (error) {
-    console.warn(`フォルダが見つかりませんでした:\ntitle:${manga.title}\nid:${id}\n`, error);
-    return { path: dummyCoverPath, isPortrait: false };
+    logger.error("[getMangaCover]サムネイル取得中にエラーが発生しました",error);
+    return null;
   }
 };

@@ -1,12 +1,12 @@
-import { Config } from "../schemas/configSchema";
+import { Config } from "../types/config.js";
 
-export const defaultCongfig: Config = {
+export const defaultConfig: Config = {
   user: {
     viewer: {
       pageDirection: "left",
       keyboardShortcuts: {
-        nextPage: ["ArrowLeft", "a"],
-        prevPage: ["ArrowRight", "d"],
+        right: ["ArrowRight", "d"],
+        left: ["ArrowLeft", "a"],
       },
     },
     ui: {
@@ -16,9 +16,5 @@ export const defaultCongfig: Config = {
   },
   server: {
     dataDirectory: "K:\\Document\\Comic\\Data",
-    cache: {
-      enable: true,
-      size: 100,
-    },
   },
 };
