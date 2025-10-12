@@ -10,11 +10,11 @@ const PORT = 3000;
 
 // CORS設定
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  
-  if (req.method === 'OPTIONS') {
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+
+  if (req.method === "OPTIONS") {
     res.sendStatus(200);
   } else {
     next();
@@ -23,9 +23,9 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(import.meta.dirname, "public")));
 app.use(express.static(path.resolve("../client/dist")));
-app.use("/files",express.static(paths.data.manga));
+app.use("/files", express.static(paths.data.manga));
 app.use(bodyParser.json());
-app.use("/api",router);
+app.use("/api", router);
 
 //検索結果へのリダイレクト
 //実際の検索は検索結果画面から/api/get-manga-listを呼び出して行う
@@ -36,32 +36,35 @@ app.get("/search", (req, res) => {
   res.redirect(`/mangaList.html${queryString}`);
 });
 
-
 // 本番モードでのみクライアントのビルドファイルを配信
 if (process.env.NODE_ENV === "production") {
   // クライアントのルートパスをハンドリング
   app.get("/", (req, res) => {
-    res.sendFile(path.resolve("../client/dist/mangaList.html"));
+    res.sendFile(path.resolve("../client/dist/index.html"));
   });
 
-  app.get("/mangaList.html", (req, res) => {
-    res.sendFile(path.resolve("../client/dist/mangaList.html"));
-  });
+  // app.get("/mangaList.html", (req, res) => {
+  //   res.sendFile(path.resolve("../client/dist/pages/mangaList/mangaList.html"));
+  // });
 
-  app.get("/tagList.html", (req, res) => {
-    res.sendFile(path.resolve("../client/dist/tagList.html"));
-  });
+  // app.get("/tagList.html", (req, res) => {
+  //   res.sendFile(path.resolve("../client/dist/pages/tagList/tagList.html"));
+  // });
 
-  app.get("/upload.html", (req, res) => {
-    res.sendFile(path.resolve("../client/dist/upload.html"));
-  });
+  // app.get("/upload.html", (req, res) => {
+  //   res.sendFile(path.resolve("../client/dist/pages/upload/upload.html"));
+  // });
 
-  app.get("/viewer.html", (req, res) => {
-    res.sendFile(path.resolve("../client/dist/viewer.html"));
-  });
+  // app.get("/viewer.html", (req, res) => {
+  //   res.sendFile(path.resolve("../client/dist/pages/viewer/viewer.html"));
+  // });
 
-  app.get("/settings.html", (req, res) => {
-    res.sendFile(path.resolve("../client/dist/settings.html"));
+  // app.get("/settings.html", (req, res) => {
+  //   res.sendFile(path.resolve("../client/dist/pages/settings/settings.html"));
+  // });
+
+  app.listen(PORT, "0.0.0.0", () => {
+    logger.log(`Server running at http://localhost:${PORT}`);
   });
 }
 

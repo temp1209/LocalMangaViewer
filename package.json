@@ -20,7 +20,7 @@
     "dev:server": "cd server && cross-env NODE_ENV=development npm run dev",
     "dev:client": "cd client && cross-env NODE_ENV=development npm run dev",
     "dev": "concurrently \"npm:dev:*\"",
-    "start": "cross-env NODE_ENV=production cd server && npm start",
+    "start": "cd server && cross-env NODE_ENV=production npm start",
     "start:dev": "cross-env NODE_ENV=development cd server && npm run dev",
     "preview": "npm run build && npm start"
   }

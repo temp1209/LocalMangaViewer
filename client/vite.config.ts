@@ -3,11 +3,10 @@ import path from "path";
 
 const pagesPath = path.resolve(__dirname,"src","pages");
 
-export default defineConfig(({ command }) => {
-  const isDev = command === 'serve';
+export default defineConfig(() => {
   
   return {
-    root: isDev ? path.resolve(__dirname, "src") : ".",
+    root: path.resolve(__dirname, "src"),
     base: "/",
     build: {
       outDir: path.resolve(__dirname, "dist"),
