@@ -432,7 +432,7 @@ body {
 }
 
 /* ダークテーマ対応 */
-@media (prefers-color-scheme: dark) {
+/*@media (prefers-color-scheme: dark) {
   body {
     background-color: #1a1a1a;
     color: #e0e0e0;
@@ -482,4 +482,4 @@ body {
     background-color: #3d3d3d;
     border-top-color: #555;
   }
-}
+}*/
