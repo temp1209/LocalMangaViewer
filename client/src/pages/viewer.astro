@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ビュワー</title>
-    <link rel = "stylesheet" href="viewer.css">
   </head>
   <body>
     <header id="header">
@@ -14,6 +13,11 @@
       <div id="loading" class="loading">読み込み中...</div>
       <img id="comic-page" src="" alt="Manga Page" />
     </div>
-    <script type="module" src="viewer.js"></script>
+    <style is:global>
+      @import "../styles/viewer.css";
+    </style>
+    <script>
+      import "../scripts/viewer";
+    </script>
   </body>
 </html>

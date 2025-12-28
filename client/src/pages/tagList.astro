@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>タグリスト</title>
-    <link rel="stylesheet" href="tagList.css">
   </head>
   <body>
     <div class="taglist-container">
@@ -12,7 +11,7 @@
         <h1>タグ一覧</h1>
         <button id="back-button" class="back-button">一覧に戻る</button>
       </header>
-      
+
       <main class="taglist-content">
         <section class="taglist-section">
           <h2>タグ統計</h2>
@@ -24,13 +23,18 @@
           </div>
         </section>
       </main>
-      
+
       <footer class="taglist-footer">
         <button id="refresh-button" class="secondary-button">更新</button>
         <button id="export-button" class="secondary-button">エクスポート</button>
       </footer>
     </div>
-    
-    <script type="module" src="tagList.js"></script>
+
+    <script>
+      import "../scripts/tagList";
+    </script>
+    <style>
+      @import "../styles/tagList.css";
+    </style>
   </body>
 </html>
