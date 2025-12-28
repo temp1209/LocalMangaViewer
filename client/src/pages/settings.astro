@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>設定</title>
-    <link rel="stylesheet" href="settings.css" />
   </head>
   <body>
     <div class="settings-container">
@@ -12,11 +11,11 @@
         <h1>設定</h1>
         <button id="back-button" class="back-button">一覧に戻る</button>
       </header>
-      
+
       <main class="settings-content">
         <section class="settings-section">
           <h2>ビューアー設定</h2>
-          
+
           <div class="setting-item">
             <label for="page-direction">ページ送り方向:</label>
             <select id="page-direction" class="setting-input">
@@ -24,7 +23,7 @@
               <option value="left">左矢印で次のページ</option>
             </select>
           </div>
-          
+
           <div class="setting-item">
             <label for="keyboard-shortcuts">キーボードショートカット:</label>
             <div class="shortcuts-info">
@@ -36,10 +35,10 @@
             </div>
           </div>
         </section>
-        
+
         <section class="settings-section">
           <h2>表示設定</h2>
-          
+
           <div class="setting-item">
             <label for="theme">テーマ:</label>
             <select id="theme" class="setting-input">
@@ -48,7 +47,7 @@
               <option value="auto">システム設定に従う</option>
             </select>
           </div>
-          
+
           <div class="setting-item">
             <label for="page-limit">1ページあたりの表示件数:</label>
             <select id="page-limit" class="setting-input">
@@ -58,32 +57,38 @@
             </select>
           </div>
         </section>
-        
+
         <section class="settings-section">
           <h2>データ設定</h2>
-          
+
           <div class="setting-item">
             <label for="data-directory">データディレクトリ:</label>
             <input type="text" id="data-directory" class="setting-input" />
           </div>
         </section>
-        
+
         <section class="settings-section">
           <h2>その他</h2>
-          
+
           <div class="setting-item">
             <button id="reset-settings" class="danger-button">設定をリセット</button>
             <button id="clear-cache" class="secondary-button">キャッシュをクリア</button>
           </div>
         </section>
       </main>
-      
+
       <footer class="settings-footer">
         <button id="save-settings" class="primary-button">設定を保存</button>
         <button id="cancel-settings" class="secondary-button">キャンセル</button>
       </footer>
     </div>
-    
-    <script type="module" src="settings.js"></script>
+
+    <script>
+      import "../scripts/settings";
+    </script>
+    <style is:global>
+      @import "../styles/settings.css";
+    </style>
   </body>
-</html> 
+</html>
+

@@ -1,4 +1,4 @@
-import { Config, defaultConfig, API_BASE, API_ENDPOINTS } from "@comic-viewer/shared";
+import { Config, defaultConfig, API_ENDPOINTS } from "@comic-viewer/shared";
 
 // 設定をサーバーから読み込む
 async function loadSettings(): Promise<Config> {
@@ -99,9 +99,6 @@ function setupEventListeners() {
   const cancelButton = document.getElementById("cancel-settings");
   const resetButton = document.getElementById("reset-settings");
   const clearCacheButton = document.getElementById("clear-cache");
-  const exportButton = document.getElementById("export-settings");
-  const importButton = document.getElementById("import-settings");
-  const changeDirectoryButton = document.getElementById("change-directory");
   const backButton = document.getElementById("back-button");
 
   // ページ送り方向の変更時にショートカット表示を更新
@@ -127,7 +124,7 @@ function setupEventListeners() {
 
   // キャンセルボタン
   cancelButton?.addEventListener("click", () => {
-    window.location.href = "../mangaList/mangaList.html";
+    window.location.href = "/mangaList";
   });
 
   // リセットボタン
@@ -144,7 +141,7 @@ function setupEventListeners() {
 
   // 戻るボタン
   backButton?.addEventListener("click", () => {
-    window.location.href = "../mangaList/mangaList.html";
+    window.location.href = "/mangaList";
   });
 }
 

@@ -80,7 +80,7 @@ function displayMangaList(mangaDataList: MetadataList) {
     }
     coverImage.alt = mangaDataItem.title;
     coverImage.addEventListener("click", () => {
-      window.location.href = `../viewer/viewer.html?id=${mangaDataItem.id}`;
+      window.location.href = `../viewer?id=${mangaDataItem.id}`;
     });
     mangaElement.appendChild(coverImage);
 
@@ -93,7 +93,7 @@ function displayMangaList(mangaDataList: MetadataList) {
     titleElement.className = "title";
     titleElement.textContent = mangaDataItem.title;
     titleElement.addEventListener("click", () => {
-      window.location.href = `../viewer/viewer.html?id=${mangaDataItem.id}`;
+      window.location.href = `../viewer?id=${mangaDataItem.id}`;
     });
     infoContainer.appendChild(titleElement);
 
@@ -106,7 +106,7 @@ function displayMangaList(mangaDataList: MetadataList) {
       authorLink.className = "author-link";
       authorLink.textContent = author;
       authorLink.addEventListener("click", () => {
-        window.location.href = `../mangaList/mangaList.html?author=${encodeURIComponent(author)}`;
+        window.location.href = `../mangaList?author=${encodeURIComponent(author)}`;
       });
 
       authorsElement.appendChild(authorLink);
@@ -145,7 +145,7 @@ function displayMangaList(mangaDataList: MetadataList) {
           characterElement.className = "character-item";
           characterElement.textContent = chara;
           characterElement.addEventListener("click", () => {
-            window.location.href = `../mangaList/mangaList.html?character=${encodeURIComponent(chara)}`;
+            window.location.href = `../mangaList?character=${encodeURIComponent(chara)}`;
           });
 
           characterContainerElement.append(characterElement);
@@ -163,7 +163,7 @@ function displayMangaList(mangaDataList: MetadataList) {
       tagElement.className = "tag-item";
       tagElement.textContent = tag;
       tagElement.addEventListener("click", () => {
-        window.location.href = `../mangaList/mangaList.html?tag=${encodeURIComponent(tag)}`;
+        window.location.href = `../mangaList?tag=${encodeURIComponent(tag)}`;
       });
 
       tagsContainerElement.appendChild(tagElement);
@@ -264,7 +264,7 @@ function setupEventHandlers() {
   if (backButton) {
     backButton.addEventListener("click", () => {
       // クエリパラメータをクリアして一覧に戻る
-      window.location.href = "mangaList.html";
+      window.location.href = "/mangaList";
     });
   }
 
