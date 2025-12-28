@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.6",
     "@types/qs": "^6.9.18",
     "astro": "^5.16.6",
     "prettier-plugin-astro": "^0.14.1",

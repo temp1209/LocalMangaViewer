@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import path from 'path';
+import {fileURLToPath} from "url"
 
 // https://astro.build/config
 export default defineConfig({
@@ -27,12 +27,6 @@ export default defineConfig({
           rewrite: (path) => path,
         }
       },
-    },
-    resolve: {
-      alias: {
-        // もし shared などのエイリアスが必要な場合はここに追加します
-        '@shared': path.resolve(__dirname, '../shared/src'),
-      }, 
     },
   },
 });
