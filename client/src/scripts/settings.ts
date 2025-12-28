@@ -127,7 +127,7 @@ function setupEventListeners() {
 
   // キャンセルボタン
   cancelButton?.addEventListener("click", () => {
-    window.location.href = "../mangaList/mangaList.html";
+    window.location.href = "/mangaList";
   });
 
   // リセットボタン
@@ -144,7 +144,7 @@ function setupEventListeners() {
 
   // 戻るボタン
   backButton?.addEventListener("click", () => {
-    window.location.href = "../mangaList/mangaList.html";
+    window.location.href = "/mangaList";
   });
 }
 

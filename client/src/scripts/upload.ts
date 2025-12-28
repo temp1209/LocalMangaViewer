@@ -65,7 +65,7 @@ async function handleUpload() {
     const result = await res.json();
     if (res.ok) {
       alert("アップロードが完了しました！");
-      window.location.href = "../mangaList/mangaList.html";
+      window.location.href = "/mangaList";
     } else {
       alert(`アップロードに失敗しました: ${result.message}`);
     }
@@ -88,7 +88,7 @@ cancelButtonUploadPage?.addEventListener("click", () => {
 });
 
 backButtonUploadPage?.addEventListener("click", () => {
-  window.location.href = "../mangaList/mangaList.html";
+  window.location.href = "/mangaList";
 });
 
 // Enterキーでのアップロード

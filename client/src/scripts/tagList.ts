@@ -36,7 +36,7 @@ function displayTagList(tagList: {str: string, count: number}[]) {
     const tagItemElement = document.createElement("div");
     tagItemElement.className = "tag-item";
     tagItemElement.addEventListener("click", () => {
-      window.location.href = `../mangaList/mangaList.html?tag=${encodeURIComponent(str)}`;
+      window.location.href = `/mangaList?tag=${encodeURIComponent(str)}`;
     });
 
     const tagStrElement = document.createElement("div");
@@ -86,7 +86,7 @@ function exportTagList() {
 function setupEventListeners() {
   // 戻るボタン
   backButton?.addEventListener('click', () => {
-    window.location.href = '../mangaList/mangaList.html';
+    window.location.href = '/mangaList';
   });
   
   // 更新ボタン
