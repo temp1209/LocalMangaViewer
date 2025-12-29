@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f5f5f5;
   color: #333;
   line-height: 1.6;
@@ -17,13 +17,47 @@ body {
 #global-header {
   background-color: #2c3e50;
   color: white;
-  padding: 20px;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-main{
+.header-logo a {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+/* ナビゲーションのリスト化 */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 10px; /* リンク同士の間隔 */
+  margin: 0;
+  padding: 0;
+}
+
+/* リンクの装飾（ボタンっぽく） */
+nav a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 20px 15px; /* クリック領域を広くする */
+  display: block;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+/* ホバー（マウスを乗せたとき）の反応 */
+nav a:hover {
+  background-color: #34495e;
+  color: #3498db;
+}
+
+main {
   background-color: white;
   min-height: 100vh;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

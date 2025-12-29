@@ -6,7 +6,7 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -16,12 +16,16 @@ const { title } = Astro.props;
   </head>
   <body>
     <header id="global-header">
+      <div class="header-logo">
+        <a href="/">📚 Comic Viewer</a>
+      </div>
       <nav>
-        <a href="/">TOP</a>
-        <a href="/mangaList">マンガ一覧</a>
-        <a href="/tagList">タグ一覧</a>
-        <a href="/upload">アップロード</a>
-        <a href="/settings">設定</a>
+        <ul>
+        <li><a href="/mangaList">マンガ一覧</a></li>
+        <li><a href="/tagList">タグ一覧</a></li>
+        <li><a href="/upload">アップロード</a></li>
+        <li><a href="/settings">設定</a></li>
+        </ul>
       </nav>
     </header>
 
@@ -33,4 +37,5 @@ const { title } = Astro.props;
       @import "../styles/mainLayout.css";
     </style>
   </body>
-</html> 
+</html>
+
