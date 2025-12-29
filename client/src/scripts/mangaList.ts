@@ -267,38 +267,4 @@ function setupEventHandlers() {
       window.location.href = "/mangaList";
     });
   }
-
-  // エクスポートボタン
-  const exportButton = document.getElementById("export-list");
-  if (exportButton) {
-    exportButton.addEventListener("click", () => {
-      exportMangaList();
-    });
-  }
-}
-
-function exportMangaList() {
-  // 現在のURLパラメータを取得
-  const urlParams = new URLSearchParams(window.location.search);
-  const currentUrl = window.location.href;
-  
-  // エクスポート用のデータを作成
-  const exportData = {
-    url: currentUrl,
-    timestamp: new Date().toISOString(),
-    parameters: Object.fromEntries(urlParams.entries())
-  };
-  
-  // JSONファイルとしてダウンロード
-  const dataStr = JSON.stringify(exportData, null, 2);
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(dataBlob);
-  
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `manga-list-export-${new Date().toISOString().split('T')[0]}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
 }
