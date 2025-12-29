@@ -1,40 +1,29 @@
-<!doctype html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>タグリスト</title>
-  </head>
-  <body>
-    <div class="taglist-container">
-      <header class="taglist-header">
-        <h1>タグ一覧</h1>
-        <button id="back-button" class="back-button">一覧に戻る</button>
-      </header>
+---
+import MainLayout from "../layouts/mainLayout.astro";
+---
 
-      <main class="taglist-content">
-        <section class="taglist-section">
-          <h2>タグ統計</h2>
-          <div class="taglist-info">
-            <p>各タグの使用回数を表示しています。タグをクリックすると、そのタグを含むマンガ一覧に移動します。</p>
-          </div>
-          <div id="tag-list-container" class="tag-grid">
-            <!-- タグ一覧がここに表示されます -->
-          </div>
-        </section>
-      </main>
+<MainLayout title="タグ一覧">
+  <main class="taglist-content">
+    <section class="taglist-section">
+      <h2>タグ統計</h2>
+      <div class="taglist-info">
+        <p>各タグの使用回数を表示しています。タグをクリックすると、そのタグを含むマンガ一覧に移動します。</p>
+      </div>
+      <div id="tag-list-container" class="tag-grid">
+        <!-- タグ一覧がここに表示されます -->
+      </div>
+    </section>
+  </main>
 
-      <footer class="taglist-footer">
-        <button id="refresh-button" class="secondary-button">更新</button>
-        <button id="export-button" class="secondary-button">エクスポート</button>
-      </footer>
-    </div>
+  <footer class="taglist-footer">
+    <button id="refresh-button" class="secondary-button">更新</button>
+    <button id="export-button" class="secondary-button">エクスポート</button>
+  </footer>
+</MainLayout>
 
-    <script>
-      import "../scripts/tagList";
-    </script>
-    <style is:global>
-      @import "../styles/tagList.css";
-    </style>
-  </body>
-</html>
+<script>
+  import "../scripts/tagList";
+</script>
+<style is:global>
+  @import "../styles/tagList.css";
+</style>

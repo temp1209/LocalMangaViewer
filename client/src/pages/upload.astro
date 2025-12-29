@@ -1,121 +1,110 @@
-<!doctype html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>アップロード</title>
-  </head>
-  <body>
-    <div class="upload-container">
-      <header class="upload-header">
-        <h1>アップロード</h1>
-        <button id="back-button" class="back-button">一覧に戻る</button>
-      </header>
+---
+import MainLayout from "../layouts/mainLayout.astro";
+---
 
-      <main class="upload-content">
-        <form id="upload-form" method="post" enctype="multipart/form-data">
-          <section class="upload-section">
-            <h2>ファイル情報</h2>
+<MainLayout title="タグ一覧">
+  <main class="upload-content">
+    <form id="upload-form" method="post" enctype="multipart/form-data">
+      <section class="upload-section">
+        <h2>ファイル情報</h2>
 
-            <div class="upload-item">
-              <label for="file">ファイルを選択:</label>
-              <input
-                type="file"
-                id="file"
-                name="file"
-                class="upload-input"
-                accept="application/x-zip-compressed, application/zip, application/pdf"
-                required
-              />
-            </div>
-          </section>
+        <div class="upload-item">
+          <label for="file">ファイルを選択:</label>
+          <input
+            type="file"
+            id="file"
+            name="file"
+            class="upload-input"
+            accept="application/x-zip-compressed, application/zip, application/pdf"
+            required
+          />
+        </div>
+      </section>
 
-          <section class="upload-section">
-            <h2>基本情報</h2>
+      <section class="upload-section">
+        <h2>基本情報</h2>
 
-            <div class="upload-item">
-              <label for="title">タイトル:</label>
-              <input type="text" id="title" name="title" class="upload-input" placeholder="タイトル" required />
-            </div>
+        <div class="upload-item">
+          <label for="title">タイトル:</label>
+          <input type="text" id="title" name="title" class="upload-input" placeholder="タイトル" required />
+        </div>
 
-            <div class="upload-item">
-              <label for="authors">作者:</label>
-              <input
-                type="text"
-                id="authors"
-                name="authors"
-                class="upload-input"
-                placeholder="作者（カンマ区切りで複数入力可）"
-                required
-              />
-            </div>
+        <div class="upload-item">
+          <label for="authors">作者:</label>
+          <input
+            type="text"
+            id="authors"
+            name="authors"
+            class="upload-input"
+            placeholder="作者（カンマ区切りで複数入力可）"
+            required
+          />
+        </div>
 
-            <div class="upload-item">
-              <label for="groups">サークル:</label>
-              <input
-                type="text"
-                id="groups"
-                name="groups"
-                class="upload-input"
-                placeholder="サークル名（カンマ区切りで複数入力可）"
-              />
-            </div>
-          </section>
+        <div class="upload-item">
+          <label for="groups">サークル:</label>
+          <input
+            type="text"
+            id="groups"
+            name="groups"
+            class="upload-input"
+            placeholder="サークル名（カンマ区切りで複数入力可）"
+          />
+        </div>
+      </section>
 
-          <section class="upload-section">
-            <h2>二次創作情報</h2>
+      <section class="upload-section">
+        <h2>二次創作情報</h2>
 
-            <div class="upload-item">
-              <label for="originals">原作:</label>
-              <input
-                type="text"
-                id="originals"
-                name="originals"
-                class="upload-input"
-                placeholder="原作名（カンマ区切りで複数入力可）"
-              />
-            </div>
+        <div class="upload-item">
+          <label for="originals">原作:</label>
+          <input
+            type="text"
+            id="originals"
+            name="originals"
+            class="upload-input"
+            placeholder="原作名（カンマ区切りで複数入力可）"
+          />
+        </div>
 
-            <div class="upload-item">
-              <label for="characters">キャラクター:</label>
-              <input
-                type="text"
-                id="characters"
-                name="characters"
-                class="upload-input"
-                placeholder="キャラクター名（カンマ区切りで複数入力可）"
-              />
-            </div>
-          </section>
+        <div class="upload-item">
+          <label for="characters">キャラクター:</label>
+          <input
+            type="text"
+            id="characters"
+            name="characters"
+            class="upload-input"
+            placeholder="キャラクター名（カンマ区切りで複数入力可）"
+          />
+        </div>
+      </section>
 
-          <section class="upload-section">
-            <h2>タグ・分類</h2>
+      <section class="upload-section">
+        <h2>タグ・分類</h2>
 
-            <div class="upload-item">
-              <label for="tags">タグ:</label>
-              <input
-                type="text"
-                id="tags"
-                name="tags"
-                class="upload-input"
-                placeholder="タグ（カンマ区切りで複数入力可）"
-              />
-            </div>
-          </section>
-        </form>
-      </main>
+        <div class="upload-item">
+          <label for="tags">タグ:</label>
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            class="upload-input"
+            placeholder="タグ（カンマ区切りで複数入力可）"
+          />
+        </div>
+      </section>
+    </form>
+  </main>
 
-      <footer class="upload-footer">
-        <button id="upload-button" class="primary-button">アップロード</button>
-        <button id="cancel-button" class="secondary-button">キャンセル</button>
-      </footer>
-    </div>
+  <footer class="upload-footer">
+    <button id="upload-button" class="primary-button">アップロード</button>
+    <button id="cancel-button" class="secondary-button">キャンセル</button>
+  </footer>
+</MainLayout>
 
-    <script>
-      import "../scripts/upload";
-    </script>
-    <style is:global>
-      @import "../styles/upload.css";
-    </style>
-  </body>
-</html>
+<script>
+  import "../scripts/upload";
+</script>
+<style is:global>
+  @import "../styles/upload.css";
+</style>
