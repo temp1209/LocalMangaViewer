@@ -3,18 +3,10 @@ import MainLayout from "../layouts/mainLayout.astro";
 ---
 
 <MainLayout title="漫画一覧">
-  <div class="mangalist-container">
-    <main class="mangalist-content">
-      <section class="mangalist-section">
-        <div class="manga-list">
-          <div id="manga-list-container">
-            <!-- 漫画フォルダ一覧を表示する場所 -->
-          </div>
-          <div class="pagination" id="pagination"></div>
-        </div>
-      </section>
-    </main>
+  <div id="manga-list-container">
+    <!-- 漫画フォルダ一覧を表示する場所 -->
   </div>
+  <div class="pagination" id="pagination"></div>
 
   <footer class="mangalist-footer">
     <div class="footer-info">
