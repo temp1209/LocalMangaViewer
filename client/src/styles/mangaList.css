@@ -148,7 +148,7 @@
   border: 1px solid #e0e0e0;
 }
 
-.pagination button {
+.pagination-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -173,7 +173,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.pagination button:disabled {
+.pagination-button:active{
   background-color: #e0e0e0;
   color: #333;
   cursor: not-allowed;
