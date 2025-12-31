@@ -20,7 +20,7 @@ export const MetadataItemSchema = z.object({
 export const MetadataListSchema = z.object({
   pageConf: PageConfSchema,
   total: z.coerce.number().int().nonnegative().default(0),
-  data: z.array(MetadataItemSchema).default([]),
+  data: z.array(MetadataItemSchema).default([])
 });
 
 //IDとcoverはクライアント側からの送信情報に含まれないようにする

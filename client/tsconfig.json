@@ -8,7 +8,10 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "lib": ["dom", "esnext"],
-    "allowJs": true
+    "baseUrl": ".",
+    "paths": {
+      "@comic-viewer/shared":["../shared/src/index.ts"]
+    }
   },
   "include": [
     "src/**/*"

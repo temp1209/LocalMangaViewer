@@ -27,6 +27,14 @@ export default defineConfig({
           rewrite: (path) => path,
         }
       },
+      fs:{
+        allow:[".."]
+      }
     },
+    resolve:{
+      alias:{
+        "@comic-viewer/shared":"../shared/src/index.ts"
+      }
+    }
   },
 });
