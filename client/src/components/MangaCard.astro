@@ -1,0 +1,81 @@
+---
+import { MetadataItem } from "@comic-viewer/shared";
+
+interface Props {
+  manga: MetadataItem;
+}
+
+const { manga } = Astro.props;
+const coverPath = `/files/${manga.id}/${manga.cover.name}`;
+---
+
+<div class="manga-item">
+  <a href={`/viewer?id=${manga.id}`}>
+    <img
+      class={manga.cover.isPortrait ? "cover__portrait" : "cover__landscape"}
+      src={coverPath}
+      alt={`${manga.title}の表紙`}
+      loading="lazy"
+      decoding="async"
+    />
+  </a>
+  <div class="info-container">
+    <div class="title"><a href={`/viewer?id=${manga.id}`}>{manga.title}</a></div>
+
+    <!-- 作者 -->
+    <div class="author">
+      {
+        manga.authors.map((author) => (
+          <span class="author-link">
+            <a href={`/mangaList?authors=${encodeURIComponent(author)}`}>{author}</a>
+          </span>
+        ))
+      }
+    </div>
+
+    <!-- サークル -->
+    {
+      manga.groups.length > 0 && (
+        <div class="group">
+          {manga.groups.map((group) => (
+            <span class="group-link">
+              <a href={`/mangaList?groups=${encodeURIComponent(group)}`}>{group}</a>
+            </span>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- 原作 -->
+    {
+      manga.originals.length > 0 && (
+        <div class="original">
+          原作：
+          {manga.originals.join(", ")}
+        </div>
+      )
+    }
+
+    <!-- キャラ -->
+    <div class="character-list-container">
+      {
+        manga.characters.map((chara) => (
+          <div class="character-item">
+            <a href={`/mangaList?characters=${encodeURIComponent(chara)}`}>{chara}</a>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- タグ -->
+    <div class="tag-list-container">
+      {
+        manga.tags.map((tag) => (
+          <div class="tag-item">
+            <a href={`/mangaList?tags=${encodeURIComponent(tag)}`}>{tag}</a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>

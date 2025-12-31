@@ -1,23 +1,30 @@
 ---
+import qs from "qs";
 import MainLayout from "../layouts/MainLayout.astro";
+import MangaCard from "../components/MangaCard.astro";
+import { getMangaQueryFromURLParam } from "../lib/manga";
+import {safeFetchWithSchema} from "../lib/fetcher"
+import { API_ENDPOINTS, MetadataListSchema,MetadataList} from "@comic-viewer/shared";
+
+const mangaQuery = getMangaQueryFromURLParam(Astro.url.searchParams);
+const endpointWithQuery = `${API_ENDPOINTS.manga.list}?${qs.stringify(mangaQuery)}`;
+const {pageConf,total, data} = await safeFetchWithSchema<MetadataList>(endpointWithQuery,MetadataListSchema);
 ---
 
 <MainLayout title="漫画一覧">
   <div id="manga-list-container">
-    <!-- 漫画フォルダ一覧を表示する場所 -->
+    {data.map((dataItem) => {
+      <MangaCard manga={dataItem}></MangaCard>
+    })}
   </div>
   <div class="pagination" id="pagination"></div>
 
   <footer class="mangalist-footer">
     <div class="footer-info">
-      <span id="manga-count">0件の漫画</span>
+      <span id="manga-count">{total}件の漫画</span>
     </div>
   </footer>
 </MainLayout>
-
-<script>
-  import "../scripts/mangaList";
-</script>
 <style is:global>
   @import "../styles/mangaList.css";
 </style>

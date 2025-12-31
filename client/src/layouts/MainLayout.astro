@@ -1,4 +1,6 @@
 ---
+import SearchBox from '../components/SearchBox.astro';
+
 interface Props {
   title: string;
 }
@@ -30,6 +32,7 @@ const { title } = Astro.props;
       <div id="global-header-right">
         <nav>
           <ul>
+            <li><SearchBox></li>
             <li><a href="/upload"><span class="material-symbols-rounded">upload</span>アップロード</a></li>
             <li><a href="/settings"><span class="material-symbols-rounded">settings</span>設定</a></li>
           </ul>
