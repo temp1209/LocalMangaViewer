@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { PageConfSchema } from "./queriesSchema.js";
-import { defaultConfig } from "../constants/defaultConfig.js";
 
 export const CoverSchema = z.object({
   name: z.string(),
@@ -14,12 +13,12 @@ export const MetadataItemSchema = z.object({
   originals: z.array(z.string()),
   characters: z.array(z.string()),
   tags: z.array(z.string()),
-  id: z.string().uuid(),
+  id: z.uuid(),
   cover: CoverSchema,
 });
 
 export const MetadataListSchema = z.object({
-  pageConf: PageConfSchema.default({ page: 1, limit: defaultConfig.user.ui.pageLimit }),
+  pageConf: PageConfSchema,
   total: z.coerce.number().int().nonnegative().default(0),
   data: z.array(MetadataItemSchema).default([])
 });
