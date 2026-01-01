@@ -3,6 +3,7 @@ import { logger } from "../../utils/logger.js";
 
 export const searchManga = (dataList: MetadataList, query: SearchQuery) => {
   logger.info("[searchManga]漫画の検索を開始しました");
+  logger.info("[searchManga]総漫画数:",dataList.length);
   let resultData = dataList;
   for (const key in query) {
     const typedKey = key as SearchableKey;

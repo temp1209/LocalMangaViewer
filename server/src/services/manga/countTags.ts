@@ -4,7 +4,7 @@ import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema.js";
 import { logger } from "../../utils/logger.js";
 
 export const countTags = async () => {
-  const metadataList = await readJsonWithSchemaSafe(paths.data.metadataFile, MetadataListSchema, []);
+  const metadataList = await readJsonWithSchemaSafe(paths.data.metadataFile, MetadataListSchema);
   const allTagData = metadataList.map((item) => item.tags).flat();
   const tagFrequency = allTagData.reduce<Record<string, number>>((acc, str) => {
     acc[str] = (acc[str] || 0) + 1;
