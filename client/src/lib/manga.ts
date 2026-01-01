@@ -3,11 +3,7 @@ import { MangaQuerySchema,searchableKeysArray,PageConfSchema} from "@comic-viewe
 export const getMangaQueryFromURLParam = (urlParams: URLSearchParams) => {
   const rawSearch = generateObjectFromKeyArray(urlParams,searchableKeysArray);
 
-  //TODO: 一旦ハードコーディング
-  //スキーマからオブジェクトのキーを取り出す方法を調べる
-  //Zodv4でないとschema.shapeが使えない
-  //非推奨になる関数もあるのでバージョンアップ要検討
-  const pageConfKeyArray = ["page","limit"];
+  const pageConfKeyArray = Object.keys(PageConfSchema.parse(undefined));
   const rawPageConf = generateObjectFromKeyArray(urlParams,pageConfKeyArray);
 
   const result = MangaQuerySchema.safeParse({
