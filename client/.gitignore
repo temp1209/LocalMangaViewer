@@ -25,3 +25,4 @@ dist-ssr
 
 .astro/
 src/env.d.ts
+.env

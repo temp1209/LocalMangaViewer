@@ -39,7 +39,7 @@ const coverPath = `/files/${manga.id}/${manga.cover.name}`;
         <div class="group">
           {manga.groups.map((group) => (
             <span class="group-link">
-              <a href={`/mangaList?groups=${encodeURIComponent(group)}`}>{group}</a>
+              サークル：<a href={`/mangaList?groups=${encodeURIComponent(group)}`}>{group}</a>
             </span>
           ))}
         </div>
@@ -58,6 +58,7 @@ const coverPath = `/files/${manga.id}/${manga.cover.name}`;
 
     <!-- キャラ -->
     <div class="character-list-container">
+      キャラクター：
       {
         manga.characters.map((chara) => (
           <div class="character-item">

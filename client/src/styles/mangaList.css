@@ -4,6 +4,7 @@
   flex-direction: column;
   gap: 20px;
   padding: 20px;
+  margin: 0 auto;
 }
 
 /* マンガアイテム */
@@ -27,6 +28,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* 上部のアクセントライン */
 .manga-item::before {
   content: "";
   position: absolute;
@@ -37,31 +39,31 @@
   background: linear-gradient(90deg, #3498db, #2980b9);
 }
 
-/* カバー画像 */
+/* カバー画像（aタグで囲まれているため調整） */
+.manga-item > a {
+  flex-shrink: 0;
+  line-height: 0; /* 下部の隙間除去 */
+}
+
 .cover__portrait,
 .cover__landscape {
-  width: 200px;
-  height: 280px;
-  border-radius: 8px;
+  width: 180px; /* 少しコンパクトに調整 */
+  height: 250px;
+  border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
-  flex-shrink: 0;
-}
-
-.cover__portrait {
   object-fit: cover;
 }
 
 .cover__landscape {
-  background-color: #e0e0e0;
   object-fit: contain;
+  background-color: #f8f9fa;
 }
 
 .cover__portrait:hover,
 .cover__landscape:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.03);
 }
 
 /* 情報コンテナ */
@@ -69,117 +71,131 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px; /* 密度を上げるため少し狭める */
   min-width: 0;
 }
 
+/* タイトル */
 .title {
-  font-size: 1.5rem;
+  margin: 0;
+}
+
+.title a {
+  font-size: 1.4rem;
   font-weight: 700;
   color: #333;
-  cursor: pointer;
-  margin: 0;
-  transition: all 0.3s ease;
-}
-
-.title:hover {
-  color: #3498db;
-}
-
-.author {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin: 0;
-  transition: all 0.3s ease;
-}
-
-.author-link {
-  cursor: pointer;
   text-decoration: none;
-  color: inherit;
+  transition: color 0.2s;
 }
 
-.author-link:hover {
+.title a:hover {
   color: #3498db;
-  text-decoration: underline;
 }
 
-/* キャラクターとタグリスト */
+/* 作者・サークル共通 */
+.author,
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+.author-link a,
+.group-link a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 2px 0;
+  border-bottom: 1px dashed #bdc3c7;
+}
+
+.author-link a:hover,
+.group-link a:hover {
+  color: #3498db;
+  border-bottom-style: solid;
+}
+
+/* 原作 */
+.original {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  background: #f1f3f4;
+  padding: 4px 10px;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+/* キャラクター・タグ共通コンテナ */
 .character-list-container,
 .tag-list-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 6px;
+  margin-top: 5px;
 }
 
-.character-item,
-.tag-item {
-  background-color: #f0f0f0;
-  color: #333;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  cursor: pointer;
-  border: 1px solid #e0e0e0;
-  transition: all 0.3s ease;
-  font-weight: 500;
+/* キャラクター・タグアイテム */
+.character-item a,
+.tag-item a {
+  display: inline-block;
+  background-color: #f0f2f5;
+  color: #555;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  border: 1px solid #dcdfe6;
+  transition: all 0.2s ease;
 }
 
-.character-item:hover,
-.tag-item:hover {
+.character-item a:hover,
+.tag-item a:hover {
   background-color: #3498db;
   color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-color: #3498db;
+}
+
+/* キャラクター固有の色（区別したい場合） */
+.character-item a {
+  background-color: #eef2ff;
+  border-color: #dee2ff;
 }
 
 /* ページネーション */
 .pagination {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
   justify-content: center;
-  margin: 20px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  gap: 8px;
+  margin: 30px 0;
 }
 
 .pagination-button {
-  display: inline-flex;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  background-color: white;
+  color: #606266;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 48px;
-  height: 48px;
-  padding: 0 16px;
-  border: none;
-  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.pagination-button:hover:not(.active) {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.pagination-button.active {
   background-color: #3498db;
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.pagination button:hover {
-  background-color: #2980b9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.pagination-button:active{
-  background-color: #e0e0e0;
-  color: #333;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-  opacity: 0.6;
+  color: white;
+  border-color: #3498db;
+  cursor: default;
 }
 
 /* フッター */
@@ -192,133 +208,20 @@
   border-top: 1px solid #ddd;
 }
 
-/* ボタンスタイル */
-.primary-button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: background-color 0.3s;
-}
-
-.primary-button:hover {
-  background-color: #2980b9;
-}
-
-.secondary-button {
-  background-color: #95a5a6;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-  margin-right: 10px;
-}
-
-.secondary-button:hover {
-  background-color: #7f8c8d;
-}
-
-.back-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-
-.back-button:hover {
-  background-color: #c0392b;
-}
-
-.danger-button {
-  background-color: #dc3545;
-  color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: background-color 0.3s;
-}
-
-.danger-button:hover {
-  background-color: #c82333;
-}
-
-/* レスポンシブデザイン */
-@media (max-width: 768px) {
-  .mangalist-container {
-    margin: 0;
-    box-shadow: none;
-  }
-  
-  .mangalist-header {
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
-  }
-  
-  .mangalist-content {
-    padding: 20px;
-  }
-  
-  .navigation-links {
-    gap: 10px;
-    padding: 15px;
-  }
-  
-  .navigation-links div {
-    padding: 10px 16px;
-  }
-  
+/* レスポンシブ */
+@media (max-width: 600px) {
   .manga-item {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 15px;
   }
-  
-  .cover__portrait,
-  .cover__landscape {
-    width: 150px;
-    height: 210px;
-  }
-  
+
   .info-container {
-    width: 100%;
+    align-items: center;
   }
-  
-  .title {
-    font-size: 1.25rem;
-  }
-  
-  .author {
-    font-size: 1rem;
-  }
-  
-  .pagination button {
-    min-width: 40px;
-    height: 40px;
-    font-size: 0.875rem;
-  }
-  
-  .mangalist-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .mangalist-footer button {
-    margin-bottom: 10px;
+
+  .character-list-container,
+  .tag-list-container {
+    justify-content: center;
   }
 }
