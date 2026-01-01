@@ -9,13 +9,14 @@
   "devDependencies": {
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
-    "rimraf": "^5.0.5"
+    "rimraf": "^5.0.5",
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "clean": "rimraf client/dist server/dist",
     "build:server": "tsc --project server/tsconfig.json",
     "build:client": "cd client && vite build",
-    "build:shared" : "tsc --project shared/tsconfig.json",
+    "build:shared": "tsc --project shared/tsconfig.json",
     "build": "npm run clean && concurrently \"npm:build:*\"",
     "dev:server": "cd server && cross-env NODE_ENV=development npm run dev",
     "dev:client": "cd client && cross-env NODE_ENV=development npm run dev",
@@ -23,5 +24,8 @@
     "start": "cd server && cross-env NODE_ENV=production npm start",
     "start:dev": "cross-env NODE_ENV=development cd server && npm run dev",
     "preview": "npm run build && npm start"
+  },
+  "dependencies": {
+    "zod": "^4.3.4"
   }
 }

@@ -12,7 +12,6 @@
     "@types/qs": "^6.9.18",
     "astro": "^5.16.6",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript": "~5.7.2",
     "vite": "^6.2.5"
   },
   "dependencies": {
