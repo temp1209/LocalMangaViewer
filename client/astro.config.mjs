@@ -4,7 +4,7 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   // 出力先（Vite設定のoutDirに相当。デフォルトもdistです）
   outDir: './dist',
-
+  output: 'server',
   // 開発サーバーの設定
   server: {
     port: 5173,
