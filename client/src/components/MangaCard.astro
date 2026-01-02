@@ -27,7 +27,7 @@ const coverPath = `/files/${manga.id}/${manga.cover.name}`;
       {
         manga.authors.map((author) => (
           <span class="author-link">
-            <a href={`/mangaList?authors=${encodeURIComponent(author)}`}>{author}</a>
+            <a href={`/mangaList?q=authors%3A${encodeURIComponent(author)}`}>{author}</a>
           </span>
         ))
       }
@@ -37,9 +37,10 @@ const coverPath = `/files/${manga.id}/${manga.cover.name}`;
     {
       manga.groups.length > 0 && (
         <div class="group">
+          サークル：
           {manga.groups.map((group) => (
             <span class="group-link">
-              サークル：<a href={`/mangaList?groups=${encodeURIComponent(group)}`}>{group}</a>
+              <a href={`/mangaList?q=groups%3A${encodeURIComponent(group)}`}>{group}</a>
             </span>
           ))}
         </div>
@@ -62,7 +63,7 @@ const coverPath = `/files/${manga.id}/${manga.cover.name}`;
       {
         manga.characters.map((chara) => (
           <div class="character-item">
-            <a href={`/mangaList?characters=${encodeURIComponent(chara)}`}>{chara}</a>
+            <a href={`/mangaList?q=characters%3A${encodeURIComponent(chara)}`}>{chara}</a>
           </div>
         ))
       }
@@ -73,7 +74,7 @@ const coverPath = `/files/${manga.id}/${manga.cover.name}`;
       {
         manga.tags.map((tag) => (
           <div class="tag-item">
-            <a href={`/mangaList?tags=${encodeURIComponent(tag)}`}>{tag}</a>
+            <a href={`/mangaList?q=tags%3A${encodeURIComponent(tag)}`}>{tag}</a>
           </div>
         ))
       }
