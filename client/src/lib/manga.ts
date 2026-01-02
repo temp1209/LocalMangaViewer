@@ -58,7 +58,7 @@ function getSearchQueryFromKeywords(rawInput: string | null): SearchQuery {
     const colonIndex = word.indexOf(":");
 
     if (colonIndex !== -1) {
-      const key = word.substring(0, colonIndex) as SearchableKey;
+      const key = word.substring(0, colonIndex) + "s" as SearchableKey;
       const value = word.substring(colonIndex + 1);
 
       // keyが定義済みの検索可能キーに含まれているかチェック
