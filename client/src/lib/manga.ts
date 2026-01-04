@@ -4,6 +4,7 @@ import {
   PageConfSchema,
   SearchQuery,
   SearchableKey,
+  PageConf,
 } from "@comic-viewer/shared";
 
 export const getMangaQueryFromURLParam = (urlParams: URLSearchParams) => {
@@ -58,7 +59,7 @@ function getSearchQueryFromKeywords(rawInput: string | null): SearchQuery {
     const colonIndex = word.indexOf(":");
 
     if (colonIndex !== -1) {
-      const key = word.substring(0, colonIndex) + "s" as SearchableKey;
+      const key = (word.substring(0, colonIndex) + "s") as SearchableKey;
       const value = word.substring(colonIndex + 1);
 
       // keyが定義済みの検索可能キーに含まれているかチェック
@@ -76,3 +77,20 @@ function getSearchQueryFromKeywords(rawInput: string | null): SearchQuery {
 
   return result;
 }
+
+export const getPagination = (pageConf:PageConf, paginationLimit: number, totalItem: number) => {
+  const totalPages = Math.ceil(totalItem / pageConf.limit);
+  const paginationSide = (paginationLimit - 1) / 2;
+
+  const pageLength = Math.min(paginationLimit, totalPages);
+  let startpage = pageConf.page - paginationSide;
+  if (startpage < 1) {
+    startpage = 1;
+  }
+  if (startpage + paginationLimit - 1 > totalPages) {
+    startpage = Math.max(1, totalPages - pageLength + 1);
+  }
+
+  const pages = Array.from({ length: pageLength }, (_, i) => i + startpage);
+  return pages;
+};

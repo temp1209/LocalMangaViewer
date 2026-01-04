@@ -2,29 +2,17 @@
 import qs from "qs";
 import MainLayout from "../layouts/MainLayout.astro";
 import MangaCard from "../components/MangaCard.astro";
-import { getMangaQueryFromURLParam } from "../lib/manga";
+import { getMangaQueryFromURLParam, getPagination } from "../lib/manga";
 import { safeFetchWithSchema } from "../lib/fetcher";
 import { API_ENDPOINTS, MetadataResponseSchema } from "@comic-viewer/shared";
+
+const PAGINATION_LIMIT = 9;
 
 const mangaQuery = getMangaQueryFromURLParam(Astro.url.searchParams);
 const endpointWithQuery = `${import.meta.env.PUBLIC_API_URL}${API_ENDPOINTS.manga.list}?${qs.stringify(mangaQuery)}`;
 const { pageConf, total, data } = await safeFetchWithSchema(endpointWithQuery, MetadataResponseSchema);
-
-const totalPages = Math.ceil(total / pageConf.limit);
-const pagenationLimit = 9;
-const pagenationSide = (pagenationLimit - 1) / 2;
+const pages = getPagination(pageConf, PAGINATION_LIMIT, total);
 const currentPage = pageConf.page;
-
-const pageLength = Math.min(pagenationLimit, totalPages);
-let startpage = currentPage - pagenationSide;
-if (startpage < 1) {
-  startpage = 1;
-}
-if (startpage + pagenationLimit - 1 > totalPages) {
-  startpage = Math.max(1, totalPages - pageLength + 1);
-}
-
-const pages = Array.from({ length: pageLength }, (_, i) => i + startpage);
 ---
 
 <MainLayout title="漫画一覧">
