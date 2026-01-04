@@ -1,5 +1,5 @@
 ---
-import SearchBox from '../components/SearchBox.astro';
+import SearchBox from "../components/SearchBox.astro";
 
 interface Props {
   title: string;
@@ -14,7 +14,10 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} | コミックビューアー</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
   </head>
   <body>
     <header id="global-header">
@@ -32,20 +35,113 @@ const { title } = Astro.props;
       <div id="global-header-right">
         <nav>
           <ul>
-            <li><SearchBox></li>
+            <li>
+              <div class="search">
+              <SearchBox />
+              </div>
+            </li>
             <li><a href="/upload"><span class="material-symbols-rounded">upload</span>アップロード</a></li>
             <li><a href="/settings"><span class="material-symbols-rounded">settings</span>設定</a></li>
           </ul>
         </nav>
       </div>
     </header>
-
     <main>
       <slot />
     </main>
-
-    <style is:global>
-      @import "../styles/mainLayout.css";
-    </style>
   </body>
 </html>
+
+<style>
+  /* 共通ヘッダー */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  #global-header {
+    background-color: #2c3e50;
+    color: white;
+    height: 64px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+  }
+
+  #global-header-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-logo a {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px 15px 0px;
+  }
+  /* ナビゲーションのリスト化 */
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 10px; /* リンク同士の間隔 */
+    margin: 0;
+    padding: 0;
+  }
+
+  /* リンクの装飾（ボタンっぽく） */
+  nav a {
+    height: 64px;
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 0px 15px; /* クリック領域を広くする */
+    display: flex;
+    align-items: center;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
+
+  .search {
+    height: 64px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ホバー（マウスを乗せたとき）の反応 */
+  nav a:hover {
+    background-color: #34495e;
+    color: #3498db;
+  }
+
+  /* アイコンの設定 */
+  .material-symbols-rounded {
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 24;
+    vertical-align: middle;
+    margin-right: 4px;
+    font-size: 24px;
+  }
+
+  main {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+</style>
