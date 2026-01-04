@@ -48,6 +48,59 @@ const currentPage = pageConf.page;
     </div>
   </footer>
 </MainLayout>
-<style is:global>
-  @import "../styles/mangaList.css";
+<style>
+  /* マンガリストコンテナ */
+  #manga-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto;
+  }
+
+  /* ページネーション */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 30px 0;
+  }
+
+  .pagination-button {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    background-color: white;
+    color: #606266;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .pagination-button:hover:not(.active) {
+    border-color: #3498db;
+    color: #3498db;
+  }
+
+  .pagination-button.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+    cursor: default;
+  }
+
+  /* フッター */
+  .mangalist-footer {
+    background-color: #ecf0f1;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #ddd;
+  }
 </style>
