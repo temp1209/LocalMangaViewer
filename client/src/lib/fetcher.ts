@@ -17,7 +17,7 @@ export const safeFetchWithSchema = async <T>(url: string, schema: z.ZodType<T>):
       console.error("バリデーションエラー:", result.error.issues);
       throw new Error("パースに失敗しました");
     }
-    console.log("[safeParseWithSchema] フェッチ終了\nResponse:",result.data);
+    console.log("[safeParseWithSchema] フェッチが正常に終了しました");
     return result.data;
   } catch (err) {
     console.error("[safeParseWithSchema] 通信もしくはパースに失敗しました:", url, err);
