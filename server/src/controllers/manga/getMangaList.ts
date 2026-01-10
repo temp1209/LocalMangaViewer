@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { MangaQuerySchema , MetadataListSchema } from "@comic-viewer/shared";
+import { MangaQuerySchema, MetadataListSchema, MetadataResponse, MetadataResponseSchema } from "@comic-viewer/shared";
 import { decodeQueryParamArray } from "../../utils/query.js";
 import { paths } from "../../config/paths.js";
 import { readJsonWithSchemaSafe } from "../../utils/readJsonWithSchema.js";
@@ -10,9 +10,8 @@ import { logger } from "../../utils/logger.js";
 // Get
 // クエリから検索しマンガ情報を返すAPI
 export const getMangaListAPI = async (req: Request, res: Response) => {
-
   logger.info("[getMangaList]漫画一覧取得APIにアクセスしました");
-  logger.log("[getMangaList]受信したクエリ:",req.query);
+  logger.log("[getMangaList]受信したクエリ:", req.query);
 
   const resultReqParse = MangaQuerySchema.safeParse(req.query);
   if (!resultReqParse.success) {
@@ -23,8 +22,8 @@ export const getMangaListAPI = async (req: Request, res: Response) => {
   const query = resultReqParse.data;
 
   const decodedSearchQuery = mapObjectValues(query.search, decodeQueryParamArray);
-  const metadataList = await readJsonWithSchemaSafe(paths.data.metadataFile, MetadataListSchema, []);
-  const searchResult = searchManga(metadataList,decodedSearchQuery);
+  const metadataList = await readJsonWithSchemaSafe(paths.data.metadataFile, MetadataListSchema);
+  const searchResult = searchManga(metadataList, decodedSearchQuery);
 
   //ページに切り取り
   const page = query.pageConf.page;
@@ -35,5 +34,12 @@ export const getMangaListAPI = async (req: Request, res: Response) => {
 
   logger.info("[getMangaList]漫画リストを取得しました");
   logger.log(`[getMangaList]漫画総数:${metadataList.length},ヒット件数:${searchResult.length}`);
-  res.status(200).json({ page, limit, total: searchResult.length, data: mangaListPageData });
+
+  const responseData: MetadataResponse = {
+    pageConf: query.pageConf,
+    total: searchResult.length,
+    data: mangaListPageData,
+  };
+
+  res.status(200).json(responseData);
 };

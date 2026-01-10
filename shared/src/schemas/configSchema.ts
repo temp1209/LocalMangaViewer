@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { defaultConfig } from "../constants/defaultConfig.js";
 
 const userConfigSchema = z.object({
   viewer: z.object({
@@ -21,4 +22,4 @@ const serverConfigSchema = z.object({
 export const configSchema = z.object({
   user:userConfigSchema,
   server:serverConfigSchema
-});
+}).default(defaultConfig);

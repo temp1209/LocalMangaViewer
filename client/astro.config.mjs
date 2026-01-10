@@ -1,11 +1,10 @@
 import { defineConfig } from 'astro/config';
-import {fileURLToPath} from "url"
 
 // https://astro.build/config
 export default defineConfig({
   // 出力先（Vite設定のoutDirに相当。デフォルトもdistです）
   outDir: './dist',
-
+  output: 'server',
   // 開発サーバーの設定
   server: {
     port: 5173,
@@ -27,6 +26,14 @@ export default defineConfig({
           rewrite: (path) => path,
         }
       },
+      fs:{
+        allow:[".."]
+      }
     },
+    resolve:{
+      alias:{
+        "@comic-viewer/shared":"../shared/src/index.ts"
+      }
+    }
   },
 });

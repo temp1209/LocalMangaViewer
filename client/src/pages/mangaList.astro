@@ -1,23 +1,106 @@
 ---
+import qs from "qs";
 import MainLayout from "../layouts/MainLayout.astro";
+import MangaCard from "../components/MangaCard.astro";
+import { getMangaQueryFromURLParam, getPagination } from "../lib/manga";
+import { safeFetchWithSchema } from "../lib/fetcher";
+import { API_ENDPOINTS, MetadataResponseSchema } from "@comic-viewer/shared";
+
+const PAGINATION_LIMIT = 9;
+
+const mangaQuery = getMangaQueryFromURLParam(Astro.url.searchParams);
+const endpointWithQuery = `${import.meta.env.PUBLIC_API_URL}${API_ENDPOINTS.manga.list}?${qs.stringify(mangaQuery)}`;
+const { pageConf, total, data } = await safeFetchWithSchema(endpointWithQuery, MetadataResponseSchema);
+const pages = getPagination(pageConf, PAGINATION_LIMIT, total);
+const currentPage = pageConf.page;
 ---
 
 <MainLayout title="漫画一覧">
   <div id="manga-list-container">
-    <!-- 漫画フォルダ一覧を表示する場所 -->
+    {
+      data.map((dataItem) => {
+        return <MangaCard manga={dataItem} />;
+      })
+    }
   </div>
-  <div class="pagination" id="pagination"></div>
+  <div class="pagination" id="pagination">
+    {
+      pages.map((page) => {
+        const urlParams = Astro.url.searchParams;
+        urlParams.set("page", page.toString());
+        const href = `?${urlParams.toString()}`;
+        return (
+          <a
+            href={href}
+            class={`pagination-button ${page === currentPage ? "active" : ""}`}
+            aria-current={page === currentPage ? "page" : undefined}
+          >
+            {page}
+          </a>
+        );
+      })
+    }
+  </div>
 
   <footer class="mangalist-footer">
     <div class="footer-info">
-      <span id="manga-count">0件の漫画</span>
+      <span id="manga-count">{total}件の漫画</span>
     </div>
   </footer>
 </MainLayout>
+<style>
+  /* マンガリストコンテナ */
+  #manga-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto;
+  }
 
-<script>
-  import "../scripts/mangaList";
-</script>
-<style is:global>
-  @import "../styles/mangaList.css";
+  /* ページネーション */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 30px 0;
+  }
+
+  .pagination-button {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    background-color: white;
+    color: #606266;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .pagination-button:hover:not(.active) {
+    border-color: #3498db;
+    color: #3498db;
+  }
+
+  .pagination-button.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+    cursor: default;
+  }
+
+  /* フッター */
+  .mangalist-footer {
+    background-color: #ecf0f1;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #ddd;
+  }
 </style>

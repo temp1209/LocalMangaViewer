@@ -1,16 +1,14 @@
-import { Config } from "../types/config.js";
-
-export const defaultConfig: Config = {
+export const defaultConfig = {
   user: {
     viewer: {
-      pageDirection: "left",
+      pageDirection: "left" as "left" | "right",
       keyboardShortcuts: {
         right: ["ArrowRight", "d"],
         left: ["ArrowLeft", "a"],
       },
     },
     ui: {
-      theme: "dark",
+      theme: "dark" as "dark" | "light" | "auto",
       pageLimit: 10,
     },
   },

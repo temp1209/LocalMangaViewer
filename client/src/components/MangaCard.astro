@@ -1,0 +1,257 @@
+---
+import { MetadataItem } from "@comic-viewer/shared";
+
+interface Props {
+  manga: MetadataItem;
+}
+
+const { manga } = Astro.props;
+const coverPath = `/files/${manga.id}/${manga.cover.name}`;
+---
+
+<div class="manga-item">
+  <a href={`/viewer?id=${manga.id}`}>
+    <img
+      class={manga.cover.isPortrait ? "cover__portrait" : "cover__landscape"}
+      src={coverPath}
+      alt={`${manga.title}の表紙`}
+      loading="lazy"
+      decoding="async"
+    />
+  </a>
+  <div class="info-container">
+    <div class="title"><a href={`/viewer?id=${manga.id}`}>{manga.title}</a></div>
+
+    <!-- 作者 -->
+    <div class="author">
+      {
+        manga.authors.map((author) => (
+          <span class="author-link">
+            <a href={`/mangaList?q=author%3A${encodeURIComponent(author)}`}>{author}</a>
+          </span>
+        ))
+      }
+    </div>
+
+    <!-- サークル -->
+    {
+      manga.groups.length > 0 && (
+        <div class="group">
+          サークル：
+          {manga.groups.map((group) => (
+            <span class="group-link">
+              <a href={`/mangaList?q=group%3A${encodeURIComponent(group)}`}>{group}</a>
+            </span>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- 原作 -->
+    {
+      manga.originals.length > 0 && (
+        <div class="original">
+          原作：
+          {manga.originals.join(", ")}
+        </div>
+      )
+    }
+
+    <!-- キャラ -->
+    <div class="character-list-container">
+      キャラクター：
+      {
+        manga.characters.map((chara) => (
+          <div class="character-item">
+            <a href={`/mangaList?q=character%3A${encodeURIComponent(chara)}`}>{chara}</a>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- タグ -->
+    <div class="tag-list-container">
+      {
+        manga.tags.map((tag) => (
+          <div class="tag-item">
+            <a href={`/mangaList?q=tag%3A${encodeURIComponent(tag)}`}>{tag}</a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>
+<style>
+  /* マンガアイテム */
+  .manga-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    min-height: 200px;
+  }
+
+  .manga-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* 上部のアクセントライン */
+  .manga-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+  }
+
+  /* カバー画像（aタグで囲まれているため調整） */
+  .manga-item > a {
+    flex-shrink: 0;
+    line-height: 0; /* 下部の隙間除去 */
+  }
+
+  .cover__portrait,
+  .cover__landscape {
+    width: 180px; /* 少しコンパクトに調整 */
+    height: 250px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    object-fit: cover;
+  }
+
+  .cover__landscape {
+    object-fit: contain;
+    background-color: #f8f9fa;
+  }
+
+  .cover__portrait:hover,
+  .cover__landscape:hover {
+    transform: scale(1.03);
+  }
+
+  /* 情報コンテナ */
+  .info-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 密度を上げるため少し狭める */
+    min-width: 0;
+  }
+
+  /* タイトル */
+  .title {
+    margin: 0;
+  }
+
+  .title a {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .title a:hover {
+    color: #3498db;
+  }
+
+  /* 作者・サークル共通 */
+  .author,
+  .group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.95rem;
+  }
+
+  .author-link a,
+  .group-link a {
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 2px 0;
+    border-bottom: 1px dashed #bdc3c7;
+  }
+
+  .author-link a:hover,
+  .group-link a:hover {
+    color: #3498db;
+    border-bottom-style: solid;
+  }
+
+  /* 原作 */
+  .original {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    background: #f1f3f4;
+    padding: 4px 10px;
+    border-radius: 4px;
+    width: fit-content;
+  }
+
+  /* キャラクター・タグ共通コンテナ */
+  .character-list-container,
+  .tag-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 5px;
+  }
+
+  /* キャラクター・タグアイテム */
+  .character-item a,
+  .tag-item a {
+    display: inline-block;
+    background-color: #f0f2f5;
+    color: #555;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    border: 1px solid #dcdfe6;
+    transition: all 0.2s ease;
+  }
+
+  .character-item a:hover,
+  .tag-item a:hover {
+    background-color: #3498db;
+    color: #ffffff;
+    border-color: #3498db;
+  }
+
+  /* キャラクター固有の色（区別したい場合） */
+  .character-item a {
+    background-color: #eef2ff;
+    border-color: #dee2ff;
+  }
+
+  /* レスポンシブ */
+  @media (max-width: 600px) {
+    .manga-item {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .info-container {
+      align-items: center;
+    }
+
+    .character-list-container,
+    .tag-list-container {
+      justify-content: center;
+    }
+  }
+</style>
